@@ -1765,7 +1765,7 @@ export default function CDPUtilityApp() {
                 <div className="mb-2">
                   <span className="text-slate-600">Assets: </span>
                   <span className="font-semibold">{formatCurrency(otherValueUSD)}</span>
-                </div>
+          </div>
                 <div className="mb-2">
                   <span className="text-slate-600">COINDEPO: </span>
                   <span className="font-semibold">{formatCurrency(cdpValueUSD)}</span>
@@ -1849,7 +1849,7 @@ export default function CDPUtilityApp() {
                                 <div>
                                   <div className="cd-asset-name">
                                     {holding.qty.toLocaleString()} {holding.asset.name}
-                                  </div>
+                </div>
                                   <div className="text-xs text-slate-500">
                                     {formatCurrency(holding.value)}
                                   </div>
@@ -1862,7 +1862,9 @@ export default function CDPUtilityApp() {
                               <div className="col-span-4 text-right cd-value-primary">
                                 <div>{formatCurrency(holding.annualInterest)}/year</div>
                                 <div className="text-xs text-slate-500 mt-1">
-                                  {holding.apr.toFixed(1)}% APR{depositBonus > 0 ? ` + ${(depositBonus * 100).toFixed(1)}% tier` : ''} • Compounded
+                                  {holding.apr.toFixed(1)}% APR{depositBonus > 0 ? (
+                                    <span style={{ color: '#f472b6', fontWeight: '600' }}> + {(depositBonus * 100).toFixed(1)}% tier</span>
+                                  ) : ''} • Compounded
                                 </div>
                     </div>
                               <div className="col-span-1"></div>
@@ -1898,7 +1900,9 @@ export default function CDPUtilityApp() {
                               <div className="col-span-4 text-right cd-loan-value" style={{color: '#dc2626 !important'}}>
                                 <div>-{formatCurrency(annualInterest)}/year</div>
                                 <div className="text-xs text-slate-500 mt-1">
-                                  {getAPRValue(loan.interestRate).toFixed(1)}% APR{loanBonus > 0 ? ` - ${(loanBonus * 100).toFixed(1)}% tier` : ''} • Compounded
+                                  {getAPRValue(loan.interestRate).toFixed(1)}% APR{loanBonus > 0 ? (
+                                    <span style={{ color: '#f472b6', fontWeight: '600' }}> - {(loanBonus * 100).toFixed(1)}% tier</span>
+                                  ) : ''} • Compounded
                                 </div>
                               </div>
                               <div className="col-span-1"></div>
@@ -1906,7 +1910,7 @@ export default function CDPUtilityApp() {
                           </div>
                         );
                       })}
-                    </div>
+                </div>
 
                         {/* Net Interest Income Total */}
                         <div className="mt-12 pt-8 border-t border-slate-200">
@@ -1914,16 +1918,16 @@ export default function CDPUtilityApp() {
                             <div className="text-right">
                               <div className="text-xs text-slate-500 mb-4">Total from all assets</div>
               </div>
-              </div>
-                          
+                </div>
+
                           {/* Extra witregel en groene totaal */}
                           <div className="mt-8 pt-4 flex justify-end">
                             <div className="text-right">
                               <div className="cd-total-green">
                                 Net Interest Income: {fmtUSD(netAnnualInterest)}/year
+                </div>
+              </div>
             </div>
-          </div>
-                          </div>
                         </div>
                   </>
                 ) : (
@@ -2020,7 +2024,7 @@ export default function CDPUtilityApp() {
                   <div className="col-span-3 text-right">INTEREST STARTED</div>
                   <div className="col-span-3 text-right">ACCRUED INTEREST</div>
                   <div className="col-span-2 text-right">PAYOUT</div>
-            </div>
+              </div>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
                   {upcomingPayouts.map((payout, i) => {
@@ -2044,9 +2048,9 @@ export default function CDPUtilityApp() {
                             <div>
                               <div className={`cd-asset-name ${payout.isLoan ? 'text-red-600' : ''}`}>
                                 {payout.qty.toLocaleString()} {payout.asset.name}
-                              </div>
-                            </div>
-                          </div>
+              </div>
+            </div>
+          </div>
                           <div className="col-span-3 text-right text-slate-500">
                             {calculation.interestStart.toLocaleDateString()}
                           </div>
@@ -2228,7 +2232,7 @@ export default function CDPUtilityApp() {
               <span className="cd-total-green-sm">Total benefits per year:</span>
               <span className="cd-total-green-sm">{fmtUSD(otherValueUSD * 0.24 + utilityUSD)}</span>
           </div>
-        </section>
+          </section>
 
           <section className="card flex-1">
             <h2 className="cd-balance-medium mb-6 text-blue-600">COINDEPO Holdings Advantages</h2>

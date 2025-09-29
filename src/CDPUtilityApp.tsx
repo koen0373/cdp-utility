@@ -408,22 +408,20 @@ const CoindepoRow: React.FC<{
           {!isEditing ? (
             <>
               <button
-                className="p-1 hover:opacity-70 transition-opacity"
-                style={{ color: '#9ca3af', background: "transparent", border: "none" }}
+                className="p-1"
                 onClick={() => setIsEditing(true)}
                 aria-label="Edit"
                 title="Edit"
               >
-                <Pencil className="w-4 h-4" />
+                <Pencil className="w-4 h-4 text-slate-500" />
               </button>
               <button
-                className="p-1 hover:opacity-70 transition-opacity"
-                style={{ color: '#9ca3af', background: "transparent", border: "none" }}
+                className="p-1"
                 onClick={onRemove}
                 aria-label="Remove"
                 title="Remove"
               >
-                <Trash className="w-4 h-4" />
+                <Trash className="w-4 h-4 text-slate-500" />
               </button>
             </>
           ) : (
@@ -560,7 +558,7 @@ const AssetRow: React.FC<{
           {!isEditing ? (
             <>
               <button
-                className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+                className="p-1"
                 onClick={() => setIsEditing(true)}
                 aria-label="Edit"
                 title="Edit"
@@ -568,7 +566,7 @@ const AssetRow: React.FC<{
                 <Pencil className="w-4 h-4 text-slate-500" />
               </button>
               <button
-                className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+                className="p-1"
                 onClick={onRemove}
                 aria-label="Remove"
                 title="Remove"

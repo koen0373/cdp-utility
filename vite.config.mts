@@ -3,6 +3,7 @@ import react from "@vitejs/plugin-react";
 
 // ESM config (note .mts extension)
 export default defineConfig({
+  base: '/cdp-utility/',
   plugins: [react()],
   server: {
     port: 5173,

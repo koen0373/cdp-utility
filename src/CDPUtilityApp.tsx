@@ -516,103 +516,50 @@ const AssetRow: React.FC<{
 
 
   return (
-    <div className="py-5">
-      <div className="grid grid-cols-12 gap-2 items-center">
-          <div className="col-span-3 flex items-center" style={{ gap: '24px' }}>
-            <TokenIcon asset={row.asset} />
-            <div>
-              <div className="cd-asset-name">{row.asset.name}</div>
-              {row.payoutDate && (
-                <div className="text-xs text-slate-500">
-                  Interest payout date: {new Date(row.payoutDate).toLocaleDateString()}
-                </div>
-              )}
-            </div>
-          </div>
-        <div className="col-span-2 text-right text-slate-800">
-          {isEditing ? (
-            <input
-              ref={inputRef}
-              type="text"
-              inputMode="decimal"
-              value={editQty}
-              onChange={(e) => setEditQty(toNum(e.target.value))}
-              onKeyDown={(e) => e.key === "Enter" && save()}
-              className="w-20 h-10 px-3 border border-slate-300 rounded-lg text-right text-sm"
-            />
-          ) : (
-            row.qty.toLocaleString()
-          )}
-        </div>
-        <div className="col-span-2 text-right text-slate-500">
-          {row.priceUSD ? `$${row.priceUSD.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 4 })}` : "—"}
-        </div>
-        <div className="col-span-2 text-right">
-          <span 
-            className="inline-block font-bold text-base"
-            style={{ 
-              backgroundColor: isLoan ? '#ef4444' : '#4ade80', 
-              color: '#ffffff',
-              padding: '6px 12px',
-              borderRadius: '8px',
-              fontSize: '14px',
-              fontWeight: '700'
-            }}
-          >
-            {isLoan 
-              ? (getAPRValue(row.interestRate) - (depositBonus * 100)).toFixed(1)
-              : (getAPRValue(row.interestRate) + (depositBonus * 100)).toFixed(1)
-            }%
-            {depositBonus > 0 && (
-              <span style={{ 
-                fontSize: '10px', 
-                color: '#16a34a', 
-                fontWeight: '600',
-                marginLeft: '4px'
-              }}>
-                {isLoan ? `-${(depositBonus * 100).toFixed(1)}%` : `+${(depositBonus * 100).toFixed(1)}%`}
-              </span>
+    <div className="py-4 border border-slate-200 rounded-lg bg-white">
+      {/* Asset Header Row */}
+      <div className="flex items-center justify-between p-4 border-b border-slate-100">
+        <div className="flex items-center gap-3">
+          <TokenIcon asset={row.asset} />
+          <div>
+            <div className="cd-asset-name text-lg font-semibold">{row.asset.name}</div>
+            {row.payoutDate && (
+              <div className="text-xs text-slate-500">
+                Interest payout date: {new Date(row.payoutDate).toLocaleDateString()}
+              </div>
             )}
-          </span>
+          </div>
         </div>
-        <div 
-          className={`col-span-2 text-right ${isLoan ? 'cd-loan-value' : 'cd-value-primary'}`}
-          style={isLoan ? { color: '#dc2626 !important', fontWeight: '600' } : {}}
-        >
-                      {isLoan ? `-${formatCurrency(value, selectedCurrency, exchangeRates)}` : formatCurrency(value, selectedCurrency, exchangeRates)}
-        </div>
-        <div className="col-span-1 flex items-center justify-end gap-2">
+        <div className="flex items-center gap-2">
           {!isEditing ? (
             <>
               <button
-                className="p-1 hover:opacity-70 transition-opacity"
-                style={{ color: '#9ca3af', background: "transparent", border: "none" }}
+                className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
                 onClick={() => setIsEditing(true)}
                 aria-label="Edit"
                 title="Edit"
               >
-                <Pencil className="w-4 h-4" />
+                <Pencil className="w-4 h-4 text-slate-500" />
               </button>
               <button
-                className="p-1 hover:opacity-70 transition-opacity"
-                style={{ color: '#9ca3af', background: "transparent", border: "none" }}
+                className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
                 onClick={onRemove}
                 aria-label="Remove"
                 title="Remove"
               >
-                <Trash className="w-4 h-4" />
+                <Trash className="w-4 h-4 text-slate-500" />
               </button>
             </>
           ) : (
             <div className="flex items-center gap-2">
               <button
-                className="btn-accent px-4 py-2 text-sm font-medium"
+                className="btn-accent px-3 py-1 text-sm font-medium"
                 onClick={save}
               >
                 ✓ Save
               </button>
               <button
-                className="btn-primary px-4 py-2 text-sm font-medium"
+                className="btn-primary px-3 py-1 text-sm font-medium"
                 onClick={() => {
                   setEditQty(row.qty);
                   setIsEditing(false);
@@ -622,6 +569,78 @@ const AssetRow: React.FC<{
               </button>
             </div>
           )}
+        </div>
+      </div>
+
+      {/* Asset Details Grid */}
+      <div className="p-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          {/* Quantity */}
+          <div className="space-y-1">
+            <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Quantity</div>
+            <div className="text-lg font-semibold text-slate-800">
+              {isEditing ? (
+                <input
+                  ref={inputRef}
+                  type="text"
+                  inputMode="decimal"
+                  value={editQty}
+                  onChange={(e) => setEditQty(toNum(e.target.value))}
+                  onKeyDown={(e) => e.key === "Enter" && save()}
+                  className="w-full h-10 px-3 border border-slate-300 rounded-lg text-right text-sm"
+                />
+              ) : (
+                row.qty.toLocaleString()
+              )}
+            </div>
+          </div>
+
+          {/* Price */}
+          <div className="space-y-1">
+            <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Price</div>
+            <div className="text-lg font-semibold text-slate-600">
+              {row.priceUSD ? `$${row.priceUSD.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 4 })}` : "—"}
+            </div>
+          </div>
+
+          {/* APR */}
+          <div className="space-y-1">
+            <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">APR</div>
+            <div className="flex items-center gap-2">
+              <span 
+                className="inline-block font-bold text-sm"
+                style={{ 
+                  backgroundColor: isLoan ? '#ef4444' : '#4ade80', 
+                  color: '#ffffff',
+                  padding: '4px 8px',
+                  borderRadius: '6px',
+                  fontSize: '12px',
+                  fontWeight: '700'
+                }}
+              >
+                {isLoan 
+                  ? (getAPRValue(row.interestRate) - (depositBonus * 100)).toFixed(1)
+                  : (getAPRValue(row.interestRate) + (depositBonus * 100)).toFixed(1)
+                }%
+              </span>
+              {depositBonus > 0 && (
+                <span className="text-xs font-medium" style={{ color: '#16a34a' }}>
+                  {isLoan ? `-${(depositBonus * 100).toFixed(1)}%` : `+${(depositBonus * 100).toFixed(1)}%`}
+                </span>
+              )}
+            </div>
+          </div>
+
+          {/* Value */}
+          <div className="space-y-1">
+            <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Value</div>
+            <div 
+              className={`text-lg font-semibold ${isLoan ? 'cd-loan-value' : 'cd-value-primary'}`}
+              style={isLoan ? { color: '#dc2626 !important', fontWeight: '600' } : {}}
+            >
+              {isLoan ? `-${formatCurrency(value, selectedCurrency, exchangeRates)}` : formatCurrency(value, selectedCurrency, exchangeRates)}
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -1,0 +1,396 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* COINDEPO.com inspired styles */
+:root {
+  --cd-primary: #3b82f6;
+  --cd-secondary: #64748b;
+  --cd-success: #22c55e;
+  --cd-text: #1e293b;
+  --cd-text-light: #64748b;
+  --cd-bg: #f8fafc;
+  --cd-card: #ffffff;
+  --cd-border: #e2e8f0;
+}
+
+body {
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--cd-text);
+  background-color: var(--cd-bg);
+}
+
+/* Typography hierarchy matching COINDEPO.com */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--cd-text);
+}
+
+.cd-title-lg {
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.cd-title-md {
+  font-size: 1.875rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.cd-title-sm {
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.cd-text-lg {
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+
+.cd-text-base {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.cd-text-sm {
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+/* Card styles matching COINDEPO.com */
+.cd-card {
+  background: var(--cd-card);
+  border-radius: 12px;
+  border: 1px solid var(--cd-border);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  padding: 2rem;
+}
+
+.cd-card-compact {
+  padding: 1.5rem;
+}
+
+/* COINDEPO Account Card Style */
+.cd-account-card {
+  background: white;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.cd-account-header {
+  display: flex;
+  justify-content: between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+}
+
+.cd-account-title {
+  color: #6b7280;
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.cd-account-subtitle {
+  color: #111827;
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 0.25rem 0 0 0;
+  line-height: 1.3;
+}
+
+.cd-balance-section {
+  margin-bottom: 2rem;
+}
+
+.cd-balance-label {
+  color: #6b7280;
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin-bottom: 1rem;
+}
+
+.cd-balance-amount {
+  color: #111827;
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.cd-balance-value {
+  color: #6b7280;
+  font-size: 1.125rem;
+  font-weight: 400;
+}
+
+.cd-interest-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.cd-interest-section h3 {
+  color: #6b7280;
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cd-interest-amount {
+  color: #111827;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.cd-interest-value {
+  color: #6b7280;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.cd-compound-badge {
+  background: #22c55e;
+  color: white;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.cd-compound-rate {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.cd-compound-text {
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+.cd-payout-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cd-payout-label {
+  color: #6b7280;
+  font-size: 1.5rem;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cd-payout-date {
+  color: #111827;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.cd-help-icon {
+  width: 20px;
+  height: 20px;
+  color: #9ca3af;
+}
+
+.cd-action-buttons {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.cd-action-btn {
+  background: #f3f4f6;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #6b7280;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cd-action-btn:hover {
+  background: #e5e7eb;
+  border-color: #9ca3af;
+}
+
+/* Spacing system matching COINDEPO.com */
+.cd-spacing-xs { margin: 0.5rem; }
+.cd-spacing-sm { margin: 1rem; }
+.cd-spacing-md { margin: 1.5rem; }
+.cd-spacing-lg { margin: 2rem; }
+.cd-spacing-xl { margin: 3rem; }
+
+.cd-gap-xs { gap: 0.5rem; }
+.cd-gap-sm { gap: 1rem; }
+.cd-gap-md { gap: 1.5rem; }
+.cd-gap-lg { gap: 2rem; }
+.cd-gap-xl { gap: 3rem; }
+
+/* Color utilities */
+.cd-text-primary { color: var(--cd-primary); }
+.cd-text-secondary { color: var(--cd-secondary); }
+.cd-text-success { color: var(--cd-success); }
+.cd-text-light { color: var(--cd-text-light); }
+
+/* Button styles matching COINDEPO.com */
+.cd-btn {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.cd-btn-primary {
+  background: var(--cd-primary);
+  color: white;
+}
+
+.cd-btn-primary:hover {
+  background: #2563eb;
+}
+
+.btn-primary {
+  background: var(--cd-primary);
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  height: 2.5rem;
+  font-weight: 500;
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+}
+
+.btn-primary:disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Consistent input and select styling */
+input, select {
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid #cbd5e1;
+  transition: all 0.2s ease;
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: var(--cd-primary);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+input:hover, select:hover {
+  border-color: #94a3b8;
+}
+
+/* Layout improvements */
+.cd-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.cd-section {
+  margin-bottom: 3rem;
+}
+
+.cd-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+@media (max-width: 1024px) {
+  .cd-grid-2 {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+/* Specific tier styling */
+.cd-tier-item {
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--cd-border);
+}
+
+.cd-tier-item:last-child {
+  border-bottom: none;
+}
+
+.cd-tier-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--cd-success);
+  margin-bottom: 0.25rem;
+}
+
+.cd-tier-description {
+  font-size: 0.875rem;
+  color: var(--cd-text-light);
+  line-height: 1.4;
+}
+
+/* Token advantage styling */
+.cd-advantage-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.cd-advantage-row:last-child {
+  border-bottom: none;
+}
+
+.cd-advantage-label {
+  font-size: 0.9rem;
+  color: var(--cd-text);
+}
+
+.cd-advantage-value {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--cd-text);
+}
+
+.cd-advantage-highlight {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--cd-primary);
+}

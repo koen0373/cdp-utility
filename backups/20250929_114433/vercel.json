@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/coingecko/api/v3/(.*)",
+      "destination": "https://api.coingecko.com/api/v3/$1"
+    }
+  ]
+}

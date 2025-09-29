@@ -1,0 +1,32 @@
+// server/proxy.cjs
+const express = require("express");
+const cors = require("cors");
+
+const app = express();
+app.use(cors());
+
+// log elke request:
+app.use((req, _res, next) => {
+  console.log(`[proxy] ${req.method} ${req.url}`);
+  next();
+});
+
+// root test
+app.get("/", (_req, res) => {
+  res.type("text/plain").send("Proxy is running on 8799. Try /cdp/ping");
+});
+
+// ping test
+app.get("/cdp/ping", (_req, res) => {
+  res.json({ ok: true, msg: "pong" });
+});
+
+// 404 fallback
+app.use((req, res) => {
+  res.status(404).json({ ok: false, error: "Not found", path: req.url });
+});
+
+const PORT = 8799;
+app.listen(PORT, () => {
+  console.log(`Proxy running on http://localhost:${PORT}`);
+});

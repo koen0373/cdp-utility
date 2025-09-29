@@ -1,0 +1,9 @@
+=== COINDEPO UTILITY BACKUP === 
+Date: Mon Sep 29 11:44:49 CEST 2025
+Status: Official Token Advantage Program with default enabled checkbox
+Features:
+- Official COINDEPO Token Advantage Program tiers
+- Token Payout Bonus enabled by default
+- Green totals with extra whitespace
+- Corrected accrued interest display
+- Updated disclaimer text

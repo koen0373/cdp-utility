@@ -1,0 +1,1 @@
+Features included: Portfolio management, COINDEPO holdings, Loans, Interest calculations, Live prices, Support block, Automatic backups

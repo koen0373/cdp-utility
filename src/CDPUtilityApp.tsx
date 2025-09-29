@@ -186,7 +186,7 @@ const TokenIcon: React.FC<{ asset: Asset; size?: number }> = ({ asset, size = 32
         src={COINDEPO_LOGO}
         width={size}
         height={size}
-        className="rounded-full bg-white border-2 border-slate-300 shadow-md"
+        className="rounded-full"
         alt="COINDEPO"
       />
     );
@@ -200,7 +200,7 @@ const TokenIcon: React.FC<{ asset: Asset; size?: number }> = ({ asset, size = 32
         src={localIcon}
         width={size}
         height={size}
-        className="rounded-full bg-white border-2 border-slate-300 shadow-md"
+        className="rounded-full"
         alt={`${asset.name} icon`}
       />
     );
@@ -265,7 +265,7 @@ const TokenIcon: React.FC<{ asset: Asset; size?: number }> = ({ asset, size = 32
       src={urls[idx]}
       width={size}
       height={size}
-      className="rounded-full bg-white border-2 border-slate-300 shadow-md"
+      className="rounded-full"
       onError={handleImageError}
       onLoad={handleImageLoad}
       alt={`${asset.name} icon`}

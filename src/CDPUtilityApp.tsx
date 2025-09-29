@@ -1280,51 +1280,52 @@ export default function CDPUtilityApp() {
   }
 
   return (
-    <div className="bg-brand-gray">
-      <div className="max-w-6xl mx-auto px-4 md:px-8 py-8">
+    <div className="bg-brand-gray min-h-screen">
+      <div className="max-w-6xl mx-auto px-3 sm:px-4 md:px-8 py-4 sm:py-6 md:py-8">
         {/* Header Section */}
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center mb-4">
-            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center mr-6">
-              <span className="text-white font-bold text-lg">CD</span>
+        <div className="text-center mb-6 sm:mb-8">
+          <div className="flex flex-col sm:flex-row items-center justify-center mb-4 gap-3 sm:gap-0">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center sm:mr-6">
+              <span className="text-white font-bold text-base sm:text-lg">CD</span>
             </div>
-            <h1 className="cd-balance-large">
+            <h1 className="cd-balance-large text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
               <span className="font-bold uppercase">COINDEPO</span> <span className="font-normal">Portfolio Manager</span>
             </h1>
           </div>
           
-          <p className="text-xl text-slate-600 mb-4 max-w-3xl mx-auto">
+          <p className="text-base sm:text-lg md:text-xl text-slate-600 mb-4 max-w-3xl mx-auto px-4">
             Maximize your crypto returns with up to 27% APR and unlock exclusive Token Advantage Program benefits
           </p>
           
-          <div className="bg-blue-50 rounded-lg p-3 max-w-2xl mx-auto">
-            <p className="text-sm text-blue-700">
+          <div className="bg-blue-50 rounded-lg p-3 max-w-2xl mx-auto mx-4">
+            <p className="text-xs sm:text-sm text-blue-700">
               <strong>Under Development:</strong> This portfolio manager is still being refined. Some features may not work as expected.
             </p>
           </div>
         </div>
 
         {/* ======= PORTFOLIO SECTION ======= */}
-        <section className="card mb-6">
-          <header className="mb-6 flex justify-between items-center">
-            <div>
-              <h1 className="cd-balance-large text-brand-blue">Your Portfolio</h1>
+        <section className="card mb-4 sm:mb-6">
+          <header className="mb-4 sm:mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div className="w-full sm:w-auto">
+              <h1 className="cd-balance-large text-brand-blue text-xl sm:text-2xl md:text-3xl">Your Portfolio</h1>
               {depositBonus > 0 && (
                 <div className="mt-2">
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 cd-tier-badge">
-                    {tierLabel} Active • +{(depositBonus * 100).toFixed(1)}% Deposit Bonus • -{(loanBonus * 100).toFixed(1)}% Loan Discount
+                  <span className="inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs font-semibold bg-green-100 cd-tier-badge">
+                    <span className="hidden sm:inline">{tierLabel} Active • +{(depositBonus * 100).toFixed(1)}% Deposit Bonus • -{(loanBonus * 100).toFixed(1)}% Loan Discount</span>
+                    <span className="sm:hidden">{tierLabel} Active</span>
                   </span>
                 </div>
               )}
             </div>
-            <div className="flex gap-2 items-center">
+            <div className="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center w-full sm:w-auto">
               {/* Currency Selector */}
-              <div className="flex items-center gap-2">
-                <label className="text-sm font-medium text-slate-600">Currency:</label>
+              <div className="flex items-center gap-2 flex-1 sm:flex-none">
+                <label className="text-xs sm:text-sm font-medium text-slate-600 whitespace-nowrap">Currency:</label>
                 <select
                   value={selectedCurrency}
                   onChange={(e) => setSelectedCurrency(e.target.value)}
-                  className="px-3 py-2 text-sm border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="px-2 sm:px-3 py-2 text-xs sm:text-sm border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 flex-1 sm:flex-none"
                 >
                   {CURRENCIES.map(currency => (
                     <option key={currency.code} value={currency.code}>
@@ -1338,7 +1339,7 @@ export default function CDPUtilityApp() {
                 {(window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') && (
                   <button
                     onClick={handleRestoreFromBackup}
-                    className="btn-primary px-4 py-2 text-sm font-medium"
+                    className="btn-primary px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium w-full sm:w-auto"
                     title="Restore from automatic backup"
                   >
                     Restore Backup
@@ -1346,7 +1347,7 @@ export default function CDPUtilityApp() {
                 )}
               <button
                 onClick={handleResetPortfolio}
-                className="btn-primary px-4 py-2 text-sm font-medium text-red-600"
+                className="btn-primary px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-red-600 w-full sm:w-auto"
                 title="Reset entire portfolio"
               >
                 Reset Portfolio
@@ -1354,11 +1355,11 @@ export default function CDPUtilityApp() {
             </div>
           </header>
           
-          <h2 className="cd-label" style={{ marginBottom: '24px' }}>YOUR ASSETS</h2>
+          <h2 className="cd-label text-lg sm:text-xl md:text-2xl" style={{ marginBottom: '16px' }}>YOUR ASSETS</h2>
 
           {/* Assets List Header */}
           {rows.length > 0 && (
-          <div className="grid grid-cols-12 gap-2 px-2 pb-2 text-xs uppercase tracking-wide text-slate-400">
+          <div className="hidden sm:grid grid-cols-12 gap-2 px-2 pb-2 text-xs uppercase tracking-wide text-slate-400">
             <div className="col-span-3"></div>
             <div className="col-span-2 text-right">QTY</div>
             <div className="col-span-2 text-right">PRICE</div>
@@ -1370,7 +1371,7 @@ export default function CDPUtilityApp() {
 
           {/* Assets List */}
           {rows.length > 0 && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+            <div className="flex flex-col gap-4 sm:gap-6">
               {rows.map((r, i) => {
                 const value = (r.qty || 0) * (r.priceUSD || 0);
 
@@ -1396,12 +1397,12 @@ export default function CDPUtilityApp() {
           )}
 
           {/* Add Asset Input Row - With Better Padding */}
-          <div style={{ marginTop: '32px', padding: '16px 0' }}>
-            <div className="flex items-end justify-between">
+          <div className="mt-6 sm:mt-8 p-4 sm:p-0">
+            <div className="flex flex-col sm:flex-row items-end justify-between gap-4">
               {/* Left side - Input fields */}
-              <div className="flex items-end" style={{ gap: '24px' }}>
+              <div className="flex flex-col sm:flex-row items-end gap-4 w-full sm:w-auto">
                 {/* Asset Selection - Always Visible */}
-                <div style={{ width: '256px' }}>
+                <div className="w-full sm:w-64">
               <select
                     className="w-full h-10 px-3 border border-slate-300 rounded-lg bg-white text-slate-700 text-sm"
                 value={addAssetSymbol}
@@ -1418,7 +1419,7 @@ export default function CDPUtilityApp() {
                 
                 {/* QTY Input - Only show after asset selection */}
                 {addAssetSymbol && (
-                  <div style={{ width: '80px' }}>
+                  <div className="w-full sm:w-20">
                     <label className="block text-xs font-medium text-slate-600 mb-1">QTY</label>
               <input
                       type="number"
@@ -1432,7 +1433,7 @@ export default function CDPUtilityApp() {
                 
                 {/* APR Selection - Only show after asset selection */}
                 {addAssetSymbol && (
-                  <div style={{ width: '176px' }}>
+                  <div className="w-full sm:w-44">
                     <label className="block text-xs font-medium text-slate-600 mb-1">Interest Account Type</label>
                     <select
                       className="w-full h-10 px-3 border border-slate-300 rounded-lg bg-white text-slate-700 text-sm"
@@ -1451,7 +1452,7 @@ export default function CDPUtilityApp() {
                 
                 {/* Interest Payout Date - Only show after asset selection */}
                 {addAssetSymbol && (
-                  <div style={{ width: '140px' }}>
+                  <div className="w-full sm:w-36">
                     <label className="block text-xs font-medium text-slate-600 mb-1">Interest Payout Date</label>
                     <input
                       type="date"
@@ -1466,9 +1467,9 @@ export default function CDPUtilityApp() {
               
               {/* Right side - ADD Button */}
               {addAssetSymbol && (
-                <div style={{ marginLeft: '32px' }}>
+                <div className="w-full sm:w-auto sm:ml-8">
               <button
-                      className="btn-accent px-4 py-2 text-sm font-medium"
+                      className="btn-accent px-4 py-2 text-sm font-medium w-full sm:w-auto"
                 onClick={handleAddHolding}
                       disabled={!addAssetSymbol || addQty <= 0 || !addAssetInterestRate}
               >
@@ -1480,9 +1481,9 @@ export default function CDPUtilityApp() {
           </div>
 
           {/* ======= YOUR COINDEPO HOLDINGS SECTION ======= */}
-          <div className="mt-8 pt-6">
-            <div style={{ marginBottom: '24px' }}>
-              <h2 className="cd-label">YOUR COINDEPO HOLDINGS</h2>
+          <div className="mt-6 sm:mt-8 pt-4 sm:pt-6">
+            <div className="mb-4 sm:mb-6">
+              <h2 className="cd-label text-lg sm:text-xl md:text-2xl">YOUR COINDEPO HOLDINGS</h2>
               <p className="text-xs text-orange-600 italic mt-1">
                 * Prices are estimated until live API becomes available
               </p>
@@ -1625,12 +1626,12 @@ export default function CDPUtilityApp() {
           </div>
 
           {/* ======= YOUR LOANS SECTION ======= */}
-          <div className="mt-8 pt-6">
-              <h2 className="cd-label" style={{ marginBottom: '24px' }}>YOUR LOANS</h2>
+          <div className="mt-6 sm:mt-8 pt-4 sm:pt-6">
+            <h2 className="cd-label text-lg sm:text-xl md:text-2xl mb-4 sm:mb-6">YOUR LOANS</h2>
 
             {/* Loans List Header */}
             {loans.length > 0 && (
-              <div className="grid grid-cols-12 gap-2 px-2 pb-2 text-xs uppercase tracking-wide text-slate-400">
+              <div className="hidden sm:grid grid-cols-12 gap-2 px-2 pb-2 text-xs uppercase tracking-wide text-slate-400">
                 <div className="col-span-3"></div>
                 <div className="col-span-2 text-right">QTY</div>
                 <div className="col-span-2 text-right">PRICE</div>
@@ -1642,7 +1643,7 @@ export default function CDPUtilityApp() {
 
             {/* Loans List */}
             {loans.length > 0 && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+              <div className="flex flex-col gap-4 sm:gap-6">
                 {loans.map((loan, i) => {
                   const value = (loan.qty || 0) * (loan.priceUSD || 0);
 
@@ -1796,9 +1797,9 @@ export default function CDPUtilityApp() {
         </section>
 
         {/* ======= INTEREST CONTRIBUTIONS SECTION ======= */}
-        <section className="card mb-6">
-          <header className="mb-6 flex justify-between items-center">
-            <h1 className="cd-balance-large text-brand-blue">Interest Contributions</h1>
+        <section className="card mb-4 sm:mb-6">
+          <header className="mb-4 sm:mb-6 flex justify-between items-center">
+            <h1 className="cd-balance-large text-brand-blue text-xl sm:text-2xl md:text-3xl">Interest Contributions</h1>
           </header>
           
           {/* Calculate total portfolio value for percentages */}
@@ -1939,9 +1940,9 @@ export default function CDPUtilityApp() {
         </section>
 
         {/* Upcoming Interest Payouts Section */}
-        <section className="card mb-6">
-          <header className="mb-6 flex justify-between items-center">
-            <h1 className="cd-balance-large text-brand-blue">Upcoming Interest Payouts</h1>
+        <section className="card mb-4 sm:mb-6">
+          <header className="mb-4 sm:mb-6 flex justify-between items-center">
+            <h1 className="cd-balance-large text-brand-blue text-xl sm:text-2xl md:text-3xl">Upcoming Interest Payouts</h1>
           </header>
           
           {(() => {
@@ -2121,9 +2122,9 @@ export default function CDPUtilityApp() {
         </section>
 
         {/* ======= Onderste blokken strak in cards ======= */}
-        <div className="flex flex-row gap-6 mt-6">
+        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 mt-4 sm:mt-6">
           <section className="card flex-1">
-            <h2 className="cd-balance-medium text-blue-600 mb-6">Your Earnings</h2>
+            <h2 className="cd-balance-medium text-blue-600 mb-4 sm:mb-6 text-lg sm:text-xl md:text-2xl">Your Earnings</h2>
 
             <div className="space-y-3 mb-6">
               <div className="flex justify-between items-center">
@@ -2241,7 +2242,7 @@ export default function CDPUtilityApp() {
           </section>
 
           <section className="card flex-1">
-            <h2 className="cd-balance-medium mb-6 text-blue-600">COINDEPO Holdings Advantages</h2>
+            <h2 className="cd-balance-medium mb-4 sm:mb-6 text-blue-600 text-lg sm:text-xl md:text-2xl">COINDEPO Holdings Advantages</h2>
             {otherValueUSD <= 0 ? (
               <p className="text-slate-500">Add assets to see required COINDEPO.</p>
             ) : (
@@ -2322,28 +2323,28 @@ export default function CDPUtilityApp() {
 
         {/* Support Section */}
         <section className="card mt-8">
-          <header className="mb-6">
-            <h2 className="cd-balance-medium text-brand-blue">Support</h2>
+          <header className="mb-4 sm:mb-6">
+            <h2 className="cd-balance-medium text-brand-blue text-lg sm:text-xl md:text-2xl">Support</h2>
           </header>
           
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             <div>
-              <p className="text-slate-600 mb-4">
+              <p className="text-slate-600 mb-4 text-sm sm:text-base">
                 If you appreciate this COINDEPO utility tool and want to contribute to its development, please consider a donation:
               </p>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
-                    <div>
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 bg-slate-50 rounded-lg gap-2">
+                    <div className="flex-1 min-w-0">
                       <span className="font-semibold text-slate-800">USDC</span>
-                      <div className="text-sm font-mono text-slate-600 break-all">
+                      <div className="text-xs sm:text-sm font-mono text-slate-600 break-all">
                         0xD875FaaC1881926dAd6760F46a2B533BD85B25fB
                       </div>
                     </div>
                     <button
                       onClick={() => navigator.clipboard.writeText('0xD875FaaC1881926dAd6760F46a2B533BD85B25fB')}
-                      className="ml-2 p-2 text-slate-400 hover:text-slate-600 transition-colors"
+                      className="p-2 text-slate-400 hover:text-slate-600 transition-colors flex-shrink-0"
                       title="Copy address"
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -2352,16 +2353,16 @@ export default function CDPUtilityApp() {
                     </button>
                   </div>
                   
-                  <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
-                    <div>
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 bg-slate-50 rounded-lg gap-2">
+                    <div className="flex-1 min-w-0">
                       <span className="font-semibold text-slate-800">ETH</span>
-                      <div className="text-sm font-mono text-slate-600 break-all">
+                      <div className="text-xs sm:text-sm font-mono text-slate-600 break-all">
                         0x4da52892A7e8F410525CAda105681F31BD5d6F10
                       </div>
                     </div>
                     <button
                       onClick={() => navigator.clipboard.writeText('0x4da52892A7e8F410525CAda105681F31BD5d6F10')}
-                      className="ml-2 p-2 text-slate-400 hover:text-slate-600 transition-colors"
+                      className="p-2 text-slate-400 hover:text-slate-600 transition-colors flex-shrink-0"
                       title="Copy address"
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -2372,16 +2373,16 @@ export default function CDPUtilityApp() {
                 </div>
                 
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
-                    <div>
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 bg-slate-50 rounded-lg gap-2">
+                    <div className="flex-1 min-w-0">
                       <span className="font-semibold text-slate-800">BTC</span>
-                      <div className="text-sm font-mono text-slate-600 break-all">
+                      <div className="text-xs sm:text-sm font-mono text-slate-600 break-all">
                         3FonkNJBAAhkLakLGZm9FhepzB1GgMFAJa
                       </div>
                     </div>
                     <button
                       onClick={() => navigator.clipboard.writeText('3FonkNJBAAhkLakLGZm9FhepzB1GgMFAJa')}
-                      className="ml-2 p-2 text-slate-400 hover:text-slate-600 transition-colors"
+                      className="p-2 text-slate-400 hover:text-slate-600 transition-colors flex-shrink-0"
                       title="Copy address"
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -2390,16 +2391,16 @@ export default function CDPUtilityApp() {
                     </button>
                   </div>
                   
-                  <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
-                    <div>
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 bg-slate-50 rounded-lg gap-2">
+                    <div className="flex-1 min-w-0">
                       <span className="font-semibold text-slate-800">COINDEPO</span>
-                      <div className="text-sm font-mono text-slate-600 break-all">
+                      <div className="text-xs sm:text-sm font-mono text-slate-600 break-all">
                         0x9f04613fE8cA16Ed48279F461336784401A5BAEb
                       </div>
                     </div>
                     <button
                       onClick={() => navigator.clipboard.writeText('0x9f04613fE8cA16Ed48279F461336784401A5BAEb')}
-                      className="ml-2 p-2 text-slate-400 hover:text-slate-600 transition-colors"
+                      className="p-2 text-slate-400 hover:text-slate-600 transition-colors flex-shrink-0"
                       title="Copy address"
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -2411,33 +2412,33 @@ export default function CDPUtilityApp() {
               </div>
             </div>
             
-            <div className="border-t border-slate-200 pt-6">
-              <p className="font-semibold text-slate-800 mb-2">NOT A COINDEPO MEMBER?</p>
-              <p className="text-slate-600 mb-2">Use my partnerlink to open a free account:</p>
+            <div className="border-t border-slate-200 pt-4 sm:pt-6">
+              <p className="font-semibold text-slate-800 mb-2 text-sm sm:text-base">NOT A COINDEPO MEMBER?</p>
+              <p className="text-slate-600 mb-2 text-sm sm:text-base">Use my partnerlink to open a free account:</p>
               <a 
                 href="https://app.coindepo.com/auth/sign-up?ref=A-ounkNJhY" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-blue-600 underline hover:text-blue-800 transition-colors break-all"
+                className="text-blue-600 underline hover:text-blue-800 transition-colors break-all text-xs sm:text-sm"
               >
                 https://app.coindepo.com/auth/sign-up?ref=A-ounkNJhY
               </a>
             </div>
             
-            <div className="border-t border-slate-200 pt-6">
-              <p className="mb-2">
+            <div className="border-t border-slate-200 pt-4 sm:pt-6">
+              <p className="mb-2 text-sm sm:text-base">
                 <span className="font-semibold text-slate-800">COINDEPO COMMUNITY LINK</span> @coindepo_community
               </p>
-              <p className="mb-2">
+              <p className="mb-2 text-sm sm:text-base">
                 <span className="font-semibold text-slate-800">Contact me on Telegram for feedback:</span> @koen0373
               </p>
-              <p className="font-semibold text-lg text-slate-800">THANK YOU!</p>
+              <p className="font-semibold text-base sm:text-lg text-slate-800">THANK YOU!</p>
             </div>
             
-            <div className="border-t border-slate-200 pt-6 text-xs text-slate-500">
-              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
-                <h4 className="font-semibold text-yellow-800 mb-2">⚠️ IMPORTANT DISCLAIMER</h4>
-                <ul className="space-y-1 text-yellow-700">
+            <div className="border-t border-slate-200 pt-4 sm:pt-6 text-xs text-slate-500">
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 sm:p-4 mb-4">
+                <h4 className="font-semibold text-yellow-800 mb-2 text-sm sm:text-base">⚠️ IMPORTANT DISCLAIMER</h4>
+                <ul className="space-y-1 text-yellow-700 text-xs sm:text-sm">
                   <li>• This Portfolio Manager is <strong>NOT</strong> a COINDEPO endorsed or official product</li>
                   <li>• All calculations, projections, and data are <strong>ESTIMATES ONLY</strong></li>
                   <li>• This tool is for <strong>EDUCATIONAL PURPOSES</strong> and community use only</li>
@@ -2447,7 +2448,7 @@ export default function CDPUtilityApp() {
                   <li>• The developers accept <strong>NO LIABILITY</strong> for any losses or damages</li>
                 </ul>
               </div>
-              <p className="text-slate-600">
+              <p className="text-slate-600 text-xs sm:text-sm">
                 <strong>Technical Note:</strong> COINDEPO prices are currently estimated at $0.10 as live APIs are temporarily unavailable.
               </p>
             </div>

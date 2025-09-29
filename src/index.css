@@ -130,9 +130,9 @@ h1.cd-balance-large {
   color: #16a34a !important;
 }
 
-/* Force light pink color for tier bonus percentages */
+/* Force black color for tier bonus percentages */
 .cd-tier-bonus {
-  color: #f472b6 !important;
+  color: #000000 !important;
   font-weight: 600 !important;
 }
 

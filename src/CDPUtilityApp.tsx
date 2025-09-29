@@ -1312,7 +1312,7 @@ export default function CDPUtilityApp() {
               {depositBonus > 0 && (
                 <div className="mt-2">
                   <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 cd-tier-badge">
-                    {tierLabel} Active • <span className="cd-tier-bonus">+{(depositBonus * 100).toFixed(1)}%</span> Deposit Bonus • <span className="cd-tier-bonus">-{(loanBonus * 100).toFixed(1)}%</span> Loan Discount
+                    {tierLabel} Active • +{(depositBonus * 100).toFixed(1)}% Deposit Bonus • -{(loanBonus * 100).toFixed(1)}% Loan Discount
                   </span>
                 </div>
               )}

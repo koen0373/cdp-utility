@@ -114,13 +114,18 @@ h1, h2, h3, h4, h5, h6 {
   color: #16a34a !important;
 }
 
-/* Force black color for card headers (except main title) */
+/* Force black color for all titles except main COINDEPO Portfolio Manager */
 .cd-balance-medium,
-.cd-label {
+.cd-label,
+h2.cd-balance-large,
+h3.cd-balance-large,
+h4.cd-balance-large,
+h5.cd-balance-large,
+h6.cd-balance-large {
   color: #000000 !important;
 }
 
-/* Force blue color for main title only */
+/* Force blue color for main COINDEPO Portfolio Manager title only */
 h1.cd-balance-large {
   color: #2563eb !important;
 }

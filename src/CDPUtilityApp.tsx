@@ -390,12 +390,12 @@ const CoindepoRow: React.FC<{
   };
 
   return (
-    <div className="py-5">
-      <div className="grid grid-cols-12 gap-2 items-center">
+    <div className="py-8 rounded-lg bg-white shadow-sm">
+      <div className="grid grid-cols-12 gap-4 items-center p-8">
         <div className="col-span-3 flex items-center" style={{ gap: '24px' }}>
           <TokenIcon asset={coindepoAsset} />
           <div>
-            <div className="cd-asset-name">COINDEPO Token</div>
+            <div className="cd-asset-name text-lg font-semibold">COINDEPO Token</div>
             {holding.payoutDate && (
               <div className="text-xs text-slate-500">
                 Interest payout date: {new Date(holding.payoutDate).toLocaleDateString()}
@@ -403,7 +403,7 @@ const CoindepoRow: React.FC<{
             )}
           </div>
         </div>
-        <div className="col-span-2 text-right text-slate-800">
+        <div className="col-span-2 text-right text-slate-800 pb-4">
           {isEditing ? (
             <input
               ref={inputRef}
@@ -415,16 +415,16 @@ const CoindepoRow: React.FC<{
               className="w-20 h-10 px-3 border border-slate-300 rounded-lg text-right text-sm"
             />
           ) : (
-            holding.qty.toLocaleString()
+            <div className="text-xl font-semibold">{holding.qty.toLocaleString()}</div>
           )}
         </div>
-        <div className="col-span-2 text-right text-slate-500">
-          {formatCurrency(holding.priceUSD, selectedCurrency, exchangeRates)}
+        <div className="col-span-2 text-right text-slate-500 pb-4">
+          <div className="text-xl font-semibold">{formatCurrency(holding.priceUSD, selectedCurrency, exchangeRates)}</div>
           <div className="text-xs text-orange-500 italic">
             ~est.
           </div>
         </div>
-        <div className="col-span-2 text-right">
+        <div className="col-span-2 text-right pb-4">
           <span 
             className="inline-block font-bold text-base"
             style={{ 
@@ -439,8 +439,8 @@ const CoindepoRow: React.FC<{
             {getAPRValue(holding.interestRate).toFixed(1)}%
           </span>
         </div>
-        <div className="col-span-2 text-right cd-value-primary">
-          {formatCurrency(value, selectedCurrency, exchangeRates)}
+        <div className="col-span-2 text-right cd-value-primary pb-4">
+          <div className="text-xl font-semibold">{formatCurrency(value, selectedCurrency, exchangeRates)}</div>
         </div>
         <div className="col-span-1 flex items-center justify-end gap-2">
           {!isEditing ? (
@@ -1522,7 +1522,7 @@ export default function CDPUtilityApp() {
                   <div className="col-span-1"></div>
                 </div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '48px' }}>
                   {coindepoHoldings.map((holding, i) => {
                     const value = (holding.qty || 0) * (holding.priceUSD || 0);
 

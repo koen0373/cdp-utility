@@ -121,12 +121,15 @@ h2.cd-balance-large,
 h3.cd-balance-large,
 h4.cd-balance-large,
 h5.cd-balance-large,
-h6.cd-balance-large {
+h6.cd-balance-large,
+h1.cd-balance-large.text-brand-blue,
+h2.cd-balance-medium.text-blue-600,
+h2.cd-balance-medium.text-brand-blue {
   color: #000000 !important;
 }
 
 /* Force blue color for main COINDEPO Portfolio Manager title only */
-h1.cd-balance-large {
+h1.cd-balance-large:not(.text-brand-blue) {
   color: #2563eb !important;
 }
 

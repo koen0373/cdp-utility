@@ -1390,7 +1390,7 @@ export default function CDPUtilityApp() {
 
           {/* Assets List */}
           {rows.length > 0 && (
-            <div className="flex flex-col gap-4 sm:gap-6">
+            <div className="flex flex-col gap-6 sm:gap-8">
               {rows.map((r, i) => {
                 const value = (r.qty || 0) * (r.priceUSD || 0);
 
@@ -2039,9 +2039,8 @@ export default function CDPUtilityApp() {
             return upcomingPayouts.length > 0 ? (
               <>
                 {/* Payouts List Header */}
-                <div className="grid grid-cols-11 gap-2 px-2 pb-2 text-xs uppercase tracking-wide text-slate-400">
+                <div className="grid grid-cols-8 gap-2 px-2 pb-2 text-xs uppercase tracking-wide text-slate-400">
                   <div className="col-span-3"></div>
-                  <div className="col-span-3 text-right">INTEREST STARTED</div>
                   <div className="col-span-3 text-right">ACCRUED INTEREST</div>
                   <div className="col-span-2 text-right">PAYOUT</div>
               </div>
@@ -2062,7 +2061,7 @@ export default function CDPUtilityApp() {
 
                     return (
                       <div key={`payout-${i}`} className="py-5">
-                        <div className="grid grid-cols-11 gap-2 items-center">
+                        <div className="grid grid-cols-8 gap-2 items-center">
                           <div className="col-span-3 flex items-center" style={{ gap: '24px' }}>
                             <TokenIcon asset={payout.asset} />
                             <div>
@@ -2071,9 +2070,6 @@ export default function CDPUtilityApp() {
               </div>
             </div>
           </div>
-                          <div className="col-span-3 text-right text-slate-500">
-                            {calculation.interestStart.toLocaleDateString()}
-                          </div>
                           <div className="col-span-3 text-right">
                             <div className={`${payout.isLoan ? 'text-red-600' : 'text-green-600'} font-semibold`}>
                               {payout.isLoan ? '-' : '+'}{(calculation.accruedInterest / (payout.asset.symbol === 'COINDEPO' ? 0.10 : 

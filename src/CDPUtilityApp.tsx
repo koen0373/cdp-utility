@@ -187,6 +187,7 @@ const TokenIcon: React.FC<{ asset: Asset; size?: number }> = ({ asset, size = 32
         width={size}
         height={size}
         className="rounded-full"
+        style={{ border: 'none', outline: 'none' }}
         alt="COINDEPO"
       />
     );
@@ -201,6 +202,7 @@ const TokenIcon: React.FC<{ asset: Asset; size?: number }> = ({ asset, size = 32
         width={size}
         height={size}
         className="rounded-full"
+        style={{ border: 'none', outline: 'none' }}
         alt={`${asset.name} icon`}
       />
     );
@@ -266,10 +268,10 @@ const TokenIcon: React.FC<{ asset: Asset; size?: number }> = ({ asset, size = 32
       width={size}
       height={size}
       className="rounded-full"
+      style={{ display: isLoading ? 'none' : 'block', border: 'none', outline: 'none' }}
       onError={handleImageError}
       onLoad={handleImageLoad}
       alt={`${asset.name} icon`}
-      style={{ display: isLoading ? 'none' : 'block' }}
     />
   );
 };

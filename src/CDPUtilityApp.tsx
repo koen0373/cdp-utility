@@ -446,6 +446,9 @@ const CoindepoRow: React.FC<{
         </div>
       </div>
 
+      {/* Empty row for visual separation */}
+      <div className="h-4"></div>
+      
       {/* COINDEPO Details Grid */}
       <div className="px-8 pb-8">
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-8">
@@ -596,6 +599,9 @@ const AssetRow: React.FC<{
         </div>
       </div>
 
+      {/* Empty row for visual separation */}
+      <div className="h-4"></div>
+      
       {/* Asset Details Grid */}
       <div className="px-8 pb-8">
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-8">
@@ -1609,6 +1615,9 @@ export default function CDPUtilityApp() {
                           ADD
                         </button>
                       </div>
+                      
+                      {/* Empty row for visual separation */}
+                      <div className="h-4"></div>
                       
                       {/* Details Grid */}
                       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">

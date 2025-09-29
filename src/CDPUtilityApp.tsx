@@ -393,7 +393,7 @@ const CoindepoRow: React.FC<{
     <div className="py-8 rounded-lg bg-white shadow-sm">
       {/* COINDEPO Header Row */}
       <div className="flex items-center justify-between p-8 pb-4">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-6">
           <TokenIcon asset={coindepoAsset} />
           <div>
             <div className="cd-asset-name text-lg font-bold">COINDEPO Token</div>
@@ -550,7 +550,7 @@ const AssetRow: React.FC<{
     <div className="py-8 rounded-lg bg-white shadow-sm">
       {/* Asset Header Row */}
       <div className="flex items-center justify-between p-8 pb-4">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-6">
           <TokenIcon asset={row.asset} />
           <div>
             <div className="cd-asset-name text-lg font-bold">{row.asset.name}</div>
@@ -1605,33 +1605,21 @@ export default function CDPUtilityApp() {
                   
                   {/* COINDEPO Input - Multi-row layout */}
                   {showCoindepoInput && (
-                    <div className="w-full">
-                      {/* Header Row */}
-                      <div className="flex items-center justify-between p-4 pb-2 bg-slate-50 rounded-lg mb-6">
-                        <div className="flex items-center gap-3">
+                    <div className="flex flex-col sm:flex-row items-end justify-between gap-6">
+                      {/* Left side - Input fields */}
+                      <div className="flex flex-col sm:flex-row items-end gap-6 w-full sm:w-auto">
+                        {/* COINDEPO Token Display - Always Visible */}
+                        <div className="w-full sm:w-64 flex items-center gap-3">
                           <TokenIcon asset={coindepoAsset} />
                           <div>
                             <div className="text-base font-bold">COINDEPO Token</div>
                             <div className="text-xs text-slate-500">Add new holding</div>
-                    </div>
+                          </div>
                         </div>
-                          <button
-                          className="btn-accent px-4 py-2 text-sm font-medium"
-                          onClick={handleAddCoindepoHolding}
-                          disabled={!cdpInputQty || toNum(cdpInputQty) <= 0 || !cdpInputAPR}
-                        >
-                          ADD
-                          </button>
-                      </div>
-                      
-                      {/* Empty row for visual separation */}
-                      <div className="h-4"></div>
-                      
-                      {/* Details Grid */}
-                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                        {/* Quantity */}
-                        <div className="space-y-2">
-                          <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Quantity</div>
+                        
+                        {/* QTY Input - Always Visible */}
+                        <div className="w-full sm:w-20">
+                          <label className="block text-xs font-medium text-slate-600 mb-1">QTY</label>
                           <input
                             type="number"
                             placeholder="Qty"
@@ -1641,20 +1629,9 @@ export default function CDPUtilityApp() {
                           />
                         </div>
                         
-                        {/* Price */}
-                        <div className="space-y-2">
-                          <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Price</div>
-                          <div className="h-10 px-3 border border-slate-300 rounded-lg bg-slate-50 flex items-center justify-end text-sm text-slate-600">
-                            {formatCurrency(0.10)}
-                            <div className="text-xs text-orange-500 italic ml-2">
-                              ~est.
-                            </div>
-                          </div>
-                        </div>
-                        
-                        {/* APR */}
-                        <div className="space-y-2">
-                          <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">APR</div>
+                        {/* APR Selection - Always Visible */}
+                        <div className="w-full sm:w-44">
+                          <label className="block text-xs font-medium text-slate-600 mb-1">Interest Account Type</label>
                           <select 
                             className="w-full h-10 px-3 border border-slate-300 rounded-lg bg-white text-slate-700 text-sm"
                             value={cdpInputAPR}
@@ -1669,19 +1646,29 @@ export default function CDPUtilityApp() {
                           </select>
                         </div>
                         
-                        {/* Payout Date */}
-                        <div className="space-y-2">
-                          <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Payout Date</div>
+                        {/* Interest Payout Date - Always Visible */}
+                        <div className="w-full sm:w-36">
+                          <label className="block text-xs font-medium text-slate-600 mb-1">Interest Payout Date</label>
                           <input
                             type="date"
-                            placeholder="Payout Date"
                             value={cdpInputPayoutDate}
                             onChange={(e) => setCdpInputPayoutDate(e.target.value)}
                             className="w-full h-10 px-3 border border-slate-300 rounded-lg text-sm"
                           />
+                        </div>
+                      </div>
+                      
+                      {/* Right side - ADD Button */}
+                      <div className="w-full sm:w-auto sm:ml-8">
+                        <button
+                          className="btn-accent px-4 py-2 text-sm font-medium w-full sm:w-auto"
+                          onClick={handleAddCoindepoHolding}
+                          disabled={!cdpInputQty || toNum(cdpInputQty) <= 0 || !cdpInputAPR}
+                        >
+                          ADD
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                </div>
                   )}
           </div>
 
@@ -2395,78 +2382,34 @@ export default function CDPUtilityApp() {
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div className="space-y-6">
-                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 bg-slate-50 rounded-lg gap-3">
-                    <div className="flex-1 min-w-0">
-                      <span className="font-semibold text-slate-800">USDC</span>
-                      <div className="text-xs sm:text-sm font-mono text-slate-600 break-all">
-                        0xD875FaaC1881926dAd6760F46a2B533BD85B25fB
-                      </div>
+                  <div className="p-4 bg-slate-100 rounded-lg">
+                    <span className="font-semibold text-slate-800">USDC</span>
+                    <div className="text-xs sm:text-sm font-mono text-slate-600 break-all mt-1">
+                      0xD875FaaC1881926dAd6760F46a2B533BD85B25fB
                     </div>
-                    <button
-                      onClick={() => navigator.clipboard.writeText('0xD875FaaC1881926dAd6760F46a2B533BD85B25fB')}
-                      className="p-2 text-slate-400 hover:text-slate-600 transition-colors flex-shrink-0"
-                      title="Copy address"
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                      </svg>
-                    </button>
                   </div>
                   
-                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 bg-slate-50 rounded-lg gap-3">
-                    <div className="flex-1 min-w-0">
-                      <span className="font-semibold text-slate-800">ETH</span>
-                      <div className="text-xs sm:text-sm font-mono text-slate-600 break-all">
-                        0x4da52892A7e8F410525CAda105681F31BD5d6F10
-                      </div>
+                  <div className="p-4 bg-slate-100 rounded-lg">
+                    <span className="font-semibold text-slate-800">ETH</span>
+                    <div className="text-xs sm:text-sm font-mono text-slate-600 break-all mt-1">
+                      0x4da52892A7e8F410525CAda105681F31BD5d6F10
                     </div>
-                    <button
-                      onClick={() => navigator.clipboard.writeText('0x4da52892A7e8F410525CAda105681F31BD5d6F10')}
-                      className="p-2 text-slate-400 hover:text-slate-600 transition-colors flex-shrink-0"
-                      title="Copy address"
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                      </svg>
-                    </button>
                   </div>
                 </div>
                 
                 <div className="space-y-4">
-                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 bg-slate-50 rounded-lg gap-3">
-                    <div className="flex-1 min-w-0">
-                      <span className="font-semibold text-slate-800">BTC</span>
-                      <div className="text-xs sm:text-sm font-mono text-slate-600 break-all">
-                        3FonkNJBAAhkLakLGZm9FhepzB1GgMFAJa
-                      </div>
+                  <div className="p-4 bg-slate-100 rounded-lg">
+                    <span className="font-semibold text-slate-800">BTC</span>
+                    <div className="text-xs sm:text-sm font-mono text-slate-600 break-all mt-1">
+                      3FonkNJBAAhkLakLGZm9FhepzB1GgMFAJa
                     </div>
-                    <button
-                      onClick={() => navigator.clipboard.writeText('3FonkNJBAAhkLakLGZm9FhepzB1GgMFAJa')}
-                      className="p-2 text-slate-400 hover:text-slate-600 transition-colors flex-shrink-0"
-                      title="Copy address"
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                      </svg>
-                    </button>
                   </div>
                   
-                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 bg-slate-50 rounded-lg gap-3">
-                    <div className="flex-1 min-w-0">
-                      <span className="font-semibold text-slate-800">COINDEPO</span>
-                      <div className="text-xs sm:text-sm font-mono text-slate-600 break-all">
-                        0x9f04613fE8cA16Ed48279F461336784401A5BAEb
-                      </div>
+                  <div className="p-4 bg-slate-100 rounded-lg">
+                    <span className="font-semibold text-slate-800">COINDEPO</span>
+                    <div className="text-xs sm:text-sm font-mono text-slate-600 break-all mt-1">
+                      0x9f04613fE8cA16Ed48279F461336784401A5BAEb
                     </div>
-                    <button
-                      onClick={() => navigator.clipboard.writeText('0x9f04613fE8cA16Ed48279F461336784401A5BAEb')}
-                      className="p-2 text-slate-400 hover:text-slate-600 transition-colors flex-shrink-0"
-                      title="Copy address"
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                      </svg>
-                    </button>
                   </div>
                 </div>
               </div>

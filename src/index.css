@@ -114,14 +114,14 @@ h1, h2, h3, h4, h5, h6 {
   color: #16a34a !important;
 }
 
-/* Force black color for all card headers */
+/* Force black color for card headers (except main title) */
 .cd-balance-medium,
 .cd-label {
   color: #000000 !important;
 }
 
-/* Force blue color for main title */
-.cd-balance-large {
+/* Force blue color for main title only */
+h1.cd-balance-large {
   color: #2563eb !important;
 }
 

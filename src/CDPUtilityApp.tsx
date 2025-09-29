@@ -1297,9 +1297,18 @@ export default function CDPUtilityApp() {
               <h1 className="cd-balance-large text-brand-blue">Your Portfolio</h1>
               {depositBonus > 0 && (
                 <div className="mt-2">
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 cd-tier-badge">
-                    {tierLabel} Active • +{(depositBonus * 100).toFixed(1)}% Deposit Bonus • -{(loanBonus * 100).toFixed(1)}% Loan Discount
-                  </span>
+                  <div className="space-y-1">
+                    <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 cd-tier-badge">
+                      {tierLabel} Active
+                    </span>
+                    <div className="text-xs text-green-700 space-y-0.5">
+                      <div>📈 +{(depositBonus * 100).toFixed(1)}% extra APR on all deposits</div>
+                      <div>💰 -{(loanBonus * 100).toFixed(1)}% discount on loan interest</div>
+                      {extraPayoutEnabled && (
+                        <div>🎁 +{(currentTier.tokenPayout * 100).toFixed(0)}% token payout bonus</div>
+                      )}
+                    </div>
+                  </div>
                 </div>
               )}
             </div>

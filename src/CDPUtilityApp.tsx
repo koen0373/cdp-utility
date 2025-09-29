@@ -1091,7 +1091,7 @@ export default function CDPUtilityApp() {
   // Token Advantage Program calculations (Official COINDEPO)
   const depositBonusUSD = otherValueUSD * depositBonus; // Extra APR on deposits
   const loanSavingsUSD = loansValueUSD * loanBonus; // Savings on loan interest
-  const tokenPayoutUSD = tokenPayoutBonus * otherValueUSD; // Extra payout in tokens (if enabled)
+  const tokenPayoutUSD = tokenPayoutBonus * cdpValueUSD; // Extra payout in tokens (if enabled) - based on COINDEPO holdings
   
   // Total utility from Token Advantage Program
   const utilityUSD = depositBonusUSD + loanSavingsUSD + tokenPayoutUSD;
@@ -2121,7 +2121,7 @@ export default function CDPUtilityApp() {
         {/* ======= Onderste blokken strak in cards ======= */}
         <div className="flex flex-row gap-6 mt-6">
           <section className="card flex-1">
-            <h2 className="cd-balance-medium text-blue-600 mb-6">Token Advantage Program</h2>
+            <h2 className="cd-balance-medium text-blue-600 mb-6">Your Earnings</h2>
 
             <div className="space-y-3 mb-6">
               <div className="flex justify-between items-center">
@@ -2193,7 +2193,7 @@ export default function CDPUtilityApp() {
 
             <div className="space-y-2 mb-4">
               <div className="flex justify-between items-center">
-                <span className="text-slate-700">Base deposit income per year:</span>
+                <span className="text-slate-700">Portfolio interest per year:</span>
                 <span className="font-semibold">{fmtUSD(otherValueUSD * 0.24)}</span>
                 </div>
               

@@ -2199,6 +2199,12 @@ export default function CDPUtilityApp() {
                 <span className="font-semibold">{fmtUSD(otherValueUSD * 0.24)}</span>
                 </div>
               
+              {depositBonus > 0 && (
+                <div className="flex justify-between items-center">
+                  <span className="text-green-600">Tier deposit bonus per year:</span>
+                  <span className="font-semibold text-green-600">{fmtUSD(depositBonusUSD)}</span>
+                </div>
+              )}
               
               {extraPayoutEnabled && (
                 <div className="flex justify-between items-center">

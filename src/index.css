@@ -114,6 +114,13 @@ h1, h2, h3, h4, h5, h6 {
   color: #16a34a !important;
 }
 
+/* Force blue color for all card headers */
+.cd-balance-large,
+.cd-balance-medium,
+.cd-label {
+  color: #2563eb !important;
+}
+
 .cd-value-secondary {
   font-family: 'Poppins', sans-serif;
   font-weight: 400;

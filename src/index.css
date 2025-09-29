@@ -130,6 +130,12 @@ h1.cd-balance-large {
   color: #16a34a !important;
 }
 
+/* Force light pink color for tier bonus percentages */
+.cd-tier-bonus {
+  color: #f472b6 !important;
+  font-weight: 600 !important;
+}
+
 .cd-value-secondary {
   font-family: 'Poppins', sans-serif;
   font-weight: 400;

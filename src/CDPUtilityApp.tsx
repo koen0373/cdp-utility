@@ -1312,7 +1312,7 @@ export default function CDPUtilityApp() {
               {depositBonus > 0 && (
                 <div className="mt-2">
                   <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 cd-tier-badge">
-                    {tierLabel} Active • +{(depositBonus * 100).toFixed(1)}% Deposit Bonus • -{(loanBonus * 100).toFixed(1)}% Loan Discount
+                    {tierLabel} Active • <span className="cd-tier-bonus">+{(depositBonus * 100).toFixed(1)}%</span> Deposit Bonus • <span className="cd-tier-bonus">-{(loanBonus * 100).toFixed(1)}%</span> Loan Discount
                   </span>
                 </div>
               )}
@@ -1863,7 +1863,7 @@ export default function CDPUtilityApp() {
                                 <div>{formatCurrency(holding.annualInterest)}/year</div>
                                 <div className="text-xs text-slate-500 mt-1">
                                   {holding.apr.toFixed(1)}% APR{depositBonus > 0 ? (
-                                    <span style={{ color: '#f472b6', fontWeight: '600' }}> + {(depositBonus * 100).toFixed(1)}% tier</span>
+                                    <span className="cd-tier-bonus"> + {(depositBonus * 100).toFixed(1)}% tier</span>
                                   ) : ''} • Compounded
                                 </div>
                     </div>
@@ -1901,7 +1901,7 @@ export default function CDPUtilityApp() {
                                 <div>-{formatCurrency(annualInterest)}/year</div>
                                 <div className="text-xs text-slate-500 mt-1">
                                   {getAPRValue(loan.interestRate).toFixed(1)}% APR{loanBonus > 0 ? (
-                                    <span style={{ color: '#f472b6', fontWeight: '600' }}> - {(loanBonus * 100).toFixed(1)}% tier</span>
+                                    <span className="cd-tier-bonus"> - {(loanBonus * 100).toFixed(1)}% tier</span>
                                   ) : ''} • Compounded
                                 </div>
                               </div>

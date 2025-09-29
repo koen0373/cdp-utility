@@ -2266,7 +2266,7 @@ export default function CDPUtilityApp() {
                           <div className="text-green-600 text-xl">✓</div>
                         )}
                       </div>
-                      <div className="text-slate-600 ml-4">
+                      <div className={`ml-4 ${achieved ? "text-green-600" : "text-slate-600"}`}>
                         Deposit: {depositBonus}, Loan: {loanBonus}, Token: {tokenBonus} {status}
                       </div>
                       {!achieved && needTokens > 0 && (

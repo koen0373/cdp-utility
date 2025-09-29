@@ -2259,14 +2259,14 @@ export default function CDPUtilityApp() {
                 return (
                     <div key={label} className="mb-4">
                       <div className="flex justify-between items-start mb-1">
-                        <div className={`text-lg font-semibold ${achieved ? "text-green-600" : "text-slate-800"}`}>
+                        <div className={`text-lg font-semibold ${achieved ? "cd-tier-achieved" : "text-slate-800"}`}>
                           {label}:
                         </div>
                         {achieved && (
-                          <div className="text-green-600 text-xl">✓</div>
+                          <div className="cd-tier-achieved-checkmark text-xl">✓</div>
                         )}
                       </div>
-                      <div className={`ml-4 ${achieved ? "text-green-600" : "text-slate-600"}`}>
+                      <div className={`ml-4 ${achieved ? "cd-tier-achieved" : "text-slate-600"}`}>
                         Deposit: {depositBonus}, Loan: {loanBonus}, Token: {tokenBonus} {status}
                       </div>
                       {!achieved && needTokens > 0 && (

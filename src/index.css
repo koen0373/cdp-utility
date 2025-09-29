@@ -96,6 +96,15 @@ h1, h2, h3, h4, h5, h6 {
   color: #16a34a !important;
 }
 
+/* Force green color for achieved tiers */
+.cd-tier-achieved {
+  color: #16a34a !important;
+}
+
+.cd-tier-achieved-checkmark {
+  color: #16a34a !important;
+}
+
 .cd-value-secondary {
   font-family: 'Poppins', sans-serif;
   font-weight: 400;

@@ -1833,8 +1833,7 @@ export default function CDPUtilityApp() {
                       <div className="col-span-3"></div>
                       <div className="col-span-2"></div>
                       <div className="col-span-2 text-right">PORTFOLIO %</div>
-                      <div className="col-span-2 text-right">APR</div>
-                      <div className="col-span-2 text-right">ANNUAL INTEREST</div>
+                      <div className="col-span-4 text-right">ANNUAL INTEREST</div>
                       <div className="col-span-1"></div>
             </div>
 
@@ -1860,23 +1859,11 @@ export default function CDPUtilityApp() {
                               <div className="col-span-2 text-right text-slate-800">
                                 {portfolioPercentage.toFixed(1)}%
                               </div>
-                <div className="col-span-2 text-right">
-                                <span 
-                                  className="inline-block font-bold text-base"
-                                  style={{ 
-                                    backgroundColor: '#4ade80', 
-                                    color: '#ffffff',
-                                    padding: '6px 12px',
-                                    borderRadius: '8px',
-                                    fontSize: '14px',
-                                    fontWeight: '700'
-                                  }}
-                                >
-                                  {holding.apr.toFixed(1)}%
-                                </span>
-                        </div>
-                              <div className="col-span-2 text-right cd-value-primary">
-                                {formatCurrency(holding.annualInterest)}/year
+                              <div className="col-span-4 text-right cd-value-primary">
+                                <div>{formatCurrency(holding.annualInterest)}/year</div>
+                                <div className="text-xs text-slate-500 mt-1">
+                                  {holding.apr.toFixed(1)}% APR{depositBonus > 0 ? ` + ${(depositBonus * 100).toFixed(1)}% tier` : ''} • Compounded
+                                </div>
                     </div>
                               <div className="col-span-1"></div>
                   </div>
@@ -1908,23 +1895,11 @@ export default function CDPUtilityApp() {
                               <div className="col-span-2 text-right text-slate-800">
                                 -
                               </div>
-                              <div className="col-span-2 text-right">
-                                <span 
-                                  className="inline-block font-bold text-base"
-                                  style={{ 
-                                    backgroundColor: '#ef4444', 
-                                    color: '#ffffff',
-                                    padding: '6px 12px',
-                                    borderRadius: '8px',
-                                    fontSize: '14px',
-                                    fontWeight: '700'
-                                  }}
-                                >
-                                  {getAPRValue(loan.interestRate).toFixed(1)}%
-                                </span>
-                              </div>
-                              <div className="col-span-2 text-right cd-loan-value" style={{color: '#dc2626 !important'}}>
-                                -{formatCurrency(annualInterest)}/year
+                              <div className="col-span-4 text-right cd-loan-value" style={{color: '#dc2626 !important'}}>
+                                <div>-{formatCurrency(annualInterest)}/year</div>
+                                <div className="text-xs text-slate-500 mt-1">
+                                  {getAPRValue(loan.interestRate).toFixed(1)}% APR{loanBonus > 0 ? ` - ${(loanBonus * 100).toFixed(1)}% tier` : ''} • Compounded
+                                </div>
                               </div>
                               <div className="col-span-1"></div>
                             </div>

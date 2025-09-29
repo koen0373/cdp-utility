@@ -1878,7 +1878,7 @@ export default function CDPUtilityApp() {
             <div className="grid grid-cols-12 gap-2 px-2 pb-2 text-xs uppercase tracking-wide text-slate-400">
                       <div className="col-span-3"></div>
                       <div className="col-span-2"></div>
-                      <div className="col-span-2 text-right">PORTFOLIO %</div>
+                      <div className="col-span-2 text-center">PORTFOLIO %</div>
                       <div className="col-span-4 text-right">ANNUAL INTEREST</div>
                       <div className="col-span-1"></div>
             </div>
@@ -1902,7 +1902,7 @@ export default function CDPUtilityApp() {
                                 </div>
                               </div>
                               <div className="col-span-2"></div>
-                              <div className="col-span-2 text-right text-slate-800">
+                              <div className="col-span-2 text-center text-slate-800">
                                 {portfolioPercentage.toFixed(1)}%
                               </div>
                               <div className="col-span-4 text-right cd-value-primary">
@@ -1940,7 +1940,7 @@ export default function CDPUtilityApp() {
                                 </div>
                               </div>
                               <div className="col-span-2"></div>
-                              <div className="col-span-2 text-right text-slate-800">
+                              <div className="col-span-2 text-center text-slate-800">
                                 -
                               </div>
                               <div className="col-span-4 text-right cd-loan-value" style={{color: '#dc2626 !important'}}>

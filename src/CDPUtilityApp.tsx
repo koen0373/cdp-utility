@@ -392,7 +392,7 @@ const CoindepoRow: React.FC<{
   return (
     <div className="py-8 rounded-lg bg-white shadow-sm">
       {/* COINDEPO Header Row */}
-      <div className="flex items-center justify-between p-8">
+      <div className="flex items-center justify-between p-8 pb-4">
         <div className="flex items-center gap-3">
           <TokenIcon asset={coindepoAsset} />
           <div>
@@ -544,7 +544,7 @@ const AssetRow: React.FC<{
   return (
     <div className="py-8 rounded-lg bg-white shadow-sm">
       {/* Asset Header Row */}
-      <div className="flex items-center justify-between p-8">
+      <div className="flex items-center justify-between p-8 pb-4">
         <div className="flex items-center gap-3">
           <TokenIcon asset={row.asset} />
           <div>
@@ -1595,7 +1595,7 @@ export default function CDPUtilityApp() {
                   {showCoindepoInput && (
                     <div className="w-full">
                       {/* Header Row */}
-                      <div className="flex items-center justify-between p-4 bg-slate-50 rounded-lg mb-4">
+                      <div className="flex items-center justify-between p-4 pb-2 bg-slate-50 rounded-lg mb-6">
                         <div className="flex items-center gap-3">
                           <TokenIcon asset={coindepoAsset} />
                           <div>

@@ -1591,81 +1591,85 @@ export default function CDPUtilityApp() {
                     </select>
                   </div>
                   
-                  {/* QTY Input - Only show after COINDEPO selection */}
+                  {/* COINDEPO Input - Multi-row layout */}
                   {showCoindepoInput && (
-                    <div style={{ width: '80px' }}>
-                      <label className="block text-xs font-medium text-slate-600 mb-1">QTY</label>
-                        <input
-                        type="number"
-                        placeholder="Qty"
-                        value={cdpInputQty || ""}
-                        onChange={(e) => setCdpInputQty(e.target.value)}
-                        className="w-full h-10 px-3 border border-slate-300 rounded-lg text-right text-sm"
-                      />
-                    </div>
-                  )}
-                  
-                  {/* APR Selection - Only show after COINDEPO selection */}
-                  {showCoindepoInput && (
-                    <div style={{ width: '176px' }}>
-                      <label className="block text-xs font-medium text-slate-600 mb-1">Interest Account Type</label>
-                      <select 
-                        className="w-full h-10 px-3 border border-slate-300 rounded-lg bg-white text-slate-700 text-sm"
-                        value={cdpInputAPR}
-                        onChange={(e) => setCdpInputAPR(e.target.value)}
-                      >
-                        <option value="">Select APR...</option>
-                        <option value="coindepo-21.5">WEEKLY: 21.5% APR</option>
-                        <option value="coindepo-23">MONTHLY: 23% APR</option>
-                        <option value="coindepo-24">QUARTERLY: 24% APR</option>
-                        <option value="coindepo-25">SEMI-ANNUAL: 25% APR</option>
-                        <option value="coindepo-27">ANNUAL: 27% APR</option>
-                      </select>
-                    </div>
-                  )}
-                  
-                  {/* Interest Payout Date - Only show after COINDEPO selection */}
-                  {showCoindepoInput && (
-                    <div style={{ width: '140px' }}>
-                      <label className="block text-xs font-medium text-slate-600 mb-1">Interest Payout Date</label>
-                      <input
-                        type="date"
-                        placeholder="Payout Date"
-                        value={cdpInputPayoutDate}
-                        onChange={(e) => setCdpInputPayoutDate(e.target.value)}
-                        className="w-full h-10 px-3 border border-slate-300 rounded-lg text-sm"
-                      />
-                    </div>
-                  )}
-                  
-                  {/* Price Display - Only show after QTY and APR are filled */}
-                  {showCoindepoInput && cdpInputQty && cdpInputAPR && (
-                    <>
-                      <div className="w-20 text-right text-slate-500 text-sm">
-                        PRICE
+                    <div className="w-full">
+                      {/* Header Row */}
+                      <div className="flex items-center justify-between p-4 bg-slate-50 rounded-lg mb-4">
+                        <div className="flex items-center gap-3">
+                          <TokenIcon asset={coindepoAsset} />
+                          <div>
+                            <div className="text-lg font-bold">COINDEPO Token</div>
+                            <div className="text-xs text-slate-500">Add new holding</div>
+                          </div>
+                        </div>
+                        <button
+                          className="btn-accent px-4 py-2 text-sm font-medium"
+                          onClick={handleAddCoindepoHolding}
+                          disabled={!cdpInputQty || toNum(cdpInputQty) <= 0 || !cdpInputAPR}
+                        >
+                          ADD
+                        </button>
                       </div>
-                      <div className="w-24 text-right text-slate-500 text-sm">
-                        {formatCurrency(0.10)}
-                        <div className="text-xs text-orange-500 italic">
-                          ~estimated
+                      
+                      {/* Details Grid */}
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                        {/* Quantity */}
+                        <div className="space-y-2">
+                          <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Quantity</div>
+                          <input
+                            type="number"
+                            placeholder="Qty"
+                            value={cdpInputQty || ""}
+                            onChange={(e) => setCdpInputQty(e.target.value)}
+                            className="w-full h-10 px-3 border border-slate-300 rounded-lg text-right text-sm"
+                          />
+                        </div>
+                        
+                        {/* Price */}
+                        <div className="space-y-2">
+                          <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Price</div>
+                          <div className="h-10 px-3 border border-slate-300 rounded-lg bg-slate-50 flex items-center justify-end text-sm text-slate-600">
+                            {formatCurrency(0.10)}
+                            <div className="text-xs text-orange-500 italic ml-2">
+                              ~est.
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {/* APR */}
+                        <div className="space-y-2">
+                          <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">APR</div>
+                          <select 
+                            className="w-full h-10 px-3 border border-slate-300 rounded-lg bg-white text-slate-700 text-sm"
+                            value={cdpInputAPR}
+                            onChange={(e) => setCdpInputAPR(e.target.value)}
+                          >
+                            <option value="">Select APR...</option>
+                            <option value="coindepo-21.5">WEEKLY: 21.5% APR</option>
+                            <option value="coindepo-23">MONTHLY: 23% APR</option>
+                            <option value="coindepo-24">QUARTERLY: 24% APR</option>
+                            <option value="coindepo-25">SEMI-ANNUAL: 25% APR</option>
+                            <option value="coindepo-27">ANNUAL: 27% APR</option>
+                          </select>
+                        </div>
+                        
+                        {/* Payout Date */}
+                        <div className="space-y-2">
+                          <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Payout Date</div>
+                          <input
+                            type="date"
+                            placeholder="Payout Date"
+                            value={cdpInputPayoutDate}
+                            onChange={(e) => setCdpInputPayoutDate(e.target.value)}
+                            className="w-full h-10 px-3 border border-slate-300 rounded-lg text-sm"
+                          />
                         </div>
                       </div>
-                    </>
+                    </div>
                   )}
                 </div>
                 
-                {/* Right side - ADD Button */}
-                {showCoindepoInput && (
-                  <div style={{ marginLeft: '32px' }}>
-                          <button
-                      className="btn-accent px-4 py-2 text-sm font-medium"
-                      onClick={handleAddCoindepoHolding}
-                      disabled={!cdpInputQty || toNum(cdpInputQty) <= 0 || !cdpInputAPR}
-                    >
-                      ADD
-                          </button>
-                  </div>
-                )}
               </div>
             </div>
           </div>

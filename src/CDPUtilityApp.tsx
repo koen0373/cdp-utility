@@ -396,7 +396,7 @@ const CoindepoRow: React.FC<{
         <div className="flex items-center gap-3">
           <TokenIcon asset={coindepoAsset} />
           <div>
-            <div className="cd-asset-name text-xl font-bold">COINDEPO Token</div>
+            <div className="cd-asset-name text-lg font-bold">COINDEPO Token</div>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -450,7 +450,7 @@ const CoindepoRow: React.FC<{
           {/* Quantity */}
           <div className="space-y-3">
             <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Quantity</div>
-            <div className="text-xl font-semibold text-slate-800">
+            <div className="text-base font-semibold text-slate-800">
               {isEditing ? (
                 <input
                   ref={inputRef}
@@ -470,7 +470,7 @@ const CoindepoRow: React.FC<{
           {/* Price */}
           <div className="space-y-3">
             <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Price</div>
-            <div className="text-xl font-semibold text-slate-600">
+            <div className="text-base font-semibold text-slate-600">
               {formatCurrency(holding.priceUSD, selectedCurrency, exchangeRates)}
               <div className="text-xs text-orange-500 italic">
                 ~est.
@@ -501,7 +501,7 @@ const CoindepoRow: React.FC<{
           {/* Value */}
           <div className="space-y-3">
             <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Value</div>
-            <div className="text-xl font-semibold cd-value-primary">
+            <div className="text-base font-semibold cd-value-primary">
               {formatCurrency(value, selectedCurrency, exchangeRates)}
             </div>
           </div>
@@ -509,9 +509,9 @@ const CoindepoRow: React.FC<{
         
         {/* Interest Payout Date Row */}
         {holding.payoutDate && (
-          <div className="mt-6 pt-4 border-t border-slate-100">
-            <div className="text-sm text-slate-500">
-              Interest payout date: <span className="font-medium text-slate-700">{new Date(holding.payoutDate).toLocaleDateString()}</span>
+          <div className="mt-4">
+            <div className="text-xs text-slate-400">
+              Interest payout date: <span className="font-medium text-slate-500">{new Date(holding.payoutDate).toLocaleDateString()}</span>
             </div>
           </div>
         )}
@@ -553,7 +553,7 @@ const AssetRow: React.FC<{
         <div className="flex items-center gap-3">
           <TokenIcon asset={row.asset} />
           <div>
-            <div className="cd-asset-name text-xl font-bold">{row.asset.name}</div>
+            <div className="cd-asset-name text-lg font-bold">{row.asset.name}</div>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -607,7 +607,7 @@ const AssetRow: React.FC<{
           {/* Quantity */}
           <div className="space-y-3">
             <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Quantity</div>
-            <div className="text-xl font-semibold text-slate-800">
+            <div className="text-base font-semibold text-slate-800">
               {isEditing ? (
                 <input
                   ref={inputRef}
@@ -627,7 +627,7 @@ const AssetRow: React.FC<{
           {/* Price */}
           <div className="space-y-3">
             <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Price</div>
-            <div className="text-xl font-semibold text-slate-600">
+            <div className="text-base font-semibold text-slate-600">
               {row.priceUSD ? `$${row.priceUSD.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 4 })}` : "—"}
             </div>
           </div>
@@ -664,7 +664,7 @@ const AssetRow: React.FC<{
           <div className="space-y-3">
             <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Value</div>
             <div 
-              className={`text-xl font-semibold ${isLoan ? 'cd-loan-value' : 'cd-value-primary'}`}
+              className={`text-base font-semibold ${isLoan ? 'cd-loan-value' : 'cd-value-primary'}`}
               style={isLoan ? { color: '#dc2626 !important', fontWeight: '600' } : {}}
             >
               {isLoan ? `-${formatCurrency(value, selectedCurrency, exchangeRates)}` : formatCurrency(value, selectedCurrency, exchangeRates)}
@@ -674,9 +674,9 @@ const AssetRow: React.FC<{
         
         {/* Interest Payout Date Row */}
         {row.payoutDate && (
-          <div className="mt-6 pt-4 border-t border-slate-100">
-            <div className="text-sm text-slate-500">
-              Interest payout date: <span className="font-medium text-slate-700">{new Date(row.payoutDate).toLocaleDateString()}</span>
+          <div className="mt-4">
+            <div className="text-xs text-slate-400">
+              Interest payout date: <span className="font-medium text-slate-500">{new Date(row.payoutDate).toLocaleDateString()}</span>
             </div>
           </div>
         )}
@@ -1345,7 +1345,7 @@ export default function CDPUtilityApp() {
             <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center sm:mr-6">
               <span className="text-white font-bold text-base sm:text-lg">CD</span>
             </div>
-            <h1 className="cd-balance-large text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
+            <h1 className="cd-balance-large text-2xl">
               <span className="font-bold uppercase">COINDEPO</span> <span className="font-normal">Portfolio Manager</span>
             </h1>
             <button
@@ -1357,7 +1357,7 @@ export default function CDPUtilityApp() {
             </button>
           </div>
           
-          <p className="text-base sm:text-lg md:text-xl text-slate-600 mb-4 max-w-3xl mx-auto px-4">
+          <p className="text-base text-slate-600 mb-4 max-w-3xl mx-auto px-4">
             Maximize your crypto returns with up to 27% APR and unlock exclusive Token Advantage Program benefits
           </p>
           
@@ -1372,7 +1372,7 @@ export default function CDPUtilityApp() {
         <section className="card mb-4 sm:mb-6">
           <header className="mb-4 sm:mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div className="w-full sm:w-auto">
-              <h1 className="cd-balance-large text-brand-blue text-xl sm:text-2xl md:text-3xl">Your Portfolio</h1>
+              <h1 className="cd-balance-large text-brand-blue text-2xl">Your Portfolio</h1>
               {depositBonus > 0 && (
                 <div className="mt-2">
                   <span className="inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs font-semibold bg-green-100 cd-tier-badge">
@@ -1412,7 +1412,7 @@ export default function CDPUtilityApp() {
             </div>
         </header>
 
-          <h2 className="cd-label text-lg sm:text-xl md:text-2xl" style={{ marginBottom: '16px' }}>YOUR ASSETS</h2>
+          <h2 className="cd-label text-lg" style={{ marginBottom: '16px' }}>YOUR ASSETS</h2>
 
           {/* Assets List Header */}
           {rows.length > 0 && (
@@ -1540,7 +1540,7 @@ export default function CDPUtilityApp() {
           {/* ======= YOUR COINDEPO HOLDINGS SECTION ======= */}
           <div className="mt-6 sm:mt-8 pt-4 sm:pt-6">
             <div className="mb-4 sm:mb-6">
-              <h2 className="cd-label text-lg sm:text-xl md:text-2xl">YOUR COINDEPO HOLDINGS</h2>
+              <h2 className="cd-label text-lg">YOUR COINDEPO HOLDINGS</h2>
               <p className="text-xs text-orange-600 italic mt-1">
                 * Prices are estimated until live API becomes available
               </p>
@@ -1601,7 +1601,7 @@ export default function CDPUtilityApp() {
                       <option value="">Add COINDEPO...</option>
                       <option value="COINDEPO">COINDEPO Token</option>
                     </select>
-                  </div>
+                    </div>
                   
                   {/* COINDEPO Input - Multi-row layout */}
                   {showCoindepoInput && (
@@ -1611,17 +1611,17 @@ export default function CDPUtilityApp() {
                         <div className="flex items-center gap-3">
                           <TokenIcon asset={coindepoAsset} />
                           <div>
-                            <div className="text-lg font-bold">COINDEPO Token</div>
+                            <div className="text-base font-bold">COINDEPO Token</div>
                             <div className="text-xs text-slate-500">Add new holding</div>
-                          </div>
+                    </div>
                         </div>
-                        <button
+                          <button
                           className="btn-accent px-4 py-2 text-sm font-medium"
                           onClick={handleAddCoindepoHolding}
                           disabled={!cdpInputQty || toNum(cdpInputQty) <= 0 || !cdpInputAPR}
                         >
                           ADD
-                        </button>
+                          </button>
                       </div>
                       
                       {/* Empty row for visual separation */}
@@ -1679,19 +1679,19 @@ export default function CDPUtilityApp() {
                             onChange={(e) => setCdpInputPayoutDate(e.target.value)}
                             className="w-full h-10 px-3 border border-slate-300 rounded-lg text-sm"
                           />
-                        </div>
-                      </div>
                     </div>
-                  )}
+                  </div>
                 </div>
-                
+                  )}
+          </div>
+
               </div>
             </div>
           </div>
 
           {/* ======= YOUR LOANS SECTION ======= */}
           <div className="mt-6 sm:mt-8 pt-4 sm:pt-6">
-            <h2 className="cd-label text-lg sm:text-xl md:text-2xl mb-4 sm:mb-6">YOUR LOANS</h2>
+            <h2 className="cd-label text-lg mb-4 sm:mb-6">YOUR LOANS</h2>
 
             {/* Loans List Header */}
             {loans.length > 0 && (
@@ -1702,7 +1702,7 @@ export default function CDPUtilityApp() {
                 <div className="col-span-2 text-right">AVG APY</div>
                 <div className="col-span-2 text-right">VALUE</div>
                 <div className="col-span-1"></div>
-              </div>
+            </div>
             )}
 
             {/* Loans List */}
@@ -1730,7 +1730,7 @@ export default function CDPUtilityApp() {
                     />
                   );
                 })}
-              </div>
+                </div>
             )}
 
             {/* Add Loan Input Row - Step by Step Flow */}
@@ -1757,14 +1757,14 @@ export default function CDPUtilityApp() {
                   {/* QTY Input - Only show after asset selection */}
                   {addLoanSymbol && (
                     <div style={{ width: '80px' }}>
-                      <input
+                  <input
                         type="number"
-                        placeholder="Qty"
+                    placeholder="Qty"
                         value={addLoanQty || ""}
                         onChange={(e) => setAddLoanQty(toNum(e.target.value))}
                         className="w-full h-10 px-3 border border-slate-300 rounded-lg text-right text-sm"
-                      />
-                    </div>
+                  />
+                </div>
                   )}
                   
                   {/* APR Selection - Only show after asset selection */}
@@ -1782,7 +1782,7 @@ export default function CDPUtilityApp() {
                           </option>
                         ))}
                       </select>
-                    </div>
+                </div>
                   )}
 
                   {/* Price Display - Only show after QTY and APR are filled */}
@@ -1810,18 +1810,18 @@ export default function CDPUtilityApp() {
                 {/* Right side - ADD Button */}
                 {addLoanSymbol && (
                   <div style={{ marginLeft: '32px' }}>
-                          <button
+                  <button
                       className="btn-accent px-4 py-2 text-sm font-medium"
                       onClick={handleAddLoan}
                       disabled={!addLoanSymbol || addLoanQty <= 0 || !addLoanAPR}
-                    >
-                      ADD
-                          </button>
+                  >
+                    ADD
+                  </button>
                         </div>
                       )}
-                    </div>
-                  </div>
                 </div>
+              </div>
+            </div>
 
           {/* ======= PORTFOLIO TOTALS ======= */}
           <div className="mt-8 pt-6 border-t border-slate-200">
@@ -1830,14 +1830,14 @@ export default function CDPUtilityApp() {
                 <div className="mb-2">
                   <span className="text-slate-600">Assets: </span>
                   <span className="font-semibold">{formatCurrency(otherValueUSD)}</span>
-          </div>
+              </div>
                 <div className="mb-2">
                   <span className="text-slate-600">COINDEPO: </span>
                   <span className="font-semibold">{formatCurrency(cdpValueUSD)}</span>
-          </div>
+              </div>
                 <div className="mb-3 pb-2 border-b border-slate-200">
                   <span className="text-slate-600">Holdings Total (for tiers): </span>
-                  <span className="text-lg font-semibold text-blue-600">{formatCurrency(holdingsTotal)}</span>
+                  <span className="text-base font-semibold text-blue-600">{formatCurrency(holdingsTotal)}</span>
                 </div>
                 {loansValueUSD > 0 && (
                   <div className="mb-2">
@@ -1863,7 +1863,7 @@ export default function CDPUtilityApp() {
         {/* ======= INTEREST CONTRIBUTIONS SECTION ======= */}
         <section className="card mb-8 sm:mb-12">
           <header className="mb-8 sm:mb-12 flex justify-between items-center">
-            <h1 className="cd-balance-large text-brand-blue text-xl sm:text-2xl md:text-3xl">Interest Contributions</h1>
+            <h1 className="cd-balance-large text-brand-blue text-2xl">Interest Contributions</h1>
           </header>
           
           {/* Calculate total portfolio value for percentages */}
@@ -1912,7 +1912,7 @@ export default function CDPUtilityApp() {
                               <div className="col-span-3 flex items-center" style={{ gap: '24px' }}>
                                 <TokenIcon asset={holding.asset} />
                                 <div>
-                                  <div className="cd-asset-name text-xl font-bold">
+                                  <div className="cd-asset-name text-lg font-bold">
                                     {holding.qty.toLocaleString()} {holding.asset.name}
                 </div>
                                   <div className="text-xs text-slate-500">
@@ -1950,7 +1950,7 @@ export default function CDPUtilityApp() {
                               <div className="col-span-3 flex items-center" style={{ gap: '24px' }}>
                                 <TokenIcon asset={loan.asset} />
                                 <div>
-                                  <div className="cd-asset-name text-red-600 text-xl font-bold">
+                                  <div className="cd-asset-name text-red-600 text-lg font-bold">
                                     {interestInAsset.toLocaleString()} {loan.asset.name} Interest
                                   </div>
                                   <div className="text-xs text-slate-500">
@@ -2006,7 +2006,7 @@ export default function CDPUtilityApp() {
         {/* Upcoming Interest Payouts Section */}
         <section className="card mb-8 sm:mb-12">
           <header className="mb-8 sm:mb-12 flex justify-between items-center">
-            <h1 className="cd-balance-large text-brand-blue text-xl sm:text-2xl md:text-3xl">Upcoming Interest Payouts</h1>
+            <h1 className="cd-balance-large text-brand-blue text-2xl">Upcoming Interest Payouts</h1>
           </header>
           
           {(() => {
@@ -2110,7 +2110,7 @@ export default function CDPUtilityApp() {
                           <div className="col-span-3 flex items-center" style={{ gap: '24px' }}>
                             <TokenIcon asset={payout.asset} />
                             <div>
-                              <div className={`cd-asset-name text-xl font-bold ${payout.isLoan ? 'text-red-600' : ''}`}>
+                              <div className={`cd-asset-name text-lg font-bold ${payout.isLoan ? 'text-red-600' : ''}`}>
                                 {payout.qty.toLocaleString()} {payout.asset.name}
               </div>
             </div>
@@ -2184,7 +2184,7 @@ export default function CDPUtilityApp() {
         {/* ======= Onderste blokken strak in cards ======= */}
         <div className="flex flex-col sm:flex-row gap-8 sm:gap-12 mt-8 sm:mt-12">
           <section className="card flex-1">
-            <h2 className="cd-balance-medium text-blue-600 mb-8 sm:mb-12 text-lg sm:text-xl md:text-2xl">Your Earnings</h2>
+            <h2 className="cd-balance-medium text-blue-600 mb-8 sm:mb-12 text-lg">Your Earnings</h2>
 
             <div className="space-y-3 mb-6">
               <div className="flex justify-between items-center">
@@ -2223,7 +2223,7 @@ export default function CDPUtilityApp() {
             </div>
 
             <div className="mb-6">
-              <h3 className="text-lg font-semibold mb-3 text-slate-800">Your Tier Benefits:</h3>
+              <h3 className="text-base font-semibold mb-3 text-slate-800">Your Tier Benefits:</h3>
               <div className="space-y-2">
                 
                 {loansValueUSD > 0 && (
@@ -2284,8 +2284,8 @@ export default function CDPUtilityApp() {
 
             <div className="pt-4 border-t border-slate-200 space-y-2">
               <div className="flex justify-between items-center">
-                <span className="text-lg font-semibold text-blue-600">Total passive income per year:</span>
-                <span className="text-lg font-semibold text-blue-600">{fmtUSD(otherValueUSD * 0.24 + utilityUSD)}</span>
+                <span className="text-base font-semibold text-blue-600">Total passive income per year:</span>
+                <span className="text-base font-semibold text-blue-600">{fmtUSD(otherValueUSD * 0.24 + utilityUSD)}</span>
               </div>
               
               <div className="flex justify-between items-center text-sm text-slate-600">
@@ -2302,7 +2302,7 @@ export default function CDPUtilityApp() {
           </section>
 
           <section className="card flex-1">
-            <h2 className="cd-balance-medium mb-8 sm:mb-12 text-blue-600 text-lg sm:text-xl md:text-2xl">COINDEPO Holdings Advantages</h2>
+            <h2 className="cd-balance-medium mb-8 sm:mb-12 text-blue-600 text-lg">COINDEPO Holdings Advantages</h2>
             {otherValueUSD <= 0 ? (
               <p className="text-slate-500">Add assets to see required COINDEPO.</p>
             ) : (
@@ -2320,7 +2320,7 @@ export default function CDPUtilityApp() {
                 return (
                     <div key={label} className="mb-4">
                       <div className="flex justify-between items-start mb-1">
-                        <div className={`text-lg font-semibold ${achieved ? "cd-tier-achieved" : "text-slate-800"}`}>
+                        <div className={`text-base font-semibold ${achieved ? "cd-tier-achieved" : "text-slate-800"}`}>
                           {label}:
                         </div>
                         {achieved && (

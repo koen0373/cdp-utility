@@ -105,6 +105,15 @@ h1, h2, h3, h4, h5, h6 {
   color: #16a34a !important;
 }
 
+/* Force green color for token payout bonus */
+.cd-token-payout-bonus {
+  color: #16a34a !important;
+}
+
+.cd-token-payout-amount {
+  color: #16a34a !important;
+}
+
 .cd-value-secondary {
   font-family: 'Poppins', sans-serif;
   font-weight: 400;

@@ -2162,10 +2162,6 @@ export default function CDPUtilityApp() {
             <div className="mb-6">
               <h3 className="text-lg font-semibold mb-3 text-slate-800">Your Tier Benefits:</h3>
               <div className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <span className="text-slate-700">Deposit bonus:</span>
-                  <span className="font-semibold">+{(depositBonus * 100).toFixed(0)}%</span>
-                </div>
                 
                 {loansValueUSD > 0 && (
                   <div className="flex justify-between items-center">
@@ -2175,9 +2171,9 @@ export default function CDPUtilityApp() {
                 )}
                 
                 <div className="flex justify-between items-center">
-                  <span className="text-slate-700">Token payout bonus:</span>
+                  <span className="cd-token-payout-bonus">Token payout bonus:</span>
                   <div className="flex items-center gap-2">
-                    <span className="font-semibold">+{(currentTier.tokenPayout * 100).toFixed(0)}%</span>
+                    <span className="font-semibold cd-token-payout-bonus">+{(currentTier.tokenPayout * 100).toFixed(0)}%</span>
                     <div className="flex items-center gap-1">
                   <input
                         type="checkbox"
@@ -2201,16 +2197,12 @@ export default function CDPUtilityApp() {
                 <span className="font-semibold">{fmtUSD(otherValueUSD * 0.24)}</span>
                 </div>
               
-              <div className="flex justify-between items-center">
-                <span className="text-slate-700">Deposit bonus income per year:</span>
-                <span className="font-semibold">{fmtUSD(depositBonusUSD)}</span>
-              </div>
               
               {extraPayoutEnabled && (
                 <div className="flex justify-between items-center">
-                  <span className="text-slate-700">Token payout bonus per year:</span>
-                  <span className="font-semibold text-green-600">{fmtUSD(tokenPayoutUSD)}</span>
-            </div>
+                  <span className="cd-token-payout-bonus">Token payout bonus per year:</span>
+                  <span className="font-semibold cd-token-payout-amount">{fmtUSD(tokenPayoutUSD)}</span>
+              </div>
               )}
               
               {loansValueUSD > 0 && (
@@ -2219,26 +2211,26 @@ export default function CDPUtilityApp() {
                   <span className="font-semibold text-green-600">{fmtUSD(loanSavingsUSD)}</span>
               </div>
               )}
-              </div>
+            </div>
 
             <div className="pt-4 border-t border-slate-200 space-y-2">
               <div className="flex justify-between items-center">
                 <span className="text-lg font-semibold text-blue-600">Total passive income per year:</span>
                 <span className="text-lg font-semibold text-blue-600">{fmtUSD(otherValueUSD * 0.24 + utilityUSD)}</span>
-            </div>
+              </div>
               
               <div className="flex justify-between items-center text-sm text-slate-600">
                 <span>Token utility yield:</span>
                 <span>{utilityYield.toFixed(2)}%</span>
-          </div>
+              </div>
             </div>
             
             {/* Extra witregel en groene totaal */}
             <div className="mt-8 pt-4 flex justify-between items-center">
               <span className="cd-total-green-sm">Total benefits per year:</span>
               <span className="cd-total-green-sm">{fmtUSD(otherValueUSD * 0.24 + utilityUSD)}</span>
-            </div>
-          </section>
+          </div>
+        </section>
 
           <section className="card flex-1">
             <h2 className="cd-balance-medium mb-6 text-blue-600">Required for tiers</h2>

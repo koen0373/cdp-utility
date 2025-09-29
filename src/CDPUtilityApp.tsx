@@ -1295,7 +1295,16 @@ export default function CDPUtilityApp() {
         {/* ======= PORTFOLIO SECTION ======= */}
         <section className="card mb-6">
           <header className="mb-6 flex justify-between items-center">
-            <h1 className="cd-balance-large text-brand-blue">Your Portfolio</h1>
+            <div>
+              <h1 className="cd-balance-large text-brand-blue">Your Portfolio</h1>
+              {depositBonus > 0 && (
+                <div className="mt-2">
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800">
+                    🎯 {tierLabel} Active • +{(depositBonus * 100).toFixed(1)}% Deposit Bonus • -{(loanBonus * 100).toFixed(1)}% Loan Discount
+                  </span>
+                </div>
+              )}
+            </div>
             <div className="flex gap-2 items-center">
               {/* Currency Selector */}
               <div className="flex items-center gap-2">

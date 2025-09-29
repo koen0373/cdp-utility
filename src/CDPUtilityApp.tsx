@@ -1608,13 +1608,15 @@ export default function CDPUtilityApp() {
                     <div className="flex flex-col sm:flex-row items-end justify-between gap-6">
                       {/* Left side - Input fields */}
                       <div className="flex flex-col sm:flex-row items-end gap-6 w-full sm:w-auto">
-                        {/* COINDEPO Token Display - Always Visible */}
-                        <div className="w-full sm:w-64 flex items-center gap-3">
-                          <TokenIcon asset={coindepoAsset} />
-                          <div>
-                            <div className="text-base font-bold">COINDEPO Token</div>
-                            <div className="text-xs text-slate-500">Add new holding</div>
-                          </div>
+                        {/* COINDEPO Selection - Always Visible */}
+                        <div className="w-full sm:w-64">
+                          <select
+                            className="w-full h-10 px-3 border border-slate-300 rounded-lg bg-white text-slate-700 text-sm"
+                            value="COINDEPO"
+                            disabled
+                          >
+                            <option value="COINDEPO">COINDEPO Token</option>
+                          </select>
                         </div>
                         
                         {/* QTY Input - Always Visible */}

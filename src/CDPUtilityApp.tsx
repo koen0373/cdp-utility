@@ -2201,7 +2201,7 @@ export default function CDPUtilityApp() {
               
               {depositBonus > 0 && (
                 <div className="flex justify-between items-center">
-                  <span className="text-green-600">Tier deposit bonus per year:</span>
+                  <span className="text-green-600">Tier {currentTier.tier} interest bonus per year:</span>
                   <span className="font-semibold text-green-600">{fmtUSD(depositBonusUSD)}</span>
                 </div>
               )}

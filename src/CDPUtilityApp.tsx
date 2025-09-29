@@ -2247,10 +2247,10 @@ export default function CDPUtilityApp() {
             ) : (
               <>
                 {[
-                  { label: "Tier 1 (0-4.99%)", pct: 0.00, depositBonus: "0%", loanBonus: "0%", tokenBonus: "+2%", status: "(disabled)" },
-                  { label: "Tier 2 (5-9.99%)", pct: 0.05, depositBonus: "+1%", loanBonus: "-1%", tokenBonus: "+2%", status: "(disabled)" },
-                  { label: "Tier 3 (10-14.99%)", pct: 0.10, depositBonus: "+2%", loanBonus: "-2%", tokenBonus: "+2%", status: "(disabled)" },
-                  { label: "Tier 4 (15%+)", pct: 0.15, depositBonus: "+3%", loanBonus: "-3%", tokenBonus: "+2%", status: "(disabled)" },
+                  { label: "Tier 1 (0-4.99%)", pct: 0.00, depositBonus: "0%", loanBonus: "0%", tokenBonus: "+2%", status: extraPayoutEnabled ? "(enabled)" : "(disabled)" },
+                  { label: "Tier 2 (5-9.99%)", pct: 0.05, depositBonus: "+1%", loanBonus: "-1%", tokenBonus: "+2%", status: extraPayoutEnabled ? "(enabled)" : "(disabled)" },
+                  { label: "Tier 3 (10-14.99%)", pct: 0.10, depositBonus: "+2%", loanBonus: "-2%", tokenBonus: "+2%", status: extraPayoutEnabled ? "(enabled)" : "(disabled)" },
+                  { label: "Tier 4 (15%+)", pct: 0.15, depositBonus: "+3%", loanBonus: "-3%", tokenBonus: "+2%", status: extraPayoutEnabled ? "(enabled)" : "(disabled)" },
                 ].map(({ label, pct, depositBonus, loanBonus, tokenBonus, status }) => {
                 const needUSD = needForPctUSD(pct);
                 const achieved = needUSD <= 0.0001;

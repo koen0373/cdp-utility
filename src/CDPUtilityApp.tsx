@@ -516,9 +516,9 @@ const AssetRow: React.FC<{
 
 
   return (
-    <div className="py-4 border border-slate-200 rounded-lg bg-white">
+    <div className="py-4 rounded-lg bg-white">
       {/* Asset Header Row */}
-      <div className="flex items-center justify-between p-4 border-b border-slate-100">
+      <div className="flex items-center justify-between p-4">
         <div className="flex items-center gap-3">
           <TokenIcon asset={row.asset} />
           <div>

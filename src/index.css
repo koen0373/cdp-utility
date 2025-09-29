@@ -144,6 +144,20 @@ h1.cd-balance-large:not(.text-brand-blue) {
   font-weight: 600 !important;
 }
 
+/* Force visual separation between asset header and details - cannot be overridden */
+.cd-visual-separation {
+  height: 1rem !important;
+  min-height: 1rem !important;
+  max-height: 1rem !important;
+  display: block !important;
+  visibility: visible !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  background: transparent !important;
+  overflow: hidden !important;
+}
+
 .cd-value-secondary {
   font-family: 'Poppins', sans-serif;
   font-weight: 400;

@@ -446,8 +446,8 @@ const CoindepoRow: React.FC<{
         </div>
       </div>
 
-      {/* Empty row for visual separation */}
-      <div className="h-4"></div>
+      {/* Empty row for visual separation - robust CSS override */}
+      <div className="cd-visual-separation"></div>
       
       {/* COINDEPO Details Grid */}
       <div className="px-8 pb-8">
@@ -599,8 +599,8 @@ const AssetRow: React.FC<{
         </div>
       </div>
 
-      {/* Empty row for visual separation */}
-      <div className="h-4"></div>
+      {/* Empty row for visual separation - robust CSS override */}
+      <div className="cd-visual-separation"></div>
       
       {/* Asset Details Grid */}
       <div className="px-8 pb-8">

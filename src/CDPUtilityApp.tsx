@@ -516,9 +516,9 @@ const AssetRow: React.FC<{
 
 
   return (
-    <div className="py-6 rounded-lg bg-white">
+    <div className="py-8 rounded-lg bg-white shadow-sm">
       {/* Asset Header Row */}
-      <div className="flex items-center justify-between p-6">
+      <div className="flex items-center justify-between p-8">
         <div className="flex items-center gap-3">
           <TokenIcon asset={row.asset} />
           <div>
@@ -573,12 +573,12 @@ const AssetRow: React.FC<{
       </div>
 
       {/* Asset Details Grid */}
-      <div className="px-6 pb-6">
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
+      <div className="px-8 pb-8">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-8">
           {/* Quantity */}
-          <div className="space-y-2">
+          <div className="space-y-3">
             <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Quantity</div>
-            <div className="text-lg font-semibold text-slate-800">
+            <div className="text-xl font-semibold text-slate-800">
               {isEditing ? (
                 <input
                   ref={inputRef}
@@ -596,17 +596,17 @@ const AssetRow: React.FC<{
           </div>
 
           {/* Price */}
-          <div className="space-y-2">
+          <div className="space-y-3">
             <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Price</div>
-            <div className="text-lg font-semibold text-slate-600">
+            <div className="text-xl font-semibold text-slate-600">
               {row.priceUSD ? `$${row.priceUSD.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 4 })}` : "—"}
             </div>
           </div>
 
           {/* APR */}
-          <div className="space-y-2">
+          <div className="space-y-3">
             <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">APR</div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
               <span 
                 className="inline-block font-bold text-sm"
                 style={{ 
@@ -632,10 +632,10 @@ const AssetRow: React.FC<{
           </div>
 
           {/* Value */}
-          <div className="space-y-2">
+          <div className="space-y-3">
             <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Value</div>
             <div 
-              className={`text-lg font-semibold ${isLoan ? 'cd-loan-value' : 'cd-value-primary'}`}
+              className={`text-xl font-semibold ${isLoan ? 'cd-loan-value' : 'cd-value-primary'}`}
               style={isLoan ? { color: '#dc2626 !important', fontWeight: '600' } : {}}
             >
               {isLoan ? `-${formatCurrency(value, selectedCurrency, exchangeRates)}` : formatCurrency(value, selectedCurrency, exchangeRates)}
@@ -1390,7 +1390,7 @@ export default function CDPUtilityApp() {
 
           {/* Assets List */}
           {rows.length > 0 && (
-            <div className="flex flex-col gap-8 sm:gap-12">
+            <div className="flex flex-col gap-12 sm:gap-16">
               {rows.map((r, i) => {
                 const value = (r.qty || 0) * (r.priceUSD || 0);
 
@@ -1416,10 +1416,10 @@ export default function CDPUtilityApp() {
           )}
 
           {/* Add Asset Input Row - With Better Padding */}
-          <div className="mt-6 sm:mt-8 p-4 sm:p-0">
-            <div className="flex flex-col sm:flex-row items-end justify-between gap-4">
+          <div className="mt-12 sm:mt-16 p-6 sm:p-0">
+            <div className="flex flex-col sm:flex-row items-end justify-between gap-6">
               {/* Left side - Input fields */}
-              <div className="flex flex-col sm:flex-row items-end gap-4 w-full sm:w-auto">
+              <div className="flex flex-col sm:flex-row items-end gap-6 w-full sm:w-auto">
                 {/* Asset Selection - Always Visible */}
                 <div className="w-full sm:w-64">
               <select
@@ -1662,7 +1662,7 @@ export default function CDPUtilityApp() {
 
             {/* Loans List */}
             {loans.length > 0 && (
-              <div className="flex flex-col gap-4 sm:gap-6">
+              <div className="flex flex-col gap-12 sm:gap-16">
                 {loans.map((loan, i) => {
                   const value = (loan.qty || 0) * (loan.priceUSD || 0);
 
@@ -1816,8 +1816,8 @@ export default function CDPUtilityApp() {
         </section>
 
         {/* ======= INTEREST CONTRIBUTIONS SECTION ======= */}
-        <section className="card mb-4 sm:mb-6">
-          <header className="mb-4 sm:mb-6 flex justify-between items-center">
+        <section className="card mb-8 sm:mb-12">
+          <header className="mb-8 sm:mb-12 flex justify-between items-center">
             <h1 className="cd-balance-large text-brand-blue text-xl sm:text-2xl md:text-3xl">Interest Contributions</h1>
           </header>
           
@@ -1959,8 +1959,8 @@ export default function CDPUtilityApp() {
         </section>
 
         {/* Upcoming Interest Payouts Section */}
-        <section className="card mb-4 sm:mb-6">
-          <header className="mb-4 sm:mb-6 flex justify-between items-center">
+        <section className="card mb-8 sm:mb-12">
+          <header className="mb-8 sm:mb-12 flex justify-between items-center">
             <h1 className="cd-balance-large text-brand-blue text-xl sm:text-2xl md:text-3xl">Upcoming Interest Payouts</h1>
           </header>
           
@@ -2137,9 +2137,9 @@ export default function CDPUtilityApp() {
         </section>
 
         {/* ======= Onderste blokken strak in cards ======= */}
-        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 mt-4 sm:mt-6">
+        <div className="flex flex-col sm:flex-row gap-8 sm:gap-12 mt-8 sm:mt-12">
           <section className="card flex-1">
-            <h2 className="cd-balance-medium text-blue-600 mb-4 sm:mb-6 text-lg sm:text-xl md:text-2xl">Your Earnings</h2>
+            <h2 className="cd-balance-medium text-blue-600 mb-8 sm:mb-12 text-lg sm:text-xl md:text-2xl">Your Earnings</h2>
 
             <div className="space-y-3 mb-6">
               <div className="flex justify-between items-center">
@@ -2257,7 +2257,7 @@ export default function CDPUtilityApp() {
           </section>
 
           <section className="card flex-1">
-            <h2 className="cd-balance-medium mb-4 sm:mb-6 text-blue-600 text-lg sm:text-xl md:text-2xl">COINDEPO Holdings Advantages</h2>
+            <h2 className="cd-balance-medium mb-8 sm:mb-12 text-blue-600 text-lg sm:text-xl md:text-2xl">COINDEPO Holdings Advantages</h2>
             {otherValueUSD <= 0 ? (
               <p className="text-slate-500">Add assets to see required COINDEPO.</p>
             ) : (
@@ -2337,20 +2337,20 @@ export default function CDPUtilityApp() {
 
 
         {/* Support Section */}
-        <section className="card mt-8">
-          <header className="mb-4 sm:mb-6">
+        <section className="card mt-12">
+          <header className="mb-8 sm:mb-12">
             <h2 className="cd-balance-medium text-brand-blue text-lg sm:text-xl md:text-2xl">Support</h2>
           </header>
           
-          <div className="space-y-4 sm:space-y-6">
+          <div className="space-y-6 sm:space-y-8">
             <div>
-              <p className="text-slate-600 mb-4 text-sm sm:text-base">
+              <p className="text-slate-600 mb-6 text-sm sm:text-base">
                 If you appreciate this COINDEPO utility tool and want to contribute to its development, please consider a donation:
               </p>
               
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-4">
-                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 bg-slate-50 rounded-lg gap-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div className="space-y-6">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 bg-slate-50 rounded-lg gap-3">
                     <div className="flex-1 min-w-0">
                       <span className="font-semibold text-slate-800">USDC</span>
                       <div className="text-xs sm:text-sm font-mono text-slate-600 break-all">
@@ -2368,7 +2368,7 @@ export default function CDPUtilityApp() {
                     </button>
                   </div>
                   
-                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 bg-slate-50 rounded-lg gap-2">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 bg-slate-50 rounded-lg gap-3">
                     <div className="flex-1 min-w-0">
                       <span className="font-semibold text-slate-800">ETH</span>
                       <div className="text-xs sm:text-sm font-mono text-slate-600 break-all">
@@ -2388,7 +2388,7 @@ export default function CDPUtilityApp() {
                 </div>
                 
                 <div className="space-y-4">
-                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 bg-slate-50 rounded-lg gap-2">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 bg-slate-50 rounded-lg gap-3">
                     <div className="flex-1 min-w-0">
                       <span className="font-semibold text-slate-800">BTC</span>
                       <div className="text-xs sm:text-sm font-mono text-slate-600 break-all">
@@ -2406,7 +2406,7 @@ export default function CDPUtilityApp() {
                     </button>
                   </div>
                   
-                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 bg-slate-50 rounded-lg gap-2">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 bg-slate-50 rounded-lg gap-3">
                     <div className="flex-1 min-w-0">
                       <span className="font-semibold text-slate-800">COINDEPO</span>
                       <div className="text-xs sm:text-sm font-mono text-slate-600 break-all">
@@ -2427,9 +2427,9 @@ export default function CDPUtilityApp() {
               </div>
             </div>
             
-            <div className="border-t border-slate-200 pt-4 sm:pt-6">
-              <p className="font-semibold text-slate-800 mb-2 text-sm sm:text-base">NOT A COINDEPO MEMBER?</p>
-              <p className="text-slate-600 mb-2 text-sm sm:text-base">Use my partnerlink to open a free account:</p>
+            <div className="border-t border-slate-200 pt-6 sm:pt-8">
+              <p className="font-semibold text-slate-800 mb-3 text-sm sm:text-base">NOT A COINDEPO MEMBER?</p>
+              <p className="text-slate-600 mb-3 text-sm sm:text-base">Use my partnerlink to open a free account:</p>
               <a 
                 href="https://app.coindepo.com/auth/sign-up?ref=A-ounkNJhY" 
                 target="_blank" 
@@ -2440,17 +2440,17 @@ export default function CDPUtilityApp() {
               </a>
             </div>
             
-            <div className="border-t border-slate-200 pt-4 sm:pt-6">
-              <p className="mb-2 text-sm sm:text-base">
+            <div className="border-t border-slate-200 pt-6 sm:pt-8">
+              <p className="mb-3 text-sm sm:text-base">
                 <span className="font-semibold text-slate-800">COINDEPO COMMUNITY LINK</span> @coindepo_community
               </p>
-              <p className="mb-2 text-sm sm:text-base">
+              <p className="mb-3 text-sm sm:text-base">
                 <span className="font-semibold text-slate-800">Contact me on Telegram for feedback:</span> @koen0373
               </p>
               <p className="font-semibold text-base sm:text-lg text-slate-800">THANK YOU!</p>
             </div>
             
-            <div className="border-t border-slate-200 pt-4 sm:pt-6 text-xs text-slate-500">
+            <div className="border-t border-slate-200 pt-6 sm:pt-8 text-xs text-slate-500">
               <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 sm:p-4 mb-4">
                 <h4 className="font-semibold text-yellow-800 mb-2 text-sm sm:text-base">⚠️ IMPORTANT DISCLAIMER</h4>
                 <ul className="space-y-1 text-yellow-700 text-xs sm:text-sm">

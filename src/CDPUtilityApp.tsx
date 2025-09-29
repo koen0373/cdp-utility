@@ -396,7 +396,7 @@ const CoindepoRow: React.FC<{
         <div className="flex items-center gap-3">
           <TokenIcon asset={coindepoAsset} />
           <div>
-            <div className="cd-asset-name text-lg font-semibold">COINDEPO Token</div>
+            <div className="cd-asset-name text-xl font-bold">COINDEPO Token</div>
             {holding.payoutDate && (
               <div className="text-xs text-slate-500">
                 Interest payout date: {new Date(holding.payoutDate).toLocaleDateString()}
@@ -548,7 +548,7 @@ const AssetRow: React.FC<{
         <div className="flex items-center gap-3">
           <TokenIcon asset={row.asset} />
           <div>
-            <div className="cd-asset-name text-lg font-semibold">{row.asset.name}</div>
+            <div className="cd-asset-name text-xl font-bold">{row.asset.name}</div>
             {row.payoutDate && (
               <div className="text-xs text-slate-500">
                 Interest payout date: {new Date(row.payoutDate).toLocaleDateString()}
@@ -1893,7 +1893,7 @@ export default function CDPUtilityApp() {
                               <div className="col-span-3 flex items-center" style={{ gap: '24px' }}>
                                 <TokenIcon asset={holding.asset} />
                                 <div>
-                                  <div className="cd-asset-name">
+                                  <div className="cd-asset-name text-xl font-bold">
                                     {holding.qty.toLocaleString()} {holding.asset.name}
                 </div>
                                   <div className="text-xs text-slate-500">
@@ -1931,7 +1931,7 @@ export default function CDPUtilityApp() {
                               <div className="col-span-3 flex items-center" style={{ gap: '24px' }}>
                                 <TokenIcon asset={loan.asset} />
                                 <div>
-                                  <div className="cd-asset-name text-red-600">
+                                  <div className="cd-asset-name text-red-600 text-xl font-bold">
                                     {interestInAsset.toLocaleString()} {loan.asset.name} Interest
                                   </div>
                                   <div className="text-xs text-slate-500">
@@ -2091,7 +2091,7 @@ export default function CDPUtilityApp() {
                           <div className="col-span-3 flex items-center" style={{ gap: '24px' }}>
                             <TokenIcon asset={payout.asset} />
                             <div>
-                              <div className={`cd-asset-name ${payout.isLoan ? 'text-red-600' : ''}`}>
+                              <div className={`cd-asset-name text-xl font-bold ${payout.isLoan ? 'text-red-600' : ''}`}>
                                 {payout.qty.toLocaleString()} {payout.asset.name}
               </div>
             </div>

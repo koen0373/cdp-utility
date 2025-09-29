@@ -121,6 +121,11 @@ h1, h2, h3, h4, h5, h6 {
   color: #2563eb !important;
 }
 
+/* Force green color for tier badge */
+.cd-tier-badge {
+  color: #16a34a !important;
+}
+
 .cd-value-secondary {
   font-family: 'Poppins', sans-serif;
   font-weight: 400;

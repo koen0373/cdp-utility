@@ -252,7 +252,7 @@ const TokenIcon: React.FC<{ asset: Asset; size?: number }> = ({ asset, size = 32
     return (
       <div
         style={{ width: size, height: size }}
-        className="rounded-full bg-gradient-to-br from-blue-100 to-purple-100 grid place-items-center text-[10px] font-semibold text-slate-700 border border-slate-200"
+        className="rounded-full bg-gradient-to-br from-blue-100 to-purple-100 grid place-items-center text-[10px] font-semibold text-slate-700"
       >
         {initials}
       </div>

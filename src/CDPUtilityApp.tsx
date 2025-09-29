@@ -516,9 +516,9 @@ const AssetRow: React.FC<{
 
 
   return (
-    <div className="py-4 rounded-lg bg-white">
+    <div className="py-6 rounded-lg bg-white">
       {/* Asset Header Row */}
-      <div className="flex items-center justify-between p-4">
+      <div className="flex items-center justify-between p-6">
         <div className="flex items-center gap-3">
           <TokenIcon asset={row.asset} />
           <div>
@@ -573,10 +573,10 @@ const AssetRow: React.FC<{
       </div>
 
       {/* Asset Details Grid */}
-      <div className="p-4">
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+      <div className="px-6 pb-6">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
           {/* Quantity */}
-          <div className="space-y-1">
+          <div className="space-y-2">
             <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Quantity</div>
             <div className="text-lg font-semibold text-slate-800">
               {isEditing ? (
@@ -596,7 +596,7 @@ const AssetRow: React.FC<{
           </div>
 
           {/* Price */}
-          <div className="space-y-1">
+          <div className="space-y-2">
             <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Price</div>
             <div className="text-lg font-semibold text-slate-600">
               {row.priceUSD ? `$${row.priceUSD.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 4 })}` : "—"}
@@ -604,7 +604,7 @@ const AssetRow: React.FC<{
           </div>
 
           {/* APR */}
-          <div className="space-y-1">
+          <div className="space-y-2">
             <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">APR</div>
             <div className="flex items-center gap-2">
               <span 
@@ -632,7 +632,7 @@ const AssetRow: React.FC<{
           </div>
 
           {/* Value */}
-          <div className="space-y-1">
+          <div className="space-y-2">
             <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Value</div>
             <div 
               className={`text-lg font-semibold ${isLoan ? 'cd-loan-value' : 'cd-value-primary'}`}
@@ -1372,8 +1372,8 @@ export default function CDPUtilityApp() {
                 Reset Portfolio
               </button>
             </div>
-          </header>
-          
+        </header>
+
           <h2 className="cd-label text-lg sm:text-xl md:text-2xl" style={{ marginBottom: '16px' }}>YOUR ASSETS</h2>
 
           {/* Assets List Header */}
@@ -1390,7 +1390,7 @@ export default function CDPUtilityApp() {
 
           {/* Assets List */}
           {rows.length > 0 && (
-            <div className="flex flex-col gap-6 sm:gap-8">
+            <div className="flex flex-col gap-8 sm:gap-12">
               {rows.map((r, i) => {
                 const value = (r.qty || 0) * (r.priceUSD || 0);
 

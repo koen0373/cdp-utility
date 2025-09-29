@@ -1271,10 +1271,8 @@ export default function CDPUtilityApp() {
         {/* Header Section */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center mb-4">
-            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center mr-4">
-              <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" />
-              </svg>
+            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center mr-6">
+              <span className="text-white font-bold text-lg">CD</span>
             </div>
             <h1 className="cd-balance-large">
               <span className="font-bold uppercase">COINDEPO</span> <span className="font-normal">Portfolio Manager</span>
@@ -1285,9 +1283,9 @@ export default function CDPUtilityApp() {
             Maximize your crypto returns with up to 27% APR and unlock exclusive Token Advantage Program benefits
           </p>
           
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 max-w-2xl mx-auto">
+          <div className="bg-blue-50 rounded-lg p-3 max-w-2xl mx-auto">
             <p className="text-sm text-blue-700">
-              <strong>🚧 Under Development:</strong> This portfolio manager is still being refined. Some features may not work as expected.
+              <strong>Under Development:</strong> This portfolio manager is still being refined. Some features may not work as expected.
             </p>
           </div>
         </div>

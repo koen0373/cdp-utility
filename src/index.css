@@ -115,10 +115,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Force black color for all card headers */
-.cd-balance-large,
 .cd-balance-medium,
 .cd-label {
   color: #000000 !important;
+}
+
+/* Force blue color for main title */
+.cd-balance-large {
+  color: #2563eb !important;
 }
 
 /* Force green color for tier badge */

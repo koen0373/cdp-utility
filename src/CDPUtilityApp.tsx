@@ -391,8 +391,9 @@ const CoindepoRow: React.FC<{
 
   return (
     <div className="py-8 rounded-lg bg-white shadow-sm">
-      <div className="grid grid-cols-12 gap-4 items-center p-8">
-        <div className="col-span-3 flex items-center" style={{ gap: '24px' }}>
+      {/* COINDEPO Header Row */}
+      <div className="flex items-center justify-between p-8">
+        <div className="flex items-center gap-3">
           <TokenIcon asset={coindepoAsset} />
           <div>
             <div className="cd-asset-name text-lg font-semibold">COINDEPO Token</div>
@@ -403,46 +404,7 @@ const CoindepoRow: React.FC<{
             )}
           </div>
         </div>
-        <div className="col-span-2 text-right text-slate-800 pb-4">
-          {isEditing ? (
-            <input
-              ref={inputRef}
-              type="text"
-              inputMode="decimal"
-              value={editQty}
-              onChange={(e) => setEditQty(toNum(e.target.value))}
-              onKeyDown={(e) => e.key === "Enter" && save()}
-              className="w-20 h-10 px-3 border border-slate-300 rounded-lg text-right text-sm"
-            />
-          ) : (
-            <div className="text-xl font-semibold">{holding.qty.toLocaleString()}</div>
-          )}
-        </div>
-        <div className="col-span-2 text-right text-slate-500 pb-4">
-          <div className="text-xl font-semibold">{formatCurrency(holding.priceUSD, selectedCurrency, exchangeRates)}</div>
-          <div className="text-xs text-orange-500 italic">
-            ~est.
-          </div>
-        </div>
-        <div className="col-span-2 text-right pb-4">
-          <span 
-            className="inline-block font-bold text-base"
-            style={{ 
-              backgroundColor: '#4ade80', 
-              color: '#ffffff',
-              padding: '6px 12px',
-              borderRadius: '8px',
-              fontSize: '14px',
-              fontWeight: '700'
-            }}
-          >
-            {getAPRValue(holding.interestRate).toFixed(1)}%
-          </span>
-        </div>
-        <div className="col-span-2 text-right cd-value-primary pb-4">
-          <div className="text-xl font-semibold">{formatCurrency(value, selectedCurrency, exchangeRates)}</div>
-        </div>
-        <div className="col-span-1 flex items-center justify-end gap-2">
+        <div className="flex items-center gap-2">
           {!isEditing ? (
             <>
               <button
@@ -483,6 +445,70 @@ const CoindepoRow: React.FC<{
               </button>
             </div>
           )}
+        </div>
+      </div>
+
+      {/* COINDEPO Details Grid */}
+      <div className="px-8 pb-8">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-8">
+          {/* Quantity */}
+          <div className="space-y-3">
+            <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Quantity</div>
+            <div className="text-xl font-semibold text-slate-800">
+              {isEditing ? (
+                <input
+                  ref={inputRef}
+                  type="text"
+                  inputMode="decimal"
+                  value={editQty}
+                  onChange={(e) => setEditQty(toNum(e.target.value))}
+                  onKeyDown={(e) => e.key === "Enter" && save()}
+                  className="w-full h-10 px-3 border border-slate-300 rounded-lg text-right text-sm"
+                />
+              ) : (
+                holding.qty.toLocaleString()
+              )}
+            </div>
+          </div>
+
+          {/* Price */}
+          <div className="space-y-3">
+            <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Price</div>
+            <div className="text-xl font-semibold text-slate-600">
+              {formatCurrency(holding.priceUSD, selectedCurrency, exchangeRates)}
+              <div className="text-xs text-orange-500 italic">
+                ~est.
+              </div>
+            </div>
+          </div>
+
+          {/* APR */}
+          <div className="space-y-3">
+            <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">APR</div>
+            <div className="flex items-center gap-3">
+              <span 
+                className="inline-block font-bold text-base"
+                style={{ 
+                  backgroundColor: '#4ade80', 
+                  color: '#ffffff',
+                  padding: '6px 12px',
+                  borderRadius: '8px',
+                  fontSize: '14px',
+                  fontWeight: '700'
+                }}
+              >
+                {getAPRValue(holding.interestRate).toFixed(1)}%
+              </span>
+            </div>
+          </div>
+
+          {/* Value */}
+          <div className="space-y-3">
+            <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Value</div>
+            <div className="text-xl font-semibold cd-value-primary">
+              {formatCurrency(value, selectedCurrency, exchangeRates)}
+            </div>
+          </div>
         </div>
       </div>
     </div>

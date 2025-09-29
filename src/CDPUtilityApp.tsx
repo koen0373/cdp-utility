@@ -2254,6 +2254,7 @@ export default function CDPUtilityApp() {
                 ].map(({ label, pct, depositBonus, loanBonus, tokenBonus, status }) => {
                 const needUSD = needForPctUSD(pct);
                 const achieved = needUSD <= 0.0001;
+                const needTokens = needUSD > 0 ? Math.ceil(needUSD / 0.10) : 0; // COINDEPO price is $0.10
 
                 return (
                     <div key={label} className="mb-4">
@@ -2268,6 +2269,11 @@ export default function CDPUtilityApp() {
                       <div className="text-slate-600 ml-4">
                         Deposit: {depositBonus}, Loan: {loanBonus}, Token: {tokenBonus} {status}
                       </div>
+                      {!achieved && needTokens > 0 && (
+                        <div className="text-blue-600 ml-4 mt-1 text-sm">
+                          Need {needTokens.toLocaleString()} COINDEPO tokens ({formatCurrency(needUSD)})
+                        </div>
+                      )}
                     </div>
                   );
                 })}

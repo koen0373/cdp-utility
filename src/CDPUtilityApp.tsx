@@ -397,11 +397,6 @@ const CoindepoRow: React.FC<{
           <TokenIcon asset={coindepoAsset} />
           <div>
             <div className="cd-asset-name text-xl font-bold">COINDEPO Token</div>
-            {holding.payoutDate && (
-              <div className="text-xs text-slate-500">
-                Interest payout date: {new Date(holding.payoutDate).toLocaleDateString()}
-              </div>
-            )}
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -511,6 +506,15 @@ const CoindepoRow: React.FC<{
             </div>
           </div>
         </div>
+        
+        {/* Interest Payout Date Row */}
+        {holding.payoutDate && (
+          <div className="mt-6 pt-4 border-t border-slate-100">
+            <div className="text-sm text-slate-500">
+              Interest payout date: <span className="font-medium text-slate-700">{new Date(holding.payoutDate).toLocaleDateString()}</span>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -550,11 +554,6 @@ const AssetRow: React.FC<{
           <TokenIcon asset={row.asset} />
           <div>
             <div className="cd-asset-name text-xl font-bold">{row.asset.name}</div>
-            {row.payoutDate && (
-              <div className="text-xs text-slate-500">
-                Interest payout date: {new Date(row.payoutDate).toLocaleDateString()}
-              </div>
-            )}
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -672,6 +671,15 @@ const AssetRow: React.FC<{
             </div>
           </div>
         </div>
+        
+        {/* Interest Payout Date Row */}
+        {row.payoutDate && (
+          <div className="mt-6 pt-4 border-t border-slate-100">
+            <div className="text-sm text-slate-500">
+              Interest payout date: <span className="font-medium text-slate-700">{new Date(row.payoutDate).toLocaleDateString()}</span>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

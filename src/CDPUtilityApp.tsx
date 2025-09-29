@@ -2233,7 +2233,7 @@ export default function CDPUtilityApp() {
         </section>
 
           <section className="card flex-1">
-            <h2 className="cd-balance-medium mb-6 text-blue-600">Required for tiers</h2>
+            <h2 className="cd-balance-medium mb-6 text-blue-600">COINDEPO Holdings Advantages</h2>
             {otherValueUSD <= 0 ? (
               <p className="text-slate-500">Add assets to see required COINDEPO.</p>
             ) : (

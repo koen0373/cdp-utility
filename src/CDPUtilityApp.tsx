@@ -1336,6 +1336,13 @@ export default function CDPUtilityApp() {
             <h1 className="cd-balance-large text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
               <span className="font-bold uppercase">COINDEPO</span> <span className="font-normal">Portfolio Manager</span>
             </h1>
+            <button
+              onClick={handleResetPortfolio}
+              className="btn-primary px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-red-600 ml-4"
+              title="Reset entire portfolio"
+            >
+              Reset Portfolio
+            </button>
           </div>
           
           <p className="text-base sm:text-lg md:text-xl text-slate-600 mb-4 max-w-3xl mx-auto px-4">
@@ -1390,13 +1397,6 @@ export default function CDPUtilityApp() {
                     Restore Backup
                   </button>
                 )}
-              <button
-                onClick={handleResetPortfolio}
-                className="btn-primary px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-red-600 w-full sm:w-auto"
-                title="Reset entire portfolio"
-              >
-                Reset Portfolio
-              </button>
             </div>
         </header>
 

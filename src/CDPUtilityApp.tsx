@@ -1146,10 +1146,12 @@ export default function CDPUtilityApp() {
   let currentTier = TIERS[0]; // Default to Tier 1
   
   // Find the correct tier based on COINDEPO percentage
+  let currentTierIndex = 0;
   for (let i = TIERS.length - 1; i >= 0; i--) {
     if (cdpShare >= TIERS[i].pct * 100) {
       tierLabel = TIERS[i].label.split(" ")[0] + " " + TIERS[i].label.split(" ")[1];
       currentTier = TIERS[i];
+      currentTierIndex = i;
       break;
     }
   }
@@ -1459,7 +1461,7 @@ export default function CDPUtilityApp() {
               {/* Left side - Input fields */}
               <div className="flex flex-col sm:flex-row items-end gap-6 w-full sm:w-auto">
                 {/* Asset Selection - Always Visible */}
-                <div className="w-full sm:w-64">
+                <div style={{ width: '256px' }}>
               <select
                     className="w-full h-10 px-3 border border-slate-300 rounded-lg bg-white text-slate-700 text-sm"
                 value={addAssetSymbol}
@@ -1583,14 +1585,14 @@ export default function CDPUtilityApp() {
                     );
                   })}
                     </div>
-              </div>
+                    </div>
             )}
 
-            {/* COINDEPO Input Row - Step by Step Flow */}
-            <div style={{ marginTop: '32px', padding: '16px 0' }}>
-              <div className="flex items-end justify-between">
+            {/* Add COINDEPO Input Row - Based on Assets section */}
+            <div className="mt-12 sm:mt-16 p-6 sm:p-0">
+              <div className="flex flex-col sm:flex-row items-end justify-between gap-6">
                 {/* Left side - Input fields */}
-                <div className="flex items-end" style={{ gap: '24px' }}>
+                <div className="flex flex-col sm:flex-row items-end gap-6 w-full sm:w-auto">
                   {/* COINDEPO Selection - Always Visible */}
                   <div style={{ width: '256px' }}>
                     <select
@@ -1601,79 +1603,67 @@ export default function CDPUtilityApp() {
                       <option value="">Add COINDEPO...</option>
                       <option value="COINDEPO">COINDEPO Token</option>
                     </select>
-                    </div>
+                  </div>
                   
-                  {/* COINDEPO Input - Multi-row layout */}
+                  {/* QTY Input - Only show after COINDEPO selection */}
                   {showCoindepoInput && (
-                    <div className="flex flex-col sm:flex-row items-end justify-between gap-6">
-                      {/* Left side - Input fields */}
-                      <div className="flex flex-col sm:flex-row items-end gap-6 w-full sm:w-auto">
-                        {/* COINDEPO Selection - Always Visible */}
-                        <div className="w-full sm:w-64">
-                          <select
-                            className="w-full h-10 px-3 border border-slate-300 rounded-lg bg-white text-slate-700 text-sm"
-                            value="COINDEPO"
-                            disabled
-                          >
-                            <option value="COINDEPO">COINDEPO Token</option>
-                          </select>
-                        </div>
-                        
-                        {/* QTY Input - Always Visible */}
-                        <div className="w-full sm:w-20">
-                          <label className="block text-xs font-medium text-slate-600 mb-1">QTY</label>
-                          <input
-                            type="number"
-                            placeholder="Qty"
-                            value={cdpInputQty || ""}
-                            onChange={(e) => setCdpInputQty(e.target.value)}
-                            className="w-full h-10 px-3 border border-slate-300 rounded-lg text-right text-sm"
-                          />
-                        </div>
-                        
-                        {/* APR Selection - Always Visible */}
-                        <div className="w-full sm:w-44">
-                          <label className="block text-xs font-medium text-slate-600 mb-1">Interest Account Type</label>
-                          <select 
-                            className="w-full h-10 px-3 border border-slate-300 rounded-lg bg-white text-slate-700 text-sm"
-                            value={cdpInputAPR}
-                            onChange={(e) => setCdpInputAPR(e.target.value)}
-                          >
-                            <option value="">Select APR...</option>
-                            <option value="coindepo-21.5">WEEKLY: 21.5% APR</option>
-                            <option value="coindepo-23">MONTHLY: 23% APR</option>
-                            <option value="coindepo-24">QUARTERLY: 24% APR</option>
-                            <option value="coindepo-25">SEMI-ANNUAL: 25% APR</option>
-                            <option value="coindepo-27">ANNUAL: 27% APR</option>
-                          </select>
-                        </div>
-                        
-                        {/* Interest Payout Date - Always Visible */}
-                        <div className="w-full sm:w-36">
-                          <label className="block text-xs font-medium text-slate-600 mb-1">Interest Payout Date</label>
-                          <input
-                            type="date"
-                            value={cdpInputPayoutDate}
-                            onChange={(e) => setCdpInputPayoutDate(e.target.value)}
-                            className="w-full h-10 px-3 border border-slate-300 rounded-lg text-sm"
-                          />
-                        </div>
-                      </div>
-                      
-                      {/* Right side - ADD Button */}
-                      <div className="w-full sm:w-auto sm:ml-8">
-                        <button
-                          className="btn-accent px-4 py-2 text-sm font-medium w-full sm:w-auto"
-                          onClick={handleAddCoindepoHolding}
-                          disabled={!cdpInputQty || toNum(cdpInputQty) <= 0 || !cdpInputAPR}
-                        >
-                          ADD
-                        </button>
-                      </div>
+                    <div className="w-full sm:w-20">
+                      <label className="block text-xs font-medium text-slate-600 mb-1">QTY</label>
+                        <input
+                        type="number"
+                        placeholder="Qty"
+                        value={cdpInputQty || ""}
+                        onChange={(e) => setCdpInputQty(e.target.value)}
+                        className="w-full h-10 px-3 border border-slate-300 rounded-lg text-right text-sm"
+                      />
                     </div>
                   )}
-          </div>
-
+                  
+                  {/* APR Selection - Only show after COINDEPO selection */}
+                  {showCoindepoInput && (
+                    <div className="w-full sm:w-44">
+                      <label className="block text-xs font-medium text-slate-600 mb-1">Interest Account Type</label>
+                      <select
+                        className="w-full h-10 px-3 border border-slate-300 rounded-lg bg-white text-slate-700 text-sm"
+                        value={cdpInputAPR}
+                        onChange={(e) => setCdpInputAPR(e.target.value)}
+                      >
+                        <option value="">Select APR...</option>
+                        <option value="coindepo-21.5">WEEKLY: 21.5% APR</option>
+                        <option value="coindepo-23">MONTHLY: 23% APR</option>
+                        <option value="coindepo-24">QUARTERLY: 24% APR</option>
+                        <option value="coindepo-25">SEMI-ANNUAL: 25% APR</option>
+                        <option value="coindepo-27">ANNUAL: 27% APR</option>
+                      </select>
+                    </div>
+                  )}
+                  
+                  {/* Interest Payout Date - Only show after COINDEPO selection */}
+                  {showCoindepoInput && (
+                    <div className="w-full sm:w-36">
+                      <label className="block text-xs font-medium text-slate-600 mb-1">Interest Payout Date</label>
+                      <input
+                        type="date"
+                        value={cdpInputPayoutDate}
+                        onChange={(e) => setCdpInputPayoutDate(e.target.value)}
+                        className="w-full h-10 px-3 border border-slate-300 rounded-lg text-sm"
+                      />
+                    </div>
+                  )}
+                </div>
+                
+                {/* Right side - ADD Button */}
+                {showCoindepoInput && (
+                  <div className="w-full sm:w-auto sm:ml-8">
+                          <button
+                      className="btn-accent px-4 py-2 text-sm font-medium w-full sm:w-auto"
+                      onClick={handleAddCoindepoHolding}
+                      disabled={!cdpInputQty || toNum(cdpInputQty) <= 0 || !cdpInputAPR}
+                    >
+                      ADD
+                          </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -1719,14 +1709,14 @@ export default function CDPUtilityApp() {
                     />
                   );
                 })}
-                </div>
+            </div>
             )}
 
-            {/* Add Loan Input Row - Step by Step Flow */}
-            <div style={{ marginTop: '32px', padding: '16px 0' }}>
-              <div className="flex items-center justify-between">
+            {/* Add Loan Input Row - Based on Assets section */}
+            <div className="mt-12 sm:mt-16 p-6 sm:p-0">
+              <div className="flex flex-col sm:flex-row items-end justify-between gap-6">
                 {/* Left side - Input fields */}
-                <div className="flex items-center" style={{ gap: '24px' }}>
+                <div className="flex flex-col sm:flex-row items-end gap-6 w-full sm:w-auto">
                   {/* Asset Selection - Always Visible */}
                   <div style={{ width: '256px' }}>
                     <select
@@ -1745,20 +1735,22 @@ export default function CDPUtilityApp() {
                   
                   {/* QTY Input - Only show after asset selection */}
                   {addLoanSymbol && (
-                    <div style={{ width: '80px' }}>
-                  <input
+                    <div className="w-full sm:w-20">
+                      <label className="block text-xs font-medium text-slate-600 mb-1">QTY</label>
+                      <input
                         type="number"
-                    placeholder="Qty"
+                        placeholder="Qty"
                         value={addLoanQty || ""}
                         onChange={(e) => setAddLoanQty(toNum(e.target.value))}
                         className="w-full h-10 px-3 border border-slate-300 rounded-lg text-right text-sm"
-                  />
-                </div>
+                      />
+                    </div>
                   )}
                   
                   {/* APR Selection - Only show after asset selection */}
                   {addLoanSymbol && (
-                    <div style={{ width: '176px' }}>
+                    <div className="w-full sm:w-44">
+                      <label className="block text-xs font-medium text-slate-600 mb-1">Interest Account Type</label>
                       <select
                         className="w-full h-10 px-3 border border-slate-300 rounded-lg bg-white text-slate-700 text-sm"
                         value={addLoanAPR}
@@ -1771,46 +1763,25 @@ export default function CDPUtilityApp() {
                           </option>
                         ))}
                       </select>
-                </div>
-                  )}
-
-                  {/* Price Display - Only show after QTY and APR are filled */}
-                  {addLoanSymbol && addLoanQty > 0 && addLoanAPR && (
-                    <>
-                      <div className="w-20 text-right text-slate-500 text-sm">
-                        PRICE
-                      </div>
-                      <div className="w-24 text-right text-slate-500 text-sm">
-                        {selectedLoanPrice > 0 
-                          ? `$${selectedLoanPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 4 })}`
-                          : "Loading..."
-                        }
-                      </div>
-                      <div className="w-20 text-right text-slate-500 text-sm">
-                        VALUE
-                      </div>
-                      <div className="w-24 text-right text-slate-500 text-sm">
-                        {formatCurrency((addLoanQty || 0) * selectedLoanPrice)}
-                      </div>
-                    </>
+                    </div>
                   )}
                 </div>
                 
                 {/* Right side - ADD Button */}
                 {addLoanSymbol && (
-                  <div style={{ marginLeft: '32px' }}>
-                  <button
-                      className="btn-accent px-4 py-2 text-sm font-medium"
+                  <div className="w-full sm:w-auto sm:ml-8">
+                          <button
+                      className="btn-accent px-4 py-2 text-sm font-medium w-full sm:w-auto"
                       onClick={handleAddLoan}
                       disabled={!addLoanSymbol || addLoanQty <= 0 || !addLoanAPR}
-                  >
-                    ADD
-                  </button>
+                    >
+                      ADD
+                          </button>
                         </div>
                       )}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
 
           {/* ======= PORTFOLIO TOTALS ======= */}
           <div className="mt-8 pt-6 border-t border-slate-200">
@@ -1819,11 +1790,11 @@ export default function CDPUtilityApp() {
                 <div className="mb-2">
                   <span className="text-slate-600">Assets: </span>
                   <span className="font-semibold">{formatCurrency(otherValueUSD)}</span>
-              </div>
+                </div>
                 <div className="mb-2">
                   <span className="text-slate-600">COINDEPO: </span>
                   <span className="font-semibold">{formatCurrency(cdpValueUSD)}</span>
-              </div>
+          </div>
                 <div className="mb-3 pb-2 border-b border-slate-200">
                   <span className="text-slate-600">Holdings Total (for tiers): </span>
                   <span className="text-base font-semibold text-blue-600">{formatCurrency(holdingsTotal)}</span>
@@ -2251,7 +2222,7 @@ export default function CDPUtilityApp() {
               
               {depositBonus > 0 && (
                 <div className="flex justify-between items-center">
-                  <span className="text-green-600">Tier {currentTier.tier} interest bonus per year:</span>
+                  <span className="text-green-600">Tier {currentTierIndex + 1} interest bonus per year:</span>
                   <span className="font-semibold text-green-600">{fmtUSD(depositBonusUSD)}</span>
                 </div>
               )}

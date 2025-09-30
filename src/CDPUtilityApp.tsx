@@ -454,7 +454,7 @@ const CoindepoRow: React.FC<{
                   value={editQty}
                   onChange={(e) => setEditQty(toNum(e.target.value))}
                   onKeyDown={(e) => e.key === "Enter" && save()}
-                  className="w-full h-10 px-3 border border-slate-300 rounded-lg text-right text-sm"
+                  className="w-24 h-8 px-2 border border-slate-300 rounded text-center text-base font-semibold"
                 />
               ) : (
                 holding.qty.toLocaleString()
@@ -504,7 +504,7 @@ const CoindepoRow: React.FC<{
         
         {/* Edit Controls - Only show when editing */}
         {isEditing && (
-          <div className="mt-6 pt-4 border-t border-slate-200">
+          <div className="mt-4">
             <div className="flex justify-end gap-3">
               <button
                 className="btn-primary px-4 py-2 text-sm font-medium"
@@ -626,7 +626,7 @@ const AssetRow: React.FC<{
                   value={editQty}
                   onChange={(e) => setEditQty(toNum(e.target.value))}
                   onKeyDown={(e) => e.key === "Enter" && save()}
-                  className="w-full h-10 px-3 border border-slate-300 rounded-lg text-right text-sm"
+                  className="w-24 h-8 px-2 border border-slate-300 rounded text-center text-base font-semibold"
                 />
               ) : (
                 row.qty.toLocaleString()
@@ -684,7 +684,7 @@ const AssetRow: React.FC<{
         
         {/* Edit Controls - Only show when editing */}
         {isEditing && (
-          <div className="mt-6 pt-4 border-t border-slate-200">
+          <div className="mt-4">
             <div className="flex justify-end gap-3">
               <button
                 className="btn-primary px-4 py-2 text-sm font-medium"

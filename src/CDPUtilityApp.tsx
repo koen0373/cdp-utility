@@ -381,11 +381,20 @@ const CoindepoRow: React.FC<{
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (isEditing) inputRef.current?.focus();
-  }, [isEditing]);
+    if (isEditing) {
+      // Pre-fill current value when entering edit mode
+      setEditQty(holding.qty);
+      inputRef.current?.focus();
+    }
+  }, [isEditing, holding.qty]);
 
   const save = () => {
     onUpdate(editQty);
+    setIsEditing(false);
+  };
+
+  const cancel = () => {
+    setEditQty(holding.qty);
     setIsEditing(false);
   };
 
@@ -420,22 +429,8 @@ const CoindepoRow: React.FC<{
               </button>
             </>
           ) : (
-            <div className="flex items-center gap-2">
-              <button
-                className="btn-accent px-4 py-2 text-sm font-medium"
-                onClick={save}
-              >
-                ✓ Save
-              </button>
-              <button
-                className="btn-primary px-4 py-2 text-sm font-medium"
-                onClick={() => {
-                  setEditQty(holding.qty);
-                  setIsEditing(false);
-                }}
-              >
-                ✕ Cancel
-              </button>
+            <div className="text-sm text-slate-500">
+              Editing...
             </div>
           )}
         </div>
@@ -507,6 +502,26 @@ const CoindepoRow: React.FC<{
           </div>
         </div>
         
+        {/* Edit Controls - Only show when editing */}
+        {isEditing && (
+          <div className="mt-6 pt-4 border-t border-slate-200">
+            <div className="flex justify-end gap-3">
+              <button
+                className="btn-primary px-4 py-2 text-sm font-medium"
+                onClick={cancel}
+              >
+                ✕ Cancel
+              </button>
+              <button
+                className="btn-accent px-4 py-2 text-sm font-medium"
+                onClick={save}
+              >
+                ✓ Save
+              </button>
+            </div>
+          </div>
+        )}
+        
         {/* Interest Payout Date Row */}
         {holding.payoutDate && (
           <div className="mt-4">
@@ -537,11 +552,20 @@ const AssetRow: React.FC<{
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (isEditing) inputRef.current?.focus();
-  }, [isEditing]);
+    if (isEditing) {
+      // Pre-fill current value when entering edit mode
+      setEditQty(row.qty);
+      inputRef.current?.focus();
+    }
+  }, [isEditing, row.qty]);
 
   const save = () => {
     onUpdate(editQty);
+    setIsEditing(false);
+  };
+
+  const cancel = () => {
+    setEditQty(row.qty);
     setIsEditing(false);
   };
 
@@ -577,22 +601,8 @@ const AssetRow: React.FC<{
               </button>
             </>
           ) : (
-            <div className="flex items-center gap-2">
-              <button
-                className="btn-accent px-3 py-1 text-sm font-medium"
-                onClick={save}
-              >
-                ✓ Save
-              </button>
-              <button
-                className="btn-primary px-3 py-1 text-sm font-medium"
-                onClick={() => {
-                  setEditQty(row.qty);
-                  setIsEditing(false);
-                }}
-              >
-                ✕ Cancel
-              </button>
+            <div className="text-sm text-slate-500">
+              Editing...
             </div>
           )}
         </div>
@@ -671,6 +681,26 @@ const AssetRow: React.FC<{
             </div>
           </div>
         </div>
+        
+        {/* Edit Controls - Only show when editing */}
+        {isEditing && (
+          <div className="mt-6 pt-4 border-t border-slate-200">
+            <div className="flex justify-end gap-3">
+              <button
+                className="btn-primary px-4 py-2 text-sm font-medium"
+                onClick={cancel}
+              >
+                ✕ Cancel
+              </button>
+              <button
+                className="btn-accent px-4 py-2 text-sm font-medium"
+                onClick={save}
+              >
+                ✓ Save
+              </button>
+            </div>
+          </div>
+        )}
         
         {/* Interest Payout Date Row */}
         {row.payoutDate && (

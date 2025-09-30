@@ -741,6 +741,7 @@ export default function CDPUtilityApp() {
     AUD: 1.35,
     CHF: 0.92
   });
+  const [localStorageStatus, setLocalStorageStatus] = useState<'available' | 'unavailable' | 'checking'>('checking');
 
   // COINDEPO price state - fixed at $0.10
   const [coindepoPrice] = useState<number>(0.10);
@@ -803,9 +804,30 @@ export default function CDPUtilityApp() {
   const [addLoanAPR, setAddLoanAPR] = useState("");
   const [selectedLoanPrice, setSelectedLoanPrice] = useState<number>(0);
 
-  // INIT - Simple localStorage loading
+  // INIT - Robust localStorage loading with mobile compatibility
   useEffect(() => {
     console.log('Loading data on startup...');
+    
+    // Check if localStorage is available
+    const isLocalStorageAvailable = () => {
+      try {
+        const testKey = '__localStorage_test__';
+        localStorage.setItem(testKey, 'test');
+        localStorage.removeItem(testKey);
+        return true;
+      } catch (e) {
+        console.warn('localStorage not available:', e);
+        return false;
+      }
+    };
+
+    const available = isLocalStorageAvailable();
+    setLocalStorageStatus(available ? 'available' : 'unavailable');
+
+    if (!available) {
+      console.warn('localStorage not available - data will not persist between sessions');
+      return;
+    }
     
     try {
       // Load rows
@@ -878,8 +900,26 @@ export default function CDPUtilityApp() {
     }
   }, [selectableAssets]);
 
-  // Save data - Simple localStorage saving with automatic backup
+  // Save data - Robust localStorage saving with mobile compatibility
   useEffect(() => {
+    // Check if localStorage is available
+    const isLocalStorageAvailable = () => {
+      try {
+        const testKey = '__localStorage_test__';
+        localStorage.setItem(testKey, 'test');
+        localStorage.removeItem(testKey);
+        return true;
+      } catch (e) {
+        console.warn('localStorage not available for saving:', e);
+        return false;
+      }
+    };
+
+    if (!isLocalStorageAvailable()) {
+      console.warn('localStorage not available - data will not be saved');
+      return;
+    }
+
     if (rows.length > 0) {
       const dataToSave = rows.map((r) => ({
         symbol: r.asset.symbol,
@@ -889,24 +929,50 @@ export default function CDPUtilityApp() {
         payoutDate: r.payoutDate
       }));
       
-      // Create automatic backup before saving new data
-      const existingData = localStorage.getItem('portfolio-rows');
-      if (existingData) {
-        const timestamp = new Date().toISOString();
-        localStorage.setItem(`portfolio-rows-backup-${timestamp}`, existingData);
-        console.log('Created automatic backup:', `portfolio-rows-backup-${timestamp}`);
+      try {
+        // Create automatic backup before saving new data
+        const existingData = localStorage.getItem('portfolio-rows');
+        if (existingData) {
+          const timestamp = new Date().toISOString();
+          localStorage.setItem(`portfolio-rows-backup-${timestamp}`, existingData);
+          console.log('Created automatic backup:', `portfolio-rows-backup-${timestamp}`);
+        }
+        
+        localStorage.setItem('portfolio-rows', JSON.stringify(dataToSave));
+        console.log('Saved rows to localStorage:', dataToSave);
+      } catch (error) {
+        console.error('Error saving rows to localStorage:', error);
       }
-      
-      localStorage.setItem('portfolio-rows', JSON.stringify(dataToSave));
-      console.log('Saved rows to localStorage:', dataToSave);
     } else {
-      localStorage.removeItem('portfolio-rows');
-      console.log('Removed empty rows from localStorage');
+      try {
+        localStorage.removeItem('portfolio-rows');
+        console.log('Removed empty rows from localStorage');
+      } catch (error) {
+        console.error('Error removing rows from localStorage:', error);
+      }
     }
   }, [rows]);
 
-  // Save COINDEPO holdings data with automatic backup
+  // Save COINDEPO holdings data with mobile compatibility
   useEffect(() => {
+    // Check if localStorage is available
+    const isLocalStorageAvailable = () => {
+      try {
+        const testKey = '__localStorage_test__';
+        localStorage.setItem(testKey, 'test');
+        localStorage.removeItem(testKey);
+        return true;
+      } catch (e) {
+        console.warn('localStorage not available for saving:', e);
+        return false;
+      }
+    };
+
+    if (!isLocalStorageAvailable()) {
+      console.warn('localStorage not available - COINDEPO data will not be saved');
+      return;
+    }
+
     if (coindepoHoldings.length > 0) {
       const dataToSave = coindepoHoldings.map((h) => ({
         qty: h.qty,
@@ -915,24 +981,50 @@ export default function CDPUtilityApp() {
         payoutDate: h.payoutDate
       }));
       
-      // Create automatic backup before saving new data
-      const existingData = localStorage.getItem('coindepo-holdings');
-      if (existingData) {
-        const timestamp = new Date().toISOString();
-        localStorage.setItem(`coindepo-holdings-backup-${timestamp}`, existingData);
-        console.log('Created COINDEPO backup:', `coindepo-holdings-backup-${timestamp}`);
+      try {
+        // Create automatic backup before saving new data
+        const existingData = localStorage.getItem('coindepo-holdings');
+        if (existingData) {
+          const timestamp = new Date().toISOString();
+          localStorage.setItem(`coindepo-holdings-backup-${timestamp}`, existingData);
+          console.log('Created COINDEPO backup:', `coindepo-holdings-backup-${timestamp}`);
+        }
+        
+        localStorage.setItem('coindepo-holdings', JSON.stringify(dataToSave));
+        console.log('Saved COINDEPO holdings to localStorage:', dataToSave);
+      } catch (error) {
+        console.error('Error saving COINDEPO holdings to localStorage:', error);
       }
-      
-      localStorage.setItem('coindepo-holdings', JSON.stringify(dataToSave));
-      console.log('Saved COINDEPO holdings to localStorage:', dataToSave);
     } else {
-      localStorage.removeItem('coindepo-holdings');
-      console.log('Removed empty COINDEPO holdings from localStorage');
+      try {
+        localStorage.removeItem('coindepo-holdings');
+        console.log('Removed empty COINDEPO holdings from localStorage');
+      } catch (error) {
+        console.error('Error removing COINDEPO holdings from localStorage:', error);
+      }
     }
   }, [coindepoHoldings]);
 
-  // Save loans data with automatic backup
+  // Save loans data with mobile compatibility
   useEffect(() => {
+    // Check if localStorage is available
+    const isLocalStorageAvailable = () => {
+      try {
+        const testKey = '__localStorage_test__';
+        localStorage.setItem(testKey, 'test');
+        localStorage.removeItem(testKey);
+        return true;
+      } catch (e) {
+        console.warn('localStorage not available for saving:', e);
+        return false;
+      }
+    };
+
+    if (!isLocalStorageAvailable()) {
+      console.warn('localStorage not available - loans data will not be saved');
+      return;
+    }
+
     if (loans.length > 0) {
       const dataToSave = loans.map((l) => ({
         symbol: l.asset.symbol,
@@ -942,58 +1034,88 @@ export default function CDPUtilityApp() {
         payoutDate: l.payoutDate
       }));
       
-      // Create automatic backup before saving new data
-      const existingData = localStorage.getItem('portfolio-loans');
-      if (existingData) {
-        const timestamp = new Date().toISOString();
-        localStorage.setItem(`portfolio-loans-backup-${timestamp}`, existingData);
-        console.log('Created loans backup:', `portfolio-loans-backup-${timestamp}`);
+      try {
+        // Create automatic backup before saving new data
+        const existingData = localStorage.getItem('portfolio-loans');
+        if (existingData) {
+          const timestamp = new Date().toISOString();
+          localStorage.setItem(`portfolio-loans-backup-${timestamp}`, existingData);
+          console.log('Created loans backup:', `portfolio-loans-backup-${timestamp}`);
+        }
+        
+        localStorage.setItem('portfolio-loans', JSON.stringify(dataToSave));
+        console.log('Saved loans to localStorage:', dataToSave);
+      } catch (error) {
+        console.error('Error saving loans to localStorage:', error);
       }
-      
-      localStorage.setItem('portfolio-loans', JSON.stringify(dataToSave));
-      console.log('Saved loans to localStorage:', dataToSave);
     } else {
-      localStorage.removeItem('portfolio-loans');
-      console.log('Removed empty loans from localStorage');
+      try {
+        localStorage.removeItem('portfolio-loans');
+        console.log('Removed empty loans from localStorage');
+      } catch (error) {
+        console.error('Error removing loans from localStorage:', error);
+      }
     }
   }, [loans]);
 
-  // Automatic backup system - every 15 minutes
+  // Automatic backup system - every 15 minutes with mobile compatibility
   useEffect(() => {
     const createPeriodicBackup = () => {
+      // Check if localStorage is available
+      const isLocalStorageAvailable = () => {
+        try {
+          const testKey = '__localStorage_test__';
+          localStorage.setItem(testKey, 'test');
+          localStorage.removeItem(testKey);
+          return true;
+        } catch (e) {
+          console.warn('localStorage not available for backup:', e);
+          return false;
+        }
+      };
+
+      if (!isLocalStorageAvailable()) {
+        console.warn('localStorage not available - skipping periodic backup');
+        return;
+      }
+
       const timestamp = new Date().toISOString();
       console.log('Creating periodic backup:', timestamp);
       
-      // Backup all portfolio data
-      const portfolioData = localStorage.getItem('portfolio-rows');
-      const coindepoData = localStorage.getItem('coindepo-holdings');
-      const loansData = localStorage.getItem('portfolio-loans');
-      
-      if (portfolioData) {
-        localStorage.setItem(`periodic-backup-portfolio-${timestamp}`, portfolioData);
+      try {
+        // Backup all portfolio data
+        const portfolioData = localStorage.getItem('portfolio-rows');
+        const coindepoData = localStorage.getItem('coindepo-holdings');
+        const loansData = localStorage.getItem('portfolio-loans');
+        
+        if (portfolioData) {
+          localStorage.setItem(`periodic-backup-portfolio-${timestamp}`, portfolioData);
+        }
+        if (coindepoData) {
+          localStorage.setItem(`periodic-backup-coindepo-${timestamp}`, coindepoData);
+        }
+        if (loansData) {
+          localStorage.setItem(`periodic-backup-loans-${timestamp}`, loansData);
+        }
+        
+        // Clean up old periodic backups (keep only last 24 hours = 96 backups)
+        const allKeys = Object.keys(localStorage);
+        const periodicBackups = allKeys
+          .filter(key => key.startsWith('periodic-backup-'))
+          .sort()
+          .reverse();
+        
+        if (periodicBackups.length > 96) {
+          periodicBackups.slice(96).forEach(key => {
+            localStorage.removeItem(key);
+            console.log('Removed old periodic backup:', key);
+          });
+        }
+        
+        console.log('Periodic backup completed. Total backups:', periodicBackups.length);
+      } catch (error) {
+        console.error('Error during periodic backup:', error);
       }
-      if (coindepoData) {
-        localStorage.setItem(`periodic-backup-coindepo-${timestamp}`, coindepoData);
-      }
-      if (loansData) {
-        localStorage.setItem(`periodic-backup-loans-${timestamp}`, loansData);
-      }
-      
-      // Clean up old periodic backups (keep only last 24 hours = 96 backups)
-      const allKeys = Object.keys(localStorage);
-      const periodicBackups = allKeys
-        .filter(key => key.startsWith('periodic-backup-'))
-        .sort()
-        .reverse();
-      
-      if (periodicBackups.length > 96) {
-        periodicBackups.slice(96).forEach(key => {
-          localStorage.removeItem(key);
-          console.log('Removed old periodic backup:', key);
-        });
-      }
-      
-      console.log('Periodic backup completed. Total backups:', periodicBackups.length);
     };
 
     // Create initial backup
@@ -1279,16 +1401,37 @@ export default function CDPUtilityApp() {
       setAddLoanAPR("");
       setSelectedLoanPrice(0);
       
-      // Clear localStorage
-      localStorage.removeItem('portfolio-rows');
-      localStorage.removeItem('portfolio-loans');
-      localStorage.removeItem('coindepo-holdings');
-      
-      console.log('Portfolio reset successfully');
+      // Clear localStorage with error handling
+      try {
+        localStorage.removeItem('portfolio-rows');
+        localStorage.removeItem('portfolio-loans');
+        localStorage.removeItem('coindepo-holdings');
+        console.log('Portfolio reset successfully');
+      } catch (error) {
+        console.error('Error clearing localStorage during reset:', error);
+      }
     }
   }
 
   function handleRestoreFromBackup() {
+    // Check if localStorage is available
+    const isLocalStorageAvailable = () => {
+      try {
+        const testKey = '__localStorage_test__';
+        localStorage.setItem(testKey, 'test');
+        localStorage.removeItem(testKey);
+        return true;
+      } catch (e) {
+        console.warn('localStorage not available for backup restore:', e);
+        return false;
+      }
+    };
+
+    if (!isLocalStorageAvailable()) {
+      alert('localStorage is not available. Cannot restore from backup.');
+      return;
+    }
+
     // Get all backup keys
     const backupKeys = Object.keys(localStorage).filter(key => 
       key.includes('-backup-') && (
@@ -1367,6 +1510,11 @@ export default function CDPUtilityApp() {
             <p className="text-xs sm:text-sm text-blue-700">
               <strong>Under Development:</strong> This portfolio manager is still being refined. Some features may not work as expected.
             </p>
+            {localStorageStatus === 'unavailable' && (
+              <p className="text-xs sm:text-sm text-orange-600 mt-2">
+                <strong>Note:</strong> Local storage is not available. Your portfolio data will not be saved between sessions.
+              </p>
+            )}
           </div>
         </div>
 
@@ -1790,7 +1938,7 @@ export default function CDPUtilityApp() {
                 <div className="mb-2">
                   <span className="text-slate-600">Assets: </span>
                   <span className="font-semibold">{formatCurrency(otherValueUSD)}</span>
-                </div>
+          </div>
                 <div className="mb-2">
                   <span className="text-slate-600">COINDEPO: </span>
                   <span className="font-semibold">{formatCurrency(cdpValueUSD)}</span>

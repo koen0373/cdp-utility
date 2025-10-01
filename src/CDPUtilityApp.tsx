@@ -2333,23 +2333,25 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
               </div>
                 </div>
 
-                        {/* Details Grid */}
-                        <div className="grid grid-cols-2 gap-4">
-                          <div className="space-y-2">
+                        {/* Details Grid - Match Interest Contributions layout */}
+                        <div className="grid grid-cols-12 gap-2">
+                          <div className="col-span-5 space-y-2">
                             <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Quantity</div>
                             <div className="text-base font-semibold">{payout.qty.toLocaleString()}</div>
-            </div>
+                          </div>
                           
-                          <div className="space-y-2">
+                          <div className="col-span-6 text-right space-y-2">
                             <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Accrued Interest</div>
                             <div className={`text-base font-semibold ${payout.isLoan ? 'text-red-600' : 'text-green-600'}`}>
                               {payout.isLoan ? '-' : '+'}{(calculation.accruedInterest / assetPrice).toLocaleString()} {payout.asset.symbol}
                               <div className="text-xs text-slate-500 mt-1">
                                 {payout.isLoan ? '-' : '+'}{fmtUSD(calculation.accruedInterest)}
-          </div>
-                </div>
-              </div>
-            </div>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div className="col-span-1"></div>
+                        </div>
 
                         {/* Payout Date */}
                         <div className="mt-4">

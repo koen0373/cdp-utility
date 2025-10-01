@@ -235,27 +235,50 @@ async function fetchCoinGeckoPrices(coingeckoIds: string[]): Promise<Record<stri
   if (!need.length) return result;
 
   try {
-    const ids = need.join(',');
-    const response = await fetch(`/api/crypto-price-proxy?ids=${encodeURIComponent(ids)}&vs_currencies=usd&include_24hr_change=true`);
+    // Convert CoinGecko IDs to symbols for CoinMarketCap
+    const symbolMap: Record<string, string> = {
+      'bitcoin': 'btc',
+      'ethereum': 'eth',
+      'tether': 'usdt',
+      'binancecoin': 'bnb',
+      'ripple': 'xrp',
+      'cardano': 'ada',
+      'solana': 'sol',
+      'dogecoin': 'doge',
+      'polkadot': 'dot',
+      'chainlink': 'link',
+      'litecoin': 'ltc',
+      'bitcoin-cash': 'bch',
+      'avalanche-2': 'avax',
+      'polygon': 'matic',
+      'uniswap': 'uni',
+      'usd-coin': 'usdc',
+      'coindepo': 'coindepo'
+    };
+    
+    const symbols = need.map(id => symbolMap[id] || id).join(',');
+    const response = await fetch(`/api/coinmarketcap-proxy?symbols=${encodeURIComponent(symbols)}`);
     
     if (!response.ok) {
-      console.error('Crypto price proxy error:', response.status);
+      console.error('CoinMarketCap proxy error:', response.status);
       return result;
     }
     
     const proxyData = await response.json();
     
     if (!proxyData.success || !proxyData.data) {
-      console.error('Invalid proxy response:', proxyData);
+      console.error('Invalid CoinMarketCap proxy response:', proxyData);
       return result;
     }
     
     const data = proxyData.data;
     
     for (const id of need) {
-      const p = data?.[id]?.usd;
-      const change24h = data?.[id]?.usd_24h_change || null;
-      if (typeof p === "number") {
+      const symbol = symbolMap[id] || id;
+      const cryptoData = data[symbol];
+      if (cryptoData && typeof cryptoData.price === "number") {
+        const p = cryptoData.price;
+        const change24h = cryptoData.priceChange24h || null;
         priceCache.set(id, { price: p, priceChange24h: change24h, ts: Date.now() });
         result[id] = p;
       }
@@ -273,26 +296,49 @@ async function fetchSinglePrice(id: string): Promise<{ price: number | null; pri
   if (hit && now - hit.ts < CACHE_TTL_MS) return { price: hit.price, priceChange24h: hit.priceChange24h || null };
   
   try {
-    console.log(`Fetching price for ${id} via proxy`);
-    const response = await fetch(`/api/crypto-price-proxy?ids=${encodeURIComponent(id)}&vs_currencies=usd&include_24hr_change=true`);
-    console.log(`Proxy response status: ${response.status}`);
+    // Convert CoinGecko ID to symbol for CoinMarketCap
+    const symbolMap: Record<string, string> = {
+      'bitcoin': 'btc',
+      'ethereum': 'eth',
+      'tether': 'usdt',
+      'binancecoin': 'bnb',
+      'ripple': 'xrp',
+      'cardano': 'ada',
+      'solana': 'sol',
+      'dogecoin': 'doge',
+      'polkadot': 'dot',
+      'chainlink': 'link',
+      'litecoin': 'ltc',
+      'bitcoin-cash': 'bch',
+      'avalanche-2': 'avax',
+      'polygon': 'matic',
+      'uniswap': 'uni',
+      'usd-coin': 'usdc',
+      'coindepo': 'coindepo'
+    };
+    
+    const symbol = symbolMap[id] || id;
+    console.log(`Fetching price for ${id} (${symbol}) via CoinMarketCap proxy`);
+    const response = await fetch(`/api/coinmarketcap-proxy?symbols=${encodeURIComponent(symbol)}`);
+    console.log(`CoinMarketCap proxy response status: ${response.status}`);
     
     if (!response.ok) {
-      console.log(`Proxy call failed with status ${response.status}`);
+      console.log(`CoinMarketCap proxy call failed with status ${response.status}`);
       return { price: null, priceChange24h: null };
     }
     
     const proxyData = await response.json();
-    console.log(`Proxy response:`, proxyData);
+    console.log(`CoinMarketCap proxy response:`, proxyData);
     
     if (!proxyData.success || !proxyData.data) {
-      console.log(`Invalid proxy response:`, proxyData);
+      console.log(`Invalid CoinMarketCap proxy response:`, proxyData);
       return { price: null, priceChange24h: null };
     }
     
     const data = proxyData.data;
-    const p = data?.[id]?.usd;
-      const change24h = data?.[id]?.usd_24h_change || null;
+    const cryptoData = data[symbol];
+    const p = cryptoData?.price;
+    const change24h = cryptoData?.priceChange24h || null;
       
     if (typeof p === "number") {
         priceCache.set(id, { price: p, priceChange24h: change24h, ts: now });
@@ -1133,29 +1179,29 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
     }
   }
 
-  // Fetch COINDEPO price from CoinGecko via proxy
+  // Fetch COINDEPO price from CoinMarketCap via proxy
   async function fetchCoindepoPrice() {
     try {
       setCoindepoPriceStatus('loading');
-      console.log('Fetching COINDEPO price via proxy...');
+      console.log('Fetching COINDEPO price via CoinMarketCap proxy...');
       
-      const response = await fetch('/api/crypto-price-proxy?ids=coindepo&vs_currencies=usd&include_24hr_change=true');
+      const response = await fetch('/api/coinmarketcap-proxy?symbols=coindepo');
       
       if (!response.ok) {
-        throw new Error(`Crypto price proxy error: ${response.status}`);
+        throw new Error(`CoinMarketCap proxy error: ${response.status}`);
       }
       
       const proxyData = await response.json();
       
       if (!proxyData.success || !proxyData.data) {
-        throw new Error('Invalid proxy response');
+        throw new Error('Invalid CoinMarketCap proxy response');
       }
       
       const data = proxyData.data;
       
-      if (data.coindepo && data.coindepo.usd) {
-        const price = data.coindepo.usd;
-        const priceChange = data.coindepo.usd_24h_change || 0;
+      if (data.coindepo && data.coindepo.price) {
+        const price = data.coindepo.price;
+        const priceChange = data.coindepo.priceChange24h || 0;
         
         setCoindepoPrice(price);
         setCoindepoPriceChange(priceChange);

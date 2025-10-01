@@ -17,17 +17,18 @@ export default async function handler(request: VercelRequest, response: VercelRe
   }
 
   try {
-    // Try multiple reliable crypto icon sources
+    // Try multiple reliable crypto icon sources (updated and tested)
     const iconUrls = [
-      // CoinGecko (most reliable)
-      `https://assets.coingecko.com/coins/images/1/large/${symbol.toLowerCase()}.png`,
-      // CryptoIcons.org
-      `https://cryptoicons.org/api/color/${symbol.toLowerCase()}/200`,
-      `https://cryptoicons.org/api/icon/${symbol.toLowerCase()}/200`,
-      // CoinMarketCap
-      `https://s2.coinmarketcap.com/static/img/coins/64x64/${symbol.toLowerCase()}.png`,
-      // SpotHQ icons
+      // SpotHQ icons (most reliable, good CORS support)
       `https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/32/color/${symbol.toLowerCase()}.png`,
+      // CoinMarketCap (reliable, good coverage)
+      `https://s2.coinmarketcap.com/static/img/coins/64x64/${symbol.toLowerCase()}.png`,
+      // CoinGecko (reliable but limited coverage)
+      `https://assets.coingecko.com/coins/images/1/large/${symbol.toLowerCase()}.png`,
+      // Alternative CoinGecko format
+      `https://assets.coingecko.com/coins/images/1/small/${symbol.toLowerCase()}.png`,
+      // CoinCap API (backup)
+      `https://assets.coincap.io/assets/icons/${symbol.toLowerCase()}@2x.png`,
     ];
 
     // Try each URL until one works
@@ -71,9 +72,9 @@ export default async function handler(request: VercelRequest, response: VercelRe
 }
 
 function getSourceName(url: string): string {
-  if (url.includes('coingecko.com')) return 'CoinGecko';
-  if (url.includes('cryptoicons.org')) return 'CryptoIcons.org';
-  if (url.includes('coinmarketcap.com')) return 'CoinMarketCap';
   if (url.includes('spothq')) return 'SpotHQ';
+  if (url.includes('coinmarketcap.com')) return 'CoinMarketCap';
+  if (url.includes('coingecko.com')) return 'CoinGecko';
+  if (url.includes('coincap.io')) return 'CoinCap';
   return 'Unknown';
 }

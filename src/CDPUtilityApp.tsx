@@ -282,7 +282,7 @@ const TokenIcon: React.FC<{ asset: Asset; size?: number }> = ({ asset, size = 32
 };
 
 /* -------------------- CoinGecko prijzen -------------------- */
-const priceCache = new Map<string, { price: number; ts: number }>();
+const priceCache = new Map<string, { price: number; priceChange24h?: number; ts: number }>();
 const CACHE_TTL_MS = 60_000;
 
 async function fetchCoinGeckoPrices(coingeckoIds: string[]): Promise<Record<string, number>> {
@@ -320,20 +320,20 @@ async function fetchCoinGeckoPrices(coingeckoIds: string[]): Promise<Record<stri
   }
 }
 
-async function fetchSinglePrice(id: string): Promise<number | null> {
+async function fetchSinglePrice(id: string): Promise<{ price: number | null; priceChange24h: number | null }> {
   const now = Date.now();
   const hit = priceCache.get(id);
-  if (hit && now - hit.ts < CACHE_TTL_MS) return hit.price;
+  if (hit && now - hit.ts < CACHE_TTL_MS) return { price: hit.price, priceChange24h: hit.priceChange24h || null };
   
   // Use proxy in development, direct API in production
   const isDevelopment = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
   const urls = isDevelopment 
     ? [
-        `/coingecko/api/v3/simple/price?ids=${encodeURIComponent(id)}&vs_currencies=usd`,
-        `https://api.coingecko.com/api/v3/simple/price?ids=${encodeURIComponent(id)}&vs_currencies=usd`
+        `/coingecko/api/v3/simple/price?ids=${encodeURIComponent(id)}&vs_currencies=usd&include_24hr_change=true`,
+        `https://api.coingecko.com/api/v3/simple/price?ids=${encodeURIComponent(id)}&vs_currencies=usd&include_24hr_change=true`
       ]
     : [
-        `https://api.coingecko.com/api/v3/simple/price?ids=${encodeURIComponent(id)}&vs_currencies=usd`
+        `https://api.coingecko.com/api/v3/simple/price?ids=${encodeURIComponent(id)}&vs_currencies=usd&include_24hr_change=true`
       ];
   
   for (const url of urls) {
@@ -350,12 +350,13 @@ async function fetchSinglePrice(id: string): Promise<number | null> {
     const data = await res.json();
       console.log(`API response:`, data);
     const p = data?.[id]?.usd;
+      const change24h = data?.[id]?.usd_24h_change || null;
       
     if (typeof p === "number") {
-      priceCache.set(id, { price: p, ts: now });
-        console.log(`Price cached: ${p}`);
-      return p;
-    }
+        priceCache.set(id, { price: p, priceChange24h: change24h, ts: now });
+        console.log(`Price cached: ${p}, 24h change: ${change24h}%`);
+        return { price: p, priceChange24h: change24h };
+      }
       
       console.log(`No valid price found in response`);
     } catch (error) {
@@ -365,7 +366,7 @@ async function fetchSinglePrice(id: string): Promise<number | null> {
   }
   
   console.log(`All price fetch attempts failed for ${id}`);
-  return hit ? hit.price : null;
+  return hit ? { price: hit.price, priceChange24h: hit.priceChange24h || null } : { price: null, priceChange24h: null };
 }
 
 /* -------------------- LocalStorage -------------------- */
@@ -560,7 +561,8 @@ const AssetRow: React.FC<{
   selectedCurrency: string;
   exchangeRates: Record<string, number>;
   depositBonus?: number;
-}> = ({ row, value, onUpdate, onRemove, isLoan = false, selectedCurrency, exchangeRates, depositBonus = 0 }) => {
+  priceChange24h?: number | null;
+}> = ({ row, value, onUpdate, onRemove, isLoan = false, selectedCurrency, exchangeRates, depositBonus = 0, priceChange24h }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editQty, setEditQty] = useState<number>(row.qty);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -653,6 +655,14 @@ const AssetRow: React.FC<{
             <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Price</div>
             <div className="text-base font-semibold text-slate-600">
               {row.priceUSD ? `$${row.priceUSD.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 4 })}` : "—"}
+              {row.priceUSD && priceChange24h !== null && priceChange24h !== undefined && (
+                <div className="flex items-center gap-2 mt-1">
+                  <div className="text-xs italic text-green-600">✓ live</div>
+                  <div className={`text-xs font-semibold ${priceChange24h >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    {priceChange24h >= 0 ? '↑' : '↓'} {Math.abs(priceChange24h).toFixed(2)}%
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
@@ -771,6 +781,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
   const [addAssetInterestRate, setAddAssetInterestRate] = useState("");
   const [addAssetPayoutDate, setAddAssetPayoutDate] = useState(""); // New state for payout date
   const [selectedAssetPrice, setSelectedAssetPrice] = useState<number>(0);
+  const [selectedAssetPriceChange, setSelectedAssetPriceChange] = useState<number | null>(null);
 
   // COINDEPO holdings (nu als array voor meerdere holdings)
   const [coindepoHoldings, setCoindepoHoldings] = useState<Row[]>([]);
@@ -857,6 +868,11 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
   const [addLoanQty, setAddLoanQty] = useState<number>(0);
   const [addLoanAPR, setAddLoanAPR] = useState("");
   const [selectedLoanPrice, setSelectedLoanPrice] = useState<number>(0);
+  const [selectedLoanPriceChange, setSelectedLoanPriceChange] = useState<number | null>(null);
+
+  // Price changes for existing assets and loans
+  const [assetPriceChanges, setAssetPriceChanges] = useState<Record<string, number | null>>({});
+  const [loanPriceChanges, setLoanPriceChanges] = useState<Record<string, number | null>>({});
 
   // INIT - Hybrid storage loading with IndexedDB and localStorage fallback
   useEffect(() => {
@@ -1126,6 +1142,27 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
     return () => clearInterval(backupInterval);
   }, []); // Empty dependency array - run once on mount
 
+  // Fetch price changes for existing assets and loans
+  async function fetchAssetPriceChanges() {
+    const allAssets = [...rows, ...loans];
+    const uniqueCoingeckoIds = [...new Set(allAssets.map(r => r.asset.coingeckoId).filter(Boolean))];
+    
+    for (const coingeckoId of uniqueCoingeckoIds) {
+      if (!coingeckoId) continue;
+      
+      try {
+        const result = await fetchSinglePrice(coingeckoId);
+        if (result.priceChange24h !== null) {
+          // Update both asset and loan price changes
+          setAssetPriceChanges(prev => ({ ...prev, [coingeckoId]: result.priceChange24h }));
+          setLoanPriceChanges(prev => ({ ...prev, [coingeckoId]: result.priceChange24h }));
+        }
+      } catch (error) {
+        console.error(`Error fetching price change for ${coingeckoId}:`, error);
+      }
+    }
+  }
+
   // Fetch COINDEPO price from CoinGecko
   async function fetchCoindepoPrice() {
     try {
@@ -1206,9 +1243,10 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rows.length]);
 
-  // Fetch COINDEPO price on initial load
+  // Fetch COINDEPO price and asset price changes on initial load
   useEffect(() => {
     fetchCoindepoPrice();
+    fetchAssetPriceChanges();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -1244,14 +1282,16 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
         console.log(`Fetching price for selected asset: ${asset.symbol} (${asset.coingeckoId})`);
         setSelectedAssetPrice(0); // Reset to show loading
         
-        fetchSinglePrice(asset.coingeckoId).then(price => {
-          console.log(`Price response for ${asset.symbol}:`, price);
-          if (price && price > 0) {
-            setSelectedAssetPrice(price);
-            console.log(`Price set for ${asset.symbol}: $${price}`);
+        fetchSinglePrice(asset.coingeckoId).then(result => {
+          console.log(`Price response for ${asset.symbol}:`, result);
+          if (result.price && result.price > 0) {
+            setSelectedAssetPrice(result.price);
+            setSelectedAssetPriceChange(result.priceChange24h);
+            console.log(`Price set for ${asset.symbol}: $${result.price}, 24h change: ${result.priceChange24h}%`);
           } else {
             console.log(`No valid price for ${asset.symbol}, setting to 0`);
             setSelectedAssetPrice(0);
+            setSelectedAssetPriceChange(null);
           }
         }).catch(error => {
           console.error(`Error fetching price for ${asset.symbol}:`, error);
@@ -1278,14 +1318,16 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
         console.log(`Fetching price for selected loan asset: ${asset.symbol} (${asset.coingeckoId})`);
         setSelectedLoanPrice(0); // Reset to show loading
         
-        fetchSinglePrice(asset.coingeckoId).then(price => {
-          console.log(`Loan price response for ${asset.symbol}:`, price);
-          if (price && price > 0) {
-            setSelectedLoanPrice(price);
-            console.log(`Loan price set for ${asset.symbol}: $${price}`);
+        fetchSinglePrice(asset.coingeckoId).then(result => {
+          console.log(`Loan price response for ${asset.symbol}:`, result);
+          if (result.price && result.price > 0) {
+            setSelectedLoanPrice(result.price);
+            setSelectedLoanPriceChange(result.priceChange24h);
+            console.log(`Loan price set for ${asset.symbol}: $${result.price}, 24h change: ${result.priceChange24h}%`);
           } else {
             console.log(`No valid loan price for ${asset.symbol}, setting to 0`);
             setSelectedLoanPrice(0);
+            setSelectedLoanPriceChange(null);
           }
         }).catch(error => {
           console.error(`Error fetching loan price for ${asset.symbol}:`, error);
@@ -1374,8 +1416,8 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
     let price = selectedAssetPrice;
     if (price === 0 && asset.coingeckoId) {
       console.log(`Fetching price for ${asset.symbol} (${asset.coingeckoId})`);
-      const p = await fetchSinglePrice(asset.coingeckoId);
-      price = typeof p === "number" ? p : 0;
+      const result = await fetchSinglePrice(asset.coingeckoId);
+      price = typeof result.price === "number" ? result.price : 0;
       console.log(`Price fetched: ${price}`);
     }
     const newRow = { asset, qty: addQty, priceUSD: price, interestRate: addAssetInterestRate, payoutDate: addAssetPayoutDate };
@@ -1428,8 +1470,8 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
     let price = selectedLoanPrice;
     if (price === 0 && asset.coingeckoId) {
       console.log(`Fetching price for loan ${asset.symbol} (${asset.coingeckoId})`);
-      const p = await fetchSinglePrice(asset.coingeckoId);
-      price = typeof p === "number" ? p : 0;
+      const result = await fetchSinglePrice(asset.coingeckoId);
+      price = typeof result.price === "number" ? result.price : 0;
       console.log(`Loan price fetched: ${price}`);
     }
     const newLoan = { asset, qty: addLoanQty, priceUSD: price, interestRate: addLoanAPR };
@@ -1457,8 +1499,8 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
       setCdpInputAPR("");
       setCdpInputPayoutDate("");
       setShowCoindepoInput(false);
-      setAddAssetSymbol("");
-      setAddQty(0);
+    setAddAssetSymbol("");
+    setAddQty(0);
       setAddAssetInterestRate("");
       setAddAssetPayoutDate("");
       setSelectedAssetPrice(0);
@@ -1611,6 +1653,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                     selectedCurrency={selectedCurrency}
                     exchangeRates={exchangeRates}
                     depositBonus={depositBonus}
+                    priceChange24h={assetPriceChanges[r.asset.coingeckoId || '']}
                     onUpdate={(newQty) => {
                       const next = [...rows];
                       next[i].qty = newQty;
@@ -1872,6 +1915,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                       selectedCurrency={selectedCurrency}
                       exchangeRates={exchangeRates}
                       depositBonus={loanBonus}
+                      priceChange24h={loanPriceChanges[loan.asset.coingeckoId || '']}
                       onUpdate={(newQty) => {
                         const next = [...loans];
                         next[i].qty = newQty;

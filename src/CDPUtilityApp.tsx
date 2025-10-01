@@ -901,6 +901,17 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
   // Portfolio section visibility toggle
   const [portfolioVisible, setPortfolioVisible] = useState(true);
 
+  // Card visibility toggles
+  const [cardVisibility, setCardVisibility] = useState({
+    portfolio: true,
+    allocation: true,
+    contributions: true,
+    payouts: true,
+    earnings: true,
+    advantages: true,
+    support: true
+  });
+
   // INIT - Hybrid storage loading with IndexedDB and localStorage fallback
   useEffect(() => {
     console.log('Loading data on startup...');
@@ -2081,10 +2092,15 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
         </section>
 
         {/* ======= PORTFOLIO ALLOCATION SECTION ======= */}
-        <section className="card mb-8 sm:mb-12">
-          <header className="mb-8 sm:mb-12">
-            <h1 className="cd-balance-large text-brand-blue text-2xl">Portfolio Allocation</h1>
-          </header>
+        {cardVisibility.allocation && (
+          <section className="card mb-8 sm:mb-12">
+            <header className="mb-8 sm:mb-12 flex items-center justify-between">
+              <h1 className="cd-balance-large text-brand-blue text-2xl">Portfolio Allocation</h1>
+              <Toggle
+                isOn={cardVisibility.allocation}
+                onToggle={() => setCardVisibility(prev => ({ ...prev, allocation: !prev.allocation }))}
+              />
+            </header>
           
           <PortfolioAllocationChart
             assets={rows.map(row => ({
@@ -2111,13 +2127,19 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
               }).format(convertedValue);
             }}
           />
-        </section>
+          </section>
+        )}
 
         {/* ======= INTEREST CONTRIBUTIONS SECTION ======= */}
-        <section className="card mb-8 sm:mb-12">
-          <header className="mb-8 sm:mb-12 flex justify-between items-center">
-            <h1 className="cd-balance-large text-brand-blue text-2xl">Interest Contributions</h1>
-          </header>
+        {cardVisibility.contributions && (
+          <section className="card mb-8 sm:mb-12">
+            <header className="mb-8 sm:mb-12 flex justify-between items-center">
+              <h1 className="cd-balance-large text-brand-blue text-2xl">Interest Contributions</h1>
+              <Toggle
+                isOn={cardVisibility.contributions}
+                onToggle={() => setCardVisibility(prev => ({ ...prev, contributions: !prev.contributions }))}
+              />
+            </header>
           
           {/* Calculate interest contributions */}
           {(() => {
@@ -2242,13 +2264,19 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
               </>
             );
           })()}
-        </section>
+          </section>
+        )}
 
         {/* Upcoming Interest Payouts Section */}
-        <section className="card mb-8 sm:mb-12">
-          <header className="mb-8 sm:mb-12 flex justify-between items-center">
-            <h1 className="cd-balance-large text-brand-blue text-2xl">Upcoming Interest Payouts</h1>
-          </header>
+        {cardVisibility.payouts && (
+          <section className="card mb-8 sm:mb-12">
+            <header className="mb-8 sm:mb-12 flex justify-between items-center">
+              <h1 className="cd-balance-large text-brand-blue text-2xl">Upcoming Interest Payouts</h1>
+              <Toggle
+                isOn={cardVisibility.payouts}
+                onToggle={() => setCardVisibility(prev => ({ ...prev, payouts: !prev.payouts }))}
+              />
+            </header>
           
           {(() => {
             // Get all holdings with payout dates
@@ -2422,12 +2450,20 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
               <p className="text-slate-500">Add assets with interest payout dates to see upcoming payouts.</p>
             );
           })()}
-        </section>
+          </section>
+        )}
 
         {/* ======= Onderste blokken strak in cards ======= */}
         <div className="flex flex-col sm:flex-row gap-8 sm:gap-12 mt-8 sm:mt-12">
-          <section className="card flex-1">
-            <h2 className="cd-balance-medium text-blue-600 mb-8 sm:mb-12 text-lg">Your Earnings</h2>
+          {cardVisibility.earnings && (
+            <section className="card flex-1">
+              <header className="mb-8 sm:mb-12 flex justify-between items-center">
+                <h2 className="cd-balance-medium text-blue-600 text-lg">Your Earnings</h2>
+                <Toggle
+                  isOn={cardVisibility.earnings}
+                  onToggle={() => setCardVisibility(prev => ({ ...prev, earnings: !prev.earnings }))}
+                />
+              </header>
             
             {!isTierProgramActive && (
               <div className="mb-6 p-4 bg-blue-50 rounded-lg">
@@ -2560,10 +2596,18 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
               <span className="cd-total-green-sm">Total benefits per year:</span>
               <span className="cd-total-green-sm">{fmtUSD(otherValueUSD * 0.24 + utilityUSD)}</span>
           </div>
-          </section>
+            </section>
+          )}
 
-          <section className="card flex-1">
-            <h2 className="cd-balance-medium mb-8 sm:mb-12 text-blue-600 text-lg">COINDEPO Holdings Advantages</h2>
+          {cardVisibility.advantages && (
+            <section className="card flex-1">
+              <header className="mb-8 sm:mb-12 flex justify-between items-center">
+                <h2 className="cd-balance-medium text-blue-600 text-lg">COINDEPO Holdings Advantages</h2>
+                <Toggle
+                  isOn={cardVisibility.advantages}
+                  onToggle={() => setCardVisibility(prev => ({ ...prev, advantages: !prev.advantages }))}
+                />
+              </header>
             
             {!isTierProgramActive && (
               <div className="mb-6 p-4 bg-blue-50 rounded-lg">
@@ -2649,15 +2693,21 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                 </div>
               </>
             )}
-          </section>
+            </section>
+          )}
         </div>
 
 
         {/* Support Section */}
-        <section className="card mt-12">
-          <header className="mb-8 sm:mb-12">
-            <h2 className="cd-balance-medium text-brand-blue text-lg sm:text-xl md:text-2xl">Support</h2>
-          </header>
+        {cardVisibility.support && (
+          <section className="card mt-12">
+            <header className="mb-8 sm:mb-12 flex justify-between items-center">
+              <h2 className="cd-balance-medium text-brand-blue text-lg sm:text-xl md:text-2xl">Support</h2>
+              <Toggle
+                isOn={cardVisibility.support}
+                onToggle={() => setCardVisibility(prev => ({ ...prev, support: !prev.support }))}
+              />
+            </header>
           
           <div className="space-y-6 sm:space-y-8">
             <div>
@@ -2741,7 +2791,8 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
               </p>
             </div>
           </div>
-        </section>
+          </section>
+        )}
       </div>
     </div>
   );

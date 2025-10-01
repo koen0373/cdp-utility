@@ -453,62 +453,68 @@ const CoindepoRow: React.FC<{
         </div>
       </div>
 
-      {/* COINDEPO Details Grid */}
+      {/* COINDEPO Details Grid - Two rows with 20px gap between rows, 50px gap between assets */}
       <div className="px-8 pb-8">
-        <div className="grid grid-cols-12 gap-2">
-          {/* Quantity */}
-          <div className="col-span-3 space-y-3">
-            <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Quantity</div>
-            <div className="text-base font-semibold text-slate-800">
-              {isEditing ? (
-                <input
-                  ref={inputRef}
-                  type="text"
-                  inputMode="decimal"
-                  value={editQty}
-                  onChange={(e) => setEditQty(toNum(e.target.value))}
-                  onKeyDown={(e) => e.key === "Enter" && save()}
-                  className="w-24 h-8 px-2 border border-slate-300 rounded text-center text-base font-semibold"
-                />
-              ) : (
-                holding.qty.toLocaleString()
-              )}
-            </div>
-          </div>
-
-          {/* Price */}
-          <div className="col-span-3 space-y-3">
-            <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Price</div>
-            <div className="text-base font-semibold text-slate-600">
-              {formatCoindepoPrice(holding.priceUSD, selectedCurrency, exchangeRates)}
-              <div className="flex items-center gap-2 mt-1">
-                <div className={`text-xs italic ${coindepoPriceStatus === 'live' ? 'text-green-600' : 'text-orange-500'}`}>
-                  {coindepoPriceStatus === 'live' ? '✓ live' : '~est.'}
-                </div>
-                {coindepoPriceStatus === 'live' && priceChange24h !== undefined && (
-                  <div className={`text-xs font-semibold ${priceChange24h >= 0 ? 'cd-price-change-positive' : 'cd-price-change-negative'}`}>
-                    {priceChange24h >= 0 ? '↑' : '↓'} {Math.abs(priceChange24h).toFixed(2)}%
-                  </div>
+        <div className="flex flex-col gap-5" style={{ gap: '20px' }}>
+          {/* First row: Quantity and Price */}
+          <div className="flex gap-12" style={{ gap: '50px' }}>
+            {/* Quantity */}
+            <div className="space-y-3">
+              <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Quantity</div>
+              <div className="text-base font-semibold text-slate-800">
+                {isEditing ? (
+                  <input
+                    ref={inputRef}
+                    type="text"
+                    inputMode="decimal"
+                    value={editQty}
+                    onChange={(e) => setEditQty(toNum(e.target.value))}
+                    onKeyDown={(e) => e.key === "Enter" && save()}
+                    className="w-24 h-8 px-2 border border-slate-300 rounded text-center text-base font-semibold"
+                  />
+                ) : (
+                  holding.qty.toLocaleString()
                 )}
+              </div>
+            </div>
+
+            {/* Price */}
+            <div className="space-y-3">
+              <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Price</div>
+              <div className="text-base font-semibold text-slate-600">
+                {formatCoindepoPrice(holding.priceUSD, selectedCurrency, exchangeRates)}
+                <div className="flex items-center gap-2 mt-1">
+                  <div className={`text-xs italic ${coindepoPriceStatus === 'live' ? 'text-green-600' : 'text-orange-500'}`}>
+                    {coindepoPriceStatus === 'live' ? '✓ live' : '~est.'}
+                  </div>
+                  {coindepoPriceStatus === 'live' && priceChange24h !== undefined && (
+                    <div className={`text-xs font-semibold ${priceChange24h >= 0 ? 'cd-price-change-positive' : 'cd-price-change-negative'}`}>
+                      {priceChange24h >= 0 ? '↑' : '↓'} {Math.abs(priceChange24h).toFixed(2)}%
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
 
-          {/* APR */}
-          <div className="col-span-3 space-y-3">
-            <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">APR</div>
-            <div className="flex items-center gap-3">
-              <span className="cd-apr-box cd-apr-box-green">
-                {getAPRValue(holding.interestRate).toFixed(1)}%
-              </span>
+          {/* Second row: APR and Value */}
+          <div className="flex gap-12" style={{ gap: '50px' }}>
+            {/* APR */}
+            <div className="space-y-3">
+              <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">APR</div>
+              <div className="flex items-center gap-3">
+                <span className="cd-apr-box cd-apr-box-green">
+                  {getAPRValue(holding.interestRate).toFixed(1)}%
+                </span>
+              </div>
             </div>
-          </div>
 
-          {/* Value */}
-          <div className="col-span-3 space-y-3">
-            <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Value</div>
-            <div className="text-base font-semibold cd-value-primary">
-              {formatCoindepoPrice(value, selectedCurrency, exchangeRates)}
+            {/* Value */}
+            <div className="space-y-3">
+              <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Value</div>
+              <div className="text-base font-semibold cd-value-primary">
+                {formatCoindepoPrice(value, selectedCurrency, exchangeRates)}
+              </div>
             </div>
           </div>
         </div>
@@ -620,71 +626,77 @@ const AssetRow: React.FC<{
         </div>
       </div>
 
-      {/* Asset Details Grid */}
+      {/* Asset Details Grid - Two rows with 20px gap between rows, 50px gap between assets */}
       <div className="px-8 pb-8">
-        <div className="grid grid-cols-12 gap-2">
-          {/* Quantity */}
-          <div className="col-span-3 space-y-3">
-            <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Quantity</div>
-            <div className="text-base font-semibold text-slate-800">
-              {isEditing ? (
-                <input
-                  ref={inputRef}
-                  type="text"
-                  inputMode="decimal"
-                  value={editQty}
-                  onChange={(e) => setEditQty(toNum(e.target.value))}
-                  onKeyDown={(e) => e.key === "Enter" && save()}
-                  className="w-24 h-8 px-2 border border-slate-300 rounded text-center text-base font-semibold"
-                />
-              ) : (
-                row.qty.toLocaleString()
-              )}
+        <div className="flex flex-col gap-5" style={{ gap: '20px' }}>
+          {/* First row: Quantity and Price */}
+          <div className="flex gap-12" style={{ gap: '50px' }}>
+            {/* Quantity */}
+            <div className="space-y-3">
+              <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Quantity</div>
+              <div className="text-base font-semibold text-slate-800">
+                {isEditing ? (
+                  <input
+                    ref={inputRef}
+                    type="text"
+                    inputMode="decimal"
+                    value={editQty}
+                    onChange={(e) => setEditQty(toNum(e.target.value))}
+                    onKeyDown={(e) => e.key === "Enter" && save()}
+                    className="w-24 h-8 px-2 border border-slate-300 rounded text-center text-base font-semibold"
+                  />
+                ) : (
+                  row.qty.toLocaleString()
+                )}
+              </div>
             </div>
-          </div>
 
-          {/* Price */}
-          <div className="col-span-3 space-y-3">
-            <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Price</div>
-            <div className="text-base font-semibold text-slate-600">
-              {row.priceUSD ? `$${row.priceUSD.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 4 })}` : "—"}
-              {row.priceUSD && priceChange24h !== null && priceChange24h !== undefined && (
-                <div className="flex items-center gap-2 mt-1">
-                  <div className="text-xs italic text-green-600">✓ live</div>
-                  <div className={`text-xs font-semibold ${priceChange24h >= 0 ? 'cd-price-change-positive' : 'cd-price-change-negative'}`}>
-                    {priceChange24h >= 0 ? '↑' : '↓'} {Math.abs(priceChange24h).toFixed(2)}%
+            {/* Price */}
+            <div className="space-y-3">
+              <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Price</div>
+              <div className="text-base font-semibold text-slate-600">
+                {row.priceUSD ? `$${row.priceUSD.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 4 })}` : "—"}
+                {row.priceUSD && priceChange24h !== null && priceChange24h !== undefined && (
+                  <div className="flex items-center gap-2 mt-1">
+                    <div className="text-xs italic text-green-600">✓ live</div>
+                    <div className={`text-xs font-semibold ${priceChange24h >= 0 ? 'cd-price-change-positive' : 'cd-price-change-negative'}`}>
+                      {priceChange24h >= 0 ? '↑' : '↓'} {Math.abs(priceChange24h).toFixed(2)}%
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           </div>
 
-          {/* APR */}
-          <div className="col-span-3 space-y-3">
-            <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">APR</div>
-            <div className="flex items-center gap-3">
-              <span className={`cd-apr-box ${isLoan ? 'cd-apr-box-red' : 'cd-apr-box-green'}`}>
-                {isLoan 
-                  ? (getAPRValue(row.interestRate) - (depositBonus * 100)).toFixed(1)
-                  : (getAPRValue(row.interestRate) + (depositBonus * 100)).toFixed(1)
-                }%
-              </span>
-              {depositBonus > 0 && (
-                <span className="text-xs font-medium" style={{ color: '#16a34a' }}>
-                  {isLoan ? `-${(depositBonus * 100).toFixed(1)}%` : `+${(depositBonus * 100).toFixed(1)}%`}
+          {/* Second row: APR and Value */}
+          <div className="flex gap-12" style={{ gap: '50px' }}>
+            {/* APR */}
+            <div className="space-y-3">
+              <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">APR</div>
+              <div className="flex items-center gap-3">
+                <span className={`cd-apr-box ${isLoan ? 'cd-apr-box-red' : 'cd-apr-box-green'}`}>
+                  {isLoan 
+                    ? (getAPRValue(row.interestRate) - (depositBonus * 100)).toFixed(1)
+                    : (getAPRValue(row.interestRate) + (depositBonus * 100)).toFixed(1)
+                  }%
                 </span>
-              )}
+                {depositBonus > 0 && (
+                  <span className="text-xs font-medium" style={{ color: '#16a34a' }}>
+                    {isLoan ? `-${(depositBonus * 100).toFixed(1)}%` : `+${(depositBonus * 100).toFixed(1)}%`}
+                  </span>
+                )}
+              </div>
             </div>
-          </div>
 
-          {/* Value */}
-          <div className="col-span-3 space-y-3">
-            <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Value</div>
-            <div 
-              className={`text-base font-semibold ${isLoan ? 'cd-loan-value' : 'cd-value-primary'}`}
-              style={isLoan ? { color: '#dc2626 !important', fontWeight: '600' } : {}}
-            >
-              {isLoan ? `-${formatCurrency(value, selectedCurrency, exchangeRates)}` : formatCurrency(value, selectedCurrency, exchangeRates)}
+            {/* Value */}
+            <div className="space-y-3">
+              <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Value</div>
+              <div 
+                className={`text-base font-semibold ${isLoan ? 'cd-loan-value' : 'cd-value-primary'}`}
+                style={isLoan ? { color: '#dc2626 !important', fontWeight: '600' } : {}}
+              >
+                {isLoan ? `-${formatCurrency(value, selectedCurrency, exchangeRates)}` : formatCurrency(value, selectedCurrency, exchangeRates)}
+              </div>
             </div>
           </div>
         </div>

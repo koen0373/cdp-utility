@@ -1559,7 +1559,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
 
         {/* ======= PORTFOLIO SECTION ======= */}
         <section className="card mb-4 sm:mb-6">
-          <header className="mb-8 sm:mb-12 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <header className="mb-8 sm:mb-12 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4" style={{ paddingBottom: '20px' }}>
             <div className="w-full sm:w-auto">
               <div className="flex items-center justify-between">
                 <h1 className="cd-balance-large text-brand-blue text-2xl">Your Portfolio</h1>
@@ -1998,7 +1998,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
 
           {/* ======= PORTFOLIO TOTALS ======= */}
           {portfolioVisible && (
-            <div className="mt-8 pt-6 border-t border-slate-200">
+            <div className="mt-8 pt-6 border-t border-slate-200" style={{ paddingTop: '20px', paddingBottom: '20px' }}>
             <div className="flex justify-end">
               <div className="text-right space-y-2">
                 <div className="mb-2">
@@ -2037,7 +2037,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
 
         {/* ======= PORTFOLIO ALLOCATION SECTION ======= */}
         <section className="card mb-8 sm:mb-12">
-          <header className="mb-8 sm:mb-12 flex items-center justify-between">
+          <header className="mb-8 sm:mb-12 flex items-center justify-between" style={{ paddingBottom: '20px' }}>
             <h1 className="cd-balance-large text-brand-blue text-2xl">Portfolio Allocation</h1>
             <Toggle
               isOn={cardVisibility.allocation}
@@ -2076,7 +2076,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
 
         {/* ======= INTEREST CONTRIBUTIONS SECTION ======= */}
         <section className="card mb-8 sm:mb-12">
-          <header className="mb-8 sm:mb-12 flex justify-between items-center">
+          <header className="mb-8 sm:mb-12 flex justify-between items-center" style={{ paddingBottom: '20px' }}>
             <h1 className="cd-balance-large text-brand-blue text-2xl">Interest Contributions</h1>
             <Toggle
               isOn={cardVisibility.contributions}
@@ -2186,7 +2186,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                 </div>
 
                         {/* Net Interest Income Total */}
-                        <div className="mt-12 pt-8 border-t border-slate-200">
+                        <div className="mt-12 pt-8 border-t border-slate-200" style={{ paddingTop: '20px', paddingBottom: '20px' }}>
                           <div className="flex justify-end">
                             <div className="text-right">
                               <div className="text-xs text-slate-500 mb-4">Total from all assets</div>
@@ -2215,7 +2215,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
 
         {/* Upcoming Interest Payouts Section */}
         <section className="card mb-8 sm:mb-12">
-          <header className="mb-8 sm:mb-12 flex justify-between items-center">
+          <header className="mb-8 sm:mb-12 flex justify-between items-center" style={{ paddingBottom: '20px' }}>
             <h1 className="cd-balance-large text-brand-blue text-2xl">Upcoming Interest Payouts</h1>
             <Toggle
               isOn={cardVisibility.payouts}
@@ -2354,7 +2354,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
           </div>
 
                 {/* Total Upcoming Interest */}
-                <div className="mt-8 pt-6 border-t border-slate-200">
+                <div className="mt-8 pt-6 border-t border-slate-200" style={{ paddingTop: '20px', paddingBottom: '20px' }}>
                   <div className="flex justify-end">
                     <div className="text-right">
                       <div className="text-xs text-slate-500 mb-4">
@@ -2404,7 +2404,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
         {/* ======= Onderste blokken strak in cards ======= */}
         <div className="flex flex-col sm:flex-row gap-8 sm:gap-12 mt-8 sm:mt-12">
           <section className="card flex-1">
-            <header className="mb-8 sm:mb-12 flex justify-between items-center">
+            <header className="mb-8 sm:mb-12 flex justify-between items-center" style={{ paddingBottom: '20px' }}>
               <h2 className="cd-balance-large text-blue-600 text-2xl">Your Earnings</h2>
               <Toggle
                 isOn={cardVisibility.earnings}
@@ -2528,7 +2528,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
               )}
             </div>
 
-            <div className="pt-4 border-t border-slate-200 space-y-2">
+            <div className="pt-4 border-t border-slate-200 space-y-2" style={{ paddingTop: '20px', paddingBottom: '20px' }}>
               <div className="flex justify-between items-center">
                 <span className="text-base font-semibold text-blue-600">Total passive income per year:</span>
                 <span className="text-base font-semibold text-blue-600">{fmtUSD(otherValueUSD * 0.24 + utilityUSD - loanInterestUSD)}</span>
@@ -2550,7 +2550,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
           </section>
 
           <section className="card flex-1">
-            <header className="mb-8 sm:mb-12 flex justify-between items-center">
+            <header className="mb-8 sm:mb-12 flex justify-between items-center" style={{ paddingBottom: '20px' }}>
               <h2 className="cd-balance-large text-blue-600 text-2xl">COINDEPO Holdings Advantages</h2>
               <Toggle
                 isOn={cardVisibility.advantages}
@@ -2607,7 +2607,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                 })}
                 
                 {/* Exchange Links */}
-                <div className="mt-8 pt-6 border-t border-slate-200">
+                <div className="mt-8 pt-6 border-t border-slate-200" style={{ paddingTop: '20px', paddingBottom: '20px' }}>
                   <div className="text-slate-600 mb-4">
                     Get your extra tokens at:
                   </div>
@@ -2652,7 +2652,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
 
         {/* Support Section */}
         <section className="card mt-12">
-          <header className="mb-8 sm:mb-12 flex justify-between items-center">
+          <header className="mb-8 sm:mb-12 flex justify-between items-center" style={{ paddingBottom: '20px' }}>
             <h2 className="cd-balance-large text-brand-blue text-2xl">Support</h2>
             <Toggle
               isOn={cardVisibility.support}
@@ -2702,7 +2702,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
               </div>
             </div>
             
-            <div className="border-t border-slate-200 pt-6 sm:pt-8">
+            <div className="border-t border-slate-200 pt-6 sm:pt-8" style={{ paddingTop: '20px', paddingBottom: '20px' }}>
               <p className="font-semibold text-slate-800 mb-3 text-sm sm:text-base">NOT A COINDEPO MEMBER?</p>
               <p className="text-slate-600 mb-3 text-sm sm:text-base">Use my partnerlink to open a free account:</p>
               <a 
@@ -2715,7 +2715,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
               </a>
             </div>
             
-            <div className="border-t border-slate-200 pt-6 sm:pt-8">
+            <div className="border-t border-slate-200 pt-6 sm:pt-8" style={{ paddingTop: '20px', paddingBottom: '20px' }}>
               <p className="mb-3 text-sm sm:text-base">
                 <span className="font-semibold text-slate-800">COINDEPO COMMUNITY LINK</span> @coindepo_community
               </p>

@@ -1486,7 +1486,8 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
             <img 
               src={COINDEPO_FULL_LOGO} 
               alt="COINDEPO Portfolio Manager" 
-              className="h-16 sm:h-20 w-auto"
+              className="h-10 sm:h-12 w-auto max-w-full"
+              style={{ maxHeight: '48px' }}
             />
             <div className="flex gap-2 sm:absolute sm:right-0">
               <button

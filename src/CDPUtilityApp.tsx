@@ -372,6 +372,29 @@ async function fetchSinglePrice(id: string): Promise<{ price: number | null; pri
 
 /* -------------------- LocalStorage -------------------- */
 
+/* ==================== Toggle Component ==================== */
+const Toggle: React.FC<{
+  isOn: boolean;
+  onToggle: () => void;
+}> = ({ isOn, onToggle }) => {
+  return (
+    <button
+      onClick={onToggle}
+      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+        isOn ? 'bg-blue-600' : 'bg-slate-300'
+      }`}
+      role="switch"
+      aria-checked={isOn}
+    >
+      <span
+        className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+          isOn ? 'translate-x-6' : 'translate-x-1'
+        }`}
+      />
+    </button>
+  );
+};
+
 /* ==================== CoindepoRow Component ==================== */
 const CoindepoRow: React.FC<{
   holding: Row;
@@ -874,6 +897,9 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
   // Price changes for existing assets and loans
   const [assetPriceChanges, setAssetPriceChanges] = useState<Record<string, number | null>>({});
   const [loanPriceChanges, setLoanPriceChanges] = useState<Record<string, number | null>>({});
+
+  // Portfolio section visibility toggle
+  const [portfolioVisible, setPortfolioVisible] = useState(true);
 
   // INIT - Hybrid storage loading with IndexedDB and localStorage fallback
   useEffect(() => {
@@ -1580,7 +1606,13 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
         <section className="card mb-4 sm:mb-6">
           <header className="mb-4 sm:mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div className="w-full sm:w-auto">
-              <h1 className="cd-balance-large text-brand-blue text-2xl">Your Portfolio</h1>
+              <div className="flex items-center justify-between">
+                <h1 className="cd-balance-large text-brand-blue text-2xl">Your Portfolio</h1>
+                <Toggle
+                  isOn={portfolioVisible}
+                  onToggle={() => setPortfolioVisible(!portfolioVisible)}
+                />
+              </div>
               {isTierProgramActive && depositBonus > 0 && (
                 <div className="mt-2">
                   <span className="inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs font-semibold bg-green-100 cd-tier-badge">
@@ -1671,7 +1703,8 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
           )}
 
           {/* Add Asset Input Row - With Better Padding */}
-          <div className="mt-12 sm:mt-16 p-6 sm:p-0">
+          {portfolioVisible && (
+            <div className="mt-12 sm:mt-16 p-6 sm:p-0">
             <div className="flex flex-col sm:flex-row items-end justify-between gap-6">
               {/* Left side - Input fields */}
               <div className="flex flex-col sm:flex-row items-end gap-6 w-full sm:w-auto">
@@ -1752,12 +1785,14 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
             </div>
               )}
             </div>
-          </div>
+            </div>
+          )}
 
           {/* ======= YOUR COINDEPO HOLDINGS SECTION ======= */}
-          <div className="mt-6 sm:mt-8 pt-4 sm:pt-6">
-            <div className="mb-4 sm:mb-6">
-              <h2 className="cd-label text-lg">YOUR COINDEPO HOLDINGS</h2>
+          {portfolioVisible && (
+            <div className="mt-6 sm:mt-8 pt-4 sm:pt-6">
+              <div className="mb-4 sm:mb-6">
+                <h2 className="cd-label text-lg">YOUR COINDEPO HOLDINGS</h2>
               <p className={`text-xs italic mt-1 ${coindepoPriceStatus === 'live' ? 'text-green-600' : 'text-orange-600'}`}>
                 {coindepoPriceStatus === 'live' 
                   ? '✓ Live prices from CoinGecko' 
@@ -1885,11 +1920,13 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                 )}
               </div>
             </div>
-          </div>
+            </div>
+          )}
 
           {/* ======= YOUR LOANS SECTION ======= */}
-          <div className="mt-6 sm:mt-8 pt-4 sm:pt-6">
-            <h2 className="cd-label text-lg mb-4 sm:mb-6">YOUR LOANS</h2>
+          {portfolioVisible && (
+            <div className="mt-6 sm:mt-8 pt-4 sm:pt-6">
+              <h2 className="cd-label text-lg mb-4 sm:mb-6">YOUR LOANS</h2>
 
             {/* Loans List Header */}
             {loans.length > 0 && (
@@ -2002,9 +2039,11 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                     </div>
                   </div>
                 </div>
+            )}
 
           {/* ======= PORTFOLIO TOTALS ======= */}
-          <div className="mt-8 pt-6 border-t border-slate-200">
+          {portfolioVisible && (
+            <div className="mt-8 pt-6 border-t border-slate-200">
             <div className="flex justify-end">
               <div className="text-right space-y-2">
                 <div className="mb-2">
@@ -2037,7 +2076,8 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                 </div>
               </div>
             </div>
-          </div>
+            </div>
+          )}
         </section>
 
         {/* ======= PORTFOLIO ALLOCATION SECTION ======= */}

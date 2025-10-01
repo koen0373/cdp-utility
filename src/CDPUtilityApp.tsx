@@ -1530,24 +1530,26 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
     <div className="bg-brand-gray min-h-screen">
       <div className="max-w-6xl mx-auto px-3 sm:px-4 md:px-8 py-4 sm:py-6 md:py-8">
         {/* Header Section */}
-        <div className="text-center mb-6 sm:mb-8">
-          <div className="flex flex-col sm:flex-row items-center justify-center mb-4 gap-3 sm:gap-0 relative">
+        <div className="text-center mb-6 sm:mb-8 relative">
+          {/* Top Right Buttons */}
+          <div className="absolute top-0 right-0 flex gap-2" style={{ paddingTop: '10px', paddingRight: '10px' }}>
+            <button
+              onClick={handleResetPortfolio}
+              className="btn-primary px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-red-600"
+              title="Reset entire portfolio"
+            >
+              Reset Portfolio
+            </button>
+            {!guestMode && <LogoutButton />}
+          </div>
+          
+          <div className="flex flex-col items-center justify-center mb-4">
             <img 
               src={COINDEPO_FULL_LOGO} 
               alt="COINDEPO Portfolio Manager" 
               className="h-20 sm:h-24 w-auto max-w-full"
               style={{ maxHeight: '96px' }}
             />
-            <div className="flex gap-2 sm:absolute sm:right-0">
-              <button
-                onClick={handleResetPortfolio}
-                className="btn-primary px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-red-600"
-                title="Reset entire portfolio"
-              >
-                Reset Portfolio
-              </button>
-              {!guestMode && <LogoutButton />}
-            </div>
           </div>
           
           <p className="text-base text-slate-600 mb-4 max-w-3xl mx-auto px-4">

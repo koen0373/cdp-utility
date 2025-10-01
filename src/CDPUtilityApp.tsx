@@ -423,9 +423,9 @@ const CoindepoRow: React.FC<{
 
       {/* COINDEPO Details Grid */}
       <div className="px-8 pb-8">
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-8">
+        <div className="grid grid-cols-12 gap-2">
           {/* Quantity */}
-          <div className="space-y-3">
+          <div className="col-span-3 space-y-3">
             <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Quantity</div>
             <div className="text-base font-semibold text-slate-800">
               {isEditing ? (
@@ -445,7 +445,7 @@ const CoindepoRow: React.FC<{
           </div>
 
           {/* Price */}
-          <div className="space-y-3">
+          <div className="col-span-3 space-y-3">
             <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Price</div>
             <div className="text-base font-semibold text-slate-600">
               {formatCoindepoPrice(holding.priceUSD, selectedCurrency, exchangeRates)}
@@ -463,7 +463,7 @@ const CoindepoRow: React.FC<{
           </div>
 
           {/* APR */}
-          <div className="space-y-3">
+          <div className="col-span-3 space-y-3">
             <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">APR</div>
             <div className="flex items-center gap-3">
               <span 
@@ -483,7 +483,7 @@ const CoindepoRow: React.FC<{
           </div>
 
           {/* Value */}
-          <div className="space-y-3">
+          <div className="col-span-3 space-y-3">
             <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Value</div>
             <div className="text-base font-semibold cd-value-primary">
               {formatCoindepoPrice(value, selectedCurrency, exchangeRates)}
@@ -600,9 +600,9 @@ const AssetRow: React.FC<{
 
       {/* Asset Details Grid */}
       <div className="px-8 pb-8">
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-8">
+        <div className="grid grid-cols-12 gap-2">
           {/* Quantity */}
-          <div className="space-y-3">
+          <div className="col-span-3 space-y-3">
             <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Quantity</div>
             <div className="text-base font-semibold text-slate-800">
               {isEditing ? (
@@ -622,7 +622,7 @@ const AssetRow: React.FC<{
           </div>
 
           {/* Price */}
-          <div className="space-y-3">
+          <div className="col-span-3 space-y-3">
             <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Price</div>
             <div className="text-base font-semibold text-slate-600">
               {row.priceUSD ? `$${row.priceUSD.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 4 })}` : "—"}
@@ -638,7 +638,7 @@ const AssetRow: React.FC<{
           </div>
 
           {/* APR */}
-          <div className="space-y-3">
+          <div className="col-span-3 space-y-3">
             <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">APR</div>
             <div className="flex items-center gap-3">
               <span 
@@ -666,7 +666,7 @@ const AssetRow: React.FC<{
           </div>
 
           {/* Value */}
-          <div className="space-y-3">
+          <div className="col-span-3 space-y-3">
             <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Value</div>
             <div 
               className={`text-base font-semibold ${isLoan ? 'cd-loan-value' : 'cd-value-primary'}`}
@@ -2123,10 +2123,8 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                   <>
                     {/* Interest List Header */}
             <div className="grid grid-cols-12 gap-2 px-2 pb-2 text-xs uppercase tracking-wide text-slate-400">
-                      <div className="col-span-3"></div>
-                      <div className="col-span-2"></div>
-                      <div className="col-span-6 text-right">ANNUAL INTEREST</div>
-                      <div className="col-span-1"></div>
+                      <div className="col-span-8"></div>
+                      <div className="col-span-4 text-right">ANNUAL INTEREST</div>
             </div>
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
@@ -2134,7 +2132,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                         return (
                           <div key={`interest-${i}`} className="py-5">
               <div className="grid grid-cols-12 gap-2 items-center">
-                              <div className="col-span-5 flex items-center" style={{ gap: '20px' }}>
+                              <div className="col-span-8 flex items-center" style={{ gap: '20px' }}>
                                 <TokenIcon asset={holding.asset} />
                                 <div>
                                   <div className="cd-asset-name text-lg font-bold">
@@ -2145,16 +2143,15 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                                   </div>
                                 </div>
                               </div>
-                              <div className="col-span-6 text-right cd-value-primary">
+                              <div className="col-span-4 text-right cd-value-primary">
                                 <div>{formatCurrency(holding.annualInterest)}/year</div>
                                 <div className="text-xs text-slate-500 mt-1">
                                   {holding.apr.toFixed(1)}% APR{depositBonus > 0 ? (
                                     <span className="cd-tier-bonus"> + {(depositBonus * 100).toFixed(1)}% tier</span>
                                   ) : ''} • Compounded
                                 </div>
-                    </div>
-                              <div className="col-span-1"></div>
-                  </div>
+                              </div>
+                            </div>
                 </div>
               );
             })}
@@ -2168,7 +2165,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                         return (
                           <div key={`loan-interest-${i}`} className="py-5">
                             <div className="grid grid-cols-12 gap-2 items-center">
-                              <div className="col-span-5 flex items-center" style={{ gap: '20px' }}>
+                              <div className="col-span-8 flex items-center" style={{ gap: '20px' }}>
                                 <TokenIcon asset={loan.asset} />
                                 <div>
                                   <div className="cd-asset-name text-red-600 text-lg font-bold">
@@ -2179,7 +2176,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                                   </div>
                                 </div>
                               </div>
-                              <div className="col-span-6 text-right cd-loan-value" style={{color: '#dc2626 !important'}}>
+                              <div className="col-span-4 text-right cd-loan-value" style={{color: '#dc2626 !important'}}>
                                 <div>-{formatCurrency(annualInterest)}/year</div>
                                 <div className="text-xs text-slate-500 mt-1">
                                   {getAPRValue(loan.interestRate).toFixed(1)}% APR{loanBonus > 0 ? (
@@ -2187,7 +2184,6 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                                   ) : ''} • Compounded
                                 </div>
                               </div>
-                              <div className="col-span-1"></div>
                             </div>
                           </div>
                         );

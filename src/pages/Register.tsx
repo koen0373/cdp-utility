@@ -29,13 +29,22 @@ export const Register: React.FC = () => {
 
     setLoading(true);
 
-    const { error } = await signUp(email, password);
-    
-    if (error) {
-      setError(error.message);
-      setLoading(false);
-    } else {
-      setSuccess(true);
+    try {
+      console.log('🔄 Attempting to sign up...');
+      const { error } = await signUp(email, password);
+      
+      if (error) {
+        console.error('❌ Sign up error:', error);
+        setError(`${error.message} (${error.status || 'unknown'})`);
+        setLoading(false);
+      } else {
+        console.log('✅ Sign up successful!');
+        setSuccess(true);
+        setLoading(false);
+      }
+    } catch (err) {
+      console.error('❌ Unexpected error during sign up:', err);
+      setError(`Unexpected error: ${err instanceof Error ? err.message : 'Unknown error'}`);
       setLoading(false);
     }
   };

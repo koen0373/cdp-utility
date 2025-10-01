@@ -1,28 +1,28 @@
 import { createClient } from '@supabase/supabase-js';
 
-// Supabase credentials - these will be provided after project setup
+// Supabase credentials
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-// Validate environment variables
+// Validate and log environment variables
+console.log('🔧 Supabase Configuration:');
+console.log('URL:', supabaseUrl ? '✓ Set' : '✗ Missing');
+console.log('Key:', supabaseAnonKey ? `✓ Set (${supabaseAnonKey.substring(0, 20)}...)` : '✗ Missing');
+
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.error('Missing Supabase environment variables!');
-  console.error('VITE_SUPABASE_URL:', supabaseUrl ? '✓ Set' : '✗ Missing');
-  console.error('VITE_SUPABASE_ANON_KEY:', supabaseAnonKey ? '✓ Set' : '✗ Missing');
-  console.error('Please check your .env file and restart the dev server.');
+  console.error('❌ Missing Supabase environment variables!');
+  throw new Error('Supabase environment variables are not configured');
 }
 
-export const supabase = createClient(
-  supabaseUrl || 'https://placeholder.supabase.co',
-  supabaseAnonKey || 'placeholder-key',
-  {
-    auth: {
-      persistSession: true,
-      autoRefreshToken: true,
-      detectSessionInUrl: true
-    }
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    persistSession: true,
+    autoRefreshToken: true,
+    detectSessionInUrl: true
   }
-);
+});
+
+console.log('✅ Supabase client initialized successfully');
 
 // Database types for type safety
 export interface Portfolio {

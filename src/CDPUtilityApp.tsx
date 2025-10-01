@@ -2316,9 +2316,9 @@ export default function CDPUtilityApp() {
                 )}
                 
                 <div className="flex justify-between items-center">
-                  <span className="cd-token-payout-bonus">Token payout bonus:</span>
+                  <span className="text-slate-700">Token payout bonus:</span>
                   <div className="flex items-center gap-2">
-                    <span className="font-semibold cd-token-payout-bonus">+{(currentTier.tokenPayout * 100).toFixed(0)}%</span>
+                    <span className="font-semibold text-slate-700">+{(currentTier.tokenPayout * 100).toFixed(0)}%</span>
                     <div className="flex items-center gap-1">
                   <input
                         type="checkbox"

@@ -105,14 +105,7 @@ h1, h2, h3, h4, h5, h6 {
   color: #16a34a !important;
 }
 
-/* Force green color for token payout bonus */
-.cd-token-payout-bonus {
-  color: #16a34a !important;
-}
-
-.cd-token-payout-amount {
-  color: #16a34a !important;
-}
+/* Removed - no longer needed, using Tailwind classes directly */
 
 /* Force black color for all titles except main COINDEPO Portfolio Manager */
 .cd-balance-medium,

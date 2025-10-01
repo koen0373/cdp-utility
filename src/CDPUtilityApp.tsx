@@ -1597,7 +1597,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
         </div>
 
         {/* ======= PORTFOLIO SECTION ======= */}
-        <section className="card mb-4 sm:mb-6">
+        <section className="cd-card mb-4 sm:mb-6">
           <header className="mb-8 sm:mb-12 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4" style={{ paddingBottom: '20px' }}>
             <div className="w-full sm:w-auto">
               <div className="flex items-center justify-between">
@@ -2075,7 +2075,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
         </section>
 
         {/* ======= PORTFOLIO ALLOCATION SECTION ======= */}
-        <section className="card mb-8 sm:mb-12">
+        <section className="cd-card mb-8 sm:mb-12">
           <header className="mb-8 sm:mb-12 flex items-center justify-between" style={{ paddingBottom: '20px' }}>
             <h1 className="cd-balance-large text-brand-blue text-2xl">Portfolio Allocation</h1>
             <Toggle
@@ -2114,7 +2114,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
         </section>
 
         {/* ======= INTEREST CONTRIBUTIONS SECTION ======= */}
-        <section className="card mb-8 sm:mb-12">
+        <section className="cd-card mb-8 sm:mb-12">
           <header className="mb-8 sm:mb-12 flex justify-between items-center" style={{ paddingBottom: '20px' }}>
             <h1 className="cd-balance-large text-brand-blue text-2xl">Interest Contributions</h1>
             <Toggle
@@ -2249,7 +2249,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
         </section>
 
         {/* Upcoming Interest Payouts Section */}
-        <section className="card mb-8 sm:mb-12">
+        <section className="cd-card mb-8 sm:mb-12">
           <header className="mb-8 sm:mb-12 flex justify-between items-center" style={{ paddingBottom: '20px' }}>
             <h1 className="cd-balance-large text-brand-blue text-2xl">Upcoming Interest Payouts</h1>
             <Toggle
@@ -2438,7 +2438,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
 
         {/* ======= Onderste blokken strak in cards ======= */}
         <div className="flex flex-col sm:flex-row gap-8 sm:gap-12 mt-8 sm:mt-12">
-          <section className="card flex-1">
+          <section className="cd-card flex-1">
             <header className="mb-8 sm:mb-12 flex justify-between items-center" style={{ paddingBottom: '20px' }}>
               <h2 className="cd-balance-large text-blue-600 text-2xl">Your Earnings</h2>
               <Toggle
@@ -2586,7 +2586,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
             )}
           </section>
 
-          <section className="card flex-1">
+          <section className="cd-card flex-1">
             <header className="mb-8 sm:mb-12 flex justify-between items-center" style={{ paddingBottom: '20px' }}>
               <h2 className="cd-balance-large text-blue-600 text-2xl">COINDEPO Holdings Advantages</h2>
               <Toggle
@@ -2688,7 +2688,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
 
 
         {/* Support Section */}
-        <section className="card mt-12">
+        <section className="cd-card mt-12">
           <header className="mb-8 sm:mb-12 flex justify-between items-center" style={{ paddingBottom: '20px' }}>
             <h2 className="cd-balance-large text-brand-blue text-2xl">Support</h2>
             <Toggle

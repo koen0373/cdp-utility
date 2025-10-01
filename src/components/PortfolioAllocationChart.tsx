@@ -68,14 +68,7 @@ export const PortfolioAllocationChart: React.FC<PortfolioAllocationChartProps> =
     maintainAspectRatio: true,
     plugins: {
       legend: {
-        position: 'bottom' as const,
-        labels: {
-          padding: 15,
-          font: {
-            size: 12,
-            family: "'Poppins', sans-serif"
-          }
-        }
+        display: false, // Hide chart legend since we'll show it separately
       },
       tooltip: {
         callbacks: {
@@ -91,40 +84,56 @@ export const PortfolioAllocationChart: React.FC<PortfolioAllocationChartProps> =
   };
 
   return (
-    <div className="space-y-6">
-      {/* Chart */}
-      <div className="max-w-xs mx-auto">
-        <Pie data={data} options={options} />
+    <div className="flex flex-col lg:flex-row gap-8 items-center">
+      {/* Legend and Percentages - Left Side */}
+      <div className="flex-1 w-full lg:w-auto">
+        <div className="space-y-3">
+          {allHoldings.map((holding, index) => {
+            const percent = total > 0 ? ((holding.value / total) * 100).toFixed(1) : '0';
+            const isLoan = holding.name === 'Loans (Debt)';
+            const isCoindepo = holding.name === 'COINDEPO';
+            
+            // Get color for this holding
+            let color = ASSET_COLORS[index % ASSET_COLORS.length].bg;
+            if (isCoindepo) color = 'rgba(37, 99, 235, 0.8)';
+            if (isLoan) color = 'rgba(220, 38, 38, 0.8)';
+            
+            return (
+              <div 
+                key={holding.name} 
+                className="flex items-center gap-3 p-3 rounded-lg bg-slate-50"
+              >
+                {/* Color indicator */}
+                <div 
+                  className="w-4 h-4 rounded-full flex-shrink-0"
+                  style={{ backgroundColor: color }}
+                ></div>
+                
+                {/* Asset info */}
+                <div className="flex-1 min-w-0">
+                  <div className="text-sm font-medium text-slate-700 truncate">{holding.name}</div>
+                  <div className="text-xs text-slate-500">{formatCurrency(holding.value)}</div>
+                </div>
+                
+                {/* Percentage */}
+                <div className={`text-lg font-bold ${
+                  isLoan ? 'text-red-600' : 
+                  isCoindepo ? 'text-blue-600' : 
+                  'text-slate-700'
+                }`}>
+                  {percent}%
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
 
-      {/* Summary Stats - Show all holdings */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-center">
-        {allHoldings.map((holding) => {
-          const percent = total > 0 ? ((holding.value / total) * 100).toFixed(1) : '0';
-          const isLoan = holding.name === 'Loans (Debt)';
-          const isCoindepo = holding.name === 'COINDEPO';
-          
-          return (
-            <div 
-              key={holding.name} 
-              className={`rounded-lg p-3 ${
-                isLoan ? 'bg-red-50' : 
-                isCoindepo ? 'bg-blue-50' : 
-                'bg-slate-50'
-              }`}
-            >
-              <div className="text-xs text-slate-600 mb-1 truncate">{holding.name}</div>
-              <div className={`text-base font-bold ${
-                isLoan ? 'text-red-600' : 
-                isCoindepo ? 'text-blue-600' : 
-                'text-slate-700'
-              }`}>
-                {percent}%
-              </div>
-              <div className="text-xs text-slate-500">{formatCurrency(holding.value)}</div>
-            </div>
-          );
-        })}
+      {/* Pie Chart - Right Side */}
+      <div className="flex-shrink-0">
+        <div className="w-64 h-64">
+          <Pie data={data} options={options} />
+        </div>
       </div>
     </div>
   );

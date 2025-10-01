@@ -1528,11 +1528,21 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
 
   return (
     <div className="bg-brand-gray min-h-screen relative">
-      {/* Top Right Buttons - Fixed to page */}
-      <div className="fixed top-0 right-0 z-50 flex gap-2 bg-white/90 backdrop-blur-sm rounded-bl-lg shadow-lg" style={{ paddingTop: '10px', paddingRight: '10px', paddingBottom: '10px', paddingLeft: '10px' }}>
+      {/* Top Right Buttons - Fixed to viewport */}
+      <div 
+        className="fixed top-0 right-0 z-50 flex gap-2 bg-white shadow-lg border border-gray-200" 
+        style={{ 
+          position: 'fixed',
+          top: '10px',
+          right: '10px',
+          zIndex: 9999,
+          padding: '8px',
+          borderRadius: '8px'
+        }}
+      >
         <button
           onClick={handleResetPortfolio}
-          className="bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 px-3 py-2 text-xs sm:text-sm font-medium rounded-md transition-colors"
+          className="bg-red-500 hover:bg-red-600 text-white px-3 py-2 text-xs sm:text-sm font-medium rounded transition-colors"
           title="Reset entire portfolio"
         >
           Reset Portfolio
@@ -1548,7 +1558,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                 window.location.reload();
               }
             }}
-            className="bg-blue-50 hover:bg-blue-100 text-blue-600 border border-blue-200 px-3 py-2 text-xs sm:text-sm font-medium rounded-md transition-colors"
+            className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 text-xs sm:text-sm font-medium rounded transition-colors"
             title="Logout"
           >
             Logout

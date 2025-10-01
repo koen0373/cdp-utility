@@ -47,6 +47,21 @@ function formatCurrency(value: number, selectedCurrency: string, exchangeRates: 
   }
 }
 
+// COINDEPO-specific formatter with 3 decimal places
+function formatCoindepoPrice(value: number, selectedCurrency: string, exchangeRates: Record<string, number>) {
+  const currency = CURRENCIES.find(c => c.code === selectedCurrency);
+  const convertedValue = value * (exchangeRates[selectedCurrency] || 1);
+  
+  if (selectedCurrency === 'JPY') {
+    return `${currency?.symbol}${Math.round(convertedValue).toLocaleString()}`;
+  } else {
+    return `${currency?.symbol}${convertedValue.toLocaleString(undefined, { 
+      minimumFractionDigits: 3, 
+      maximumFractionDigits: 3 
+    })}`;
+  }
+}
+
 /* -------------------- APR Helper Functions -------------------- */
 function isStablecoin(symbol: string): boolean {
   const stablecoins = ['USDT', 'USDT-ERC20', 'USDT-TRC20', 'USDT-BEP20', 'USDC', 'DAI', 'BUSD', 'TUSD', 'USDP', 'GUSD', 'USDD'];
@@ -433,7 +448,7 @@ const CoindepoRow: React.FC<{
           <div className="space-y-3">
             <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Price</div>
             <div className="text-base font-semibold text-slate-600">
-              {formatCurrency(holding.priceUSD, selectedCurrency, exchangeRates)}
+              {formatCoindepoPrice(holding.priceUSD, selectedCurrency, exchangeRates)}
               <div className="flex items-center gap-2 mt-1">
                 <div className={`text-xs italic ${coindepoPriceStatus === 'live' ? 'text-green-600' : 'text-orange-500'}`}>
                   {coindepoPriceStatus === 'live' ? '✓ live' : '~est.'}
@@ -471,7 +486,7 @@ const CoindepoRow: React.FC<{
           <div className="space-y-3">
             <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Value</div>
             <div className="text-base font-semibold cd-value-primary">
-              {formatCurrency(value, selectedCurrency, exchangeRates)}
+              {formatCoindepoPrice(value, selectedCurrency, exchangeRates)}
             </div>
           </div>
         </div>

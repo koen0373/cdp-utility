@@ -2461,7 +2461,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
         <div className="flex flex-col sm:flex-row gap-8 sm:gap-12 mt-8 sm:mt-12">
           <section className="card flex-1">
             <header className="mb-8 sm:mb-12 flex justify-between items-center">
-              <h2 className="cd-balance-medium text-blue-600 text-2xl">Your Earnings</h2>
+              <h2 className="cd-balance-large text-blue-600 text-2xl">Your Earnings</h2>
               <Toggle
                 isOn={cardVisibility.earnings}
                 onToggle={() => setCardVisibility(prev => ({ ...prev, earnings: !prev.earnings }))}
@@ -2607,7 +2607,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
 
           <section className="card flex-1">
             <header className="mb-8 sm:mb-12 flex justify-between items-center">
-              <h2 className="cd-balance-medium text-blue-600 text-2xl">COINDEPO Holdings Advantages</h2>
+              <h2 className="cd-balance-large text-blue-600 text-2xl">COINDEPO Holdings Advantages</h2>
               <Toggle
                 isOn={cardVisibility.advantages}
                 onToggle={() => setCardVisibility(prev => ({ ...prev, advantages: !prev.advantages }))}
@@ -2709,7 +2709,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
         {/* Support Section */}
         <section className="card mt-12">
           <header className="mb-8 sm:mb-12 flex justify-between items-center">
-            <h2 className="cd-balance-medium text-brand-blue text-2xl">Support</h2>
+            <h2 className="cd-balance-large text-brand-blue text-2xl">Support</h2>
             <Toggle
               isOn={cardVisibility.support}
               onToggle={() => setCardVisibility(prev => ({ ...prev, support: !prev.support }))}

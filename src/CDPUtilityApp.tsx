@@ -1699,84 +1699,88 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
           {/* Add Asset Input Row - With Better Padding */}
           {portfolioVisible && (
             <div className="mt-12 sm:mt-16 p-6 sm:p-0">
-            <div className="flex flex-col sm:flex-row items-end justify-between gap-6">
-              {/* Left side - Input fields */}
-              <div className="flex flex-col sm:flex-row items-end gap-6 w-full sm:w-auto">
-                {/* Asset Selection - Always Visible */}
-                <div style={{ width: '256px' }}>
-              <select
-                    className="w-full h-10 px-3 border border-slate-300 rounded-lg bg-white text-slate-700 text-sm"
-                value={addAssetSymbol}
-                onChange={(e) => setAddAssetSymbol(e.target.value)}
-              >
-                    <option value="">Add asset...</option>
-                {selectableAssets.map((a) => (
-                  <option key={a.symbol} value={a.symbol}>
-                    {a.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-                
-                {/* QTY Input - Only show after asset selection */}
-                {addAssetSymbol && (
-                  <div className="w-full sm:w-20">
-                    <label className="block text-xs font-medium text-slate-600 mb-1">QTY</label>
-              <input
-                      type="number"
-                placeholder="Qty"
-                value={addQty || ""}
-                onChange={(e) => setAddQty(toNum(e.target.value))}
-                      className="w-full h-10 px-3 border border-slate-300 rounded-lg text-right text-sm"
-              />
-            </div>
-                )}
-                
-                {/* APR Selection - Only show after asset selection */}
-                {addAssetSymbol && (
-                  <div className="w-full sm:w-44">
-                    <label className="block text-xs font-medium text-slate-600 mb-1">Interest Account Type</label>
+            <div className="flex flex-col gap-6">
+              {/* Input fields in two rows with 20px padding */}
+              <div className="flex flex-col gap-5" style={{ padding: '20px' }}>
+                {/* First row: Asset Selection and QTY */}
+                <div className="flex flex-col sm:flex-row items-end gap-6">
+                  {/* Asset Selection - Always Visible */}
+                  <div style={{ width: '256px' }}>
                     <select
                       className="w-full h-10 px-3 border border-slate-300 rounded-lg bg-white text-slate-700 text-sm"
-                      value={addAssetInterestRate}
-                      onChange={(e) => setAddAssetInterestRate(e.target.value)}
+                      value={addAssetSymbol}
+                      onChange={(e) => setAddAssetSymbol(e.target.value)}
                     >
-                      <option value="">Select APR...</option>
-                      {getAPROptions(addAssetSymbol).map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.label}
+                      <option value="">Add asset...</option>
+                      {selectableAssets.map((a) => (
+                        <option key={a.symbol} value={a.symbol}>
+                          {a.name}
                         </option>
                       ))}
                     </select>
                   </div>
-                )}
+                  
+                  {/* QTY Input - Only show after asset selection */}
+                  {addAssetSymbol && (
+                    <div className="w-full sm:w-20">
+                      <label className="block text-xs font-medium text-slate-600 mb-1">QTY</label>
+                      <input
+                        type="number"
+                        placeholder="Qty"
+                        value={addQty || ""}
+                        onChange={(e) => setAddQty(toNum(e.target.value))}
+                        className="w-full h-10 px-3 border border-slate-300 rounded-lg text-right text-sm"
+                      />
+                    </div>
+                  )}
+                </div>
                 
-                {/* Interest Payout Date - Only show after asset selection */}
+                {/* Second row: APR Selection and Interest Payout Date */}
                 {addAssetSymbol && (
-                  <div className="w-full sm:w-36">
-                    <label className="block text-xs font-medium text-slate-600 mb-1">Interest Payout Date</label>
-                    <input
-                      type="date"
-                      placeholder="Payout Date"
-                      value={addAssetPayoutDate}
-                      onChange={(e) => setAddAssetPayoutDate(e.target.value)}
-                      className="w-full h-10 px-3 border border-slate-300 rounded-lg text-sm"
-                    />
+                  <div className="flex flex-col sm:flex-row items-end gap-6">
+                    {/* APR Selection */}
+                    <div className="w-full sm:w-44">
+                      <label className="block text-xs font-medium text-slate-600 mb-1">Interest Account Type</label>
+                      <select
+                        className="w-full h-10 px-3 border border-slate-300 rounded-lg bg-white text-slate-700 text-sm"
+                        value={addAssetInterestRate}
+                        onChange={(e) => setAddAssetInterestRate(e.target.value)}
+                      >
+                        <option value="">Select APR...</option>
+                        {getAPROptions(addAssetSymbol).map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    
+                    {/* Interest Payout Date */}
+                    <div className="w-full sm:w-36">
+                      <label className="block text-xs font-medium text-slate-600 mb-1">Interest Payout Date</label>
+                      <input
+                        type="date"
+                        placeholder="Payout Date"
+                        value={addAssetPayoutDate}
+                        onChange={(e) => setAddAssetPayoutDate(e.target.value)}
+                        className="w-full h-10 px-3 border border-slate-300 rounded-lg text-sm"
+                      />
+                    </div>
                   </div>
                 )}
               </div>
               
-              {/* Right side - ADD Button */}
+              {/* ADD Button */}
               {addAssetSymbol && (
-                <div className="w-full sm:w-auto sm:ml-8">
-              <button
-                      className="btn-accent px-4 py-2 text-sm font-medium w-full sm:w-auto"
-                onClick={handleAddHolding}
-                      disabled={!addAssetSymbol || addQty <= 0 || !addAssetInterestRate}
-              >
-                ADD
-              </button>
-            </div>
+                <div className="flex justify-end" style={{ padding: '0 20px' }}>
+                  <button
+                    className="btn-accent px-4 py-2 text-sm font-medium"
+                    onClick={handleAddHolding}
+                    disabled={!addAssetSymbol || addQty <= 0 || !addAssetInterestRate}
+                  >
+                    ADD
+                  </button>
+                </div>
               )}
           </div>
             </div>

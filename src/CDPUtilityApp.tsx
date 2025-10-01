@@ -390,7 +390,7 @@ const CoindepoRow: React.FC<{
         <div className="flex items-center" style={{ gap: '20px' }}>
           <TokenIcon asset={coindepoAsset} />
           <div>
-            <div className="cd-asset-name text-lg font-bold">COINDEPO Token</div>
+            <div className="cd-asset-name text-lg font-bold">COINDEPO</div>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -1819,7 +1819,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                       onChange={(e) => setShowCoindepoInput(e.target.value === "COINDEPO")}
                     >
                       <option value="">Add COINDEPO...</option>
-                      <option value="COINDEPO">COINDEPO Token</option>
+                      <option value="COINDEPO">COINDEPO</option>
                     </select>
                   </div>
                   

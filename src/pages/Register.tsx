@@ -53,12 +53,12 @@ export const Register: React.FC = () => {
   if (success) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-slate-100 flex items-center justify-center p-4">
-        <div className="max-w-sm w-full bg-white rounded-2xl shadow-xl p-8">
+        <div className="w-full max-w-xs bg-white rounded-2xl shadow-xl p-6">
           <div className="text-center">
             <img 
               src={COINDEPO_FULL_LOGO} 
               alt="COINDEPO Portfolio Manager" 
-              className="h-16 w-auto mx-auto mb-6"
+              className="h-8 w-auto mx-auto mb-4"
             />
             <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
               <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -86,16 +86,16 @@ export const Register: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-slate-100 flex items-center justify-center p-4">
-      <div className="max-w-sm w-full bg-white rounded-2xl shadow-xl p-8">
+      <div className="w-full max-w-xs bg-white rounded-2xl shadow-xl p-6">
         {/* Logo */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-6">
           <img 
             src={COINDEPO_FULL_LOGO} 
             alt="COINDEPO Portfolio Manager" 
-            className="h-16 w-auto mx-auto mb-4"
+            className="h-8 w-auto mx-auto mb-3"
           />
-          <h1 className="text-2xl font-bold text-blue-600 mb-2">Create Account</h1>
-          <p className="text-slate-600 text-sm">Start managing your COINDEPO portfolio</p>
+          <h1 className="text-lg font-bold text-blue-600 mb-1">Create Account</h1>
+          <p className="text-slate-600 text-xs">Start managing your COINDEPO portfolio</p>
         </div>
 
         {error && (

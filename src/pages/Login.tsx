@@ -28,16 +28,16 @@ export const Login: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-slate-100 flex items-center justify-center p-4">
-      <div className="max-w-sm w-full bg-white rounded-2xl shadow-xl p-8">
+      <div className="w-full max-w-xs bg-white rounded-2xl shadow-xl p-6">
         {/* Logo */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-6">
           <img 
             src={COINDEPO_FULL_LOGO} 
             alt="COINDEPO Portfolio Manager" 
-            className="h-16 w-auto mx-auto mb-4"
+            className="h-8 w-auto mx-auto mb-3"
           />
-          <h1 className="text-2xl font-bold text-blue-600 mb-2">Welcome Back</h1>
-          <p className="text-slate-600 text-sm">Sign in to access your portfolio</p>
+          <h1 className="text-lg font-bold text-blue-600 mb-1">Welcome Back</h1>
+          <p className="text-slate-600 text-xs">Sign in to access your portfolio</p>
         </div>
 
         {error && (

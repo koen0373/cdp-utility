@@ -301,7 +301,7 @@ async function fetchCoinGeckoPrices(coingeckoIds: string[]): Promise<Record<stri
 
   const url = `/coingecko/api/v3/simple/price?ids=${encodeURIComponent(
     need.join(",")
-  )}&vs_currencies=usd`;
+  )}&vs_currencies=usd&include_24hr_change=true`;
 
   try {
     const res = await fetch(url);
@@ -309,8 +309,9 @@ async function fetchCoinGeckoPrices(coingeckoIds: string[]): Promise<Record<stri
     const data = await res.json();
     for (const id of need) {
       const p = data?.[id]?.usd;
+      const change24h = data?.[id]?.usd_24h_change || null;
       if (typeof p === "number") {
-        priceCache.set(id, { price: p, ts: Date.now() });
+        priceCache.set(id, { price: p, priceChange24h: change24h, ts: Date.now() });
         result[id] = p;
       }
     }
@@ -1216,6 +1217,9 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
     
     // Also refresh COINDEPO price
     await fetchCoindepoPrice();
+    
+    // Refresh price changes for existing assets
+    await fetchAssetPriceChanges();
     
     // Only update rows if there are existing rows
     if (rows.length > 0) {

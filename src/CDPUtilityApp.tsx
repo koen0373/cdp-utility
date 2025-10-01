@@ -642,13 +642,13 @@ const AssetRow: React.FC<{
             <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">APR</div>
             <div className="flex items-center gap-3">
               <span 
-                className="inline-block font-bold text-sm"
+                className="inline-block font-bold text-base"
                 style={{ 
                   backgroundColor: isLoan ? '#ef4444' : '#4ade80', 
                   color: '#ffffff',
-                  padding: '4px 8px',
-                  borderRadius: '6px',
-                  fontSize: '12px',
+                  padding: '6px 12px',
+                  borderRadius: '8px',
+                  fontSize: '14px',
                   fontWeight: '700'
                 }}
               >

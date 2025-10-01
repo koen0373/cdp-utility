@@ -6,6 +6,7 @@ import COINDEPO_FULL_LOGO from "./assets/Manager logo.png";
 import { storageService } from "./storageService";
 import { LogoutButton } from "./components/LogoutButton";
 import { usePortfolioSync } from "./hooks/usePortfolioSync";
+import { PortfolioAllocationChart } from "./components/PortfolioAllocationChart";
 
 // Local crypto icon imports
 import BTC_ICON from "./assets/crypto-icons/btc.png";
@@ -877,7 +878,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
               const validRows: Row[] = portfolioData.assets
                 .map((r: any) => {
                   const asset = selectableAssets.find((a) => a.symbol === r.symbol);
-                  if (!asset) return null;
+          if (!asset) return null;
                   return { 
                     asset, 
                     qty: r.qty || 0, 
@@ -1175,7 +1176,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
         priceUSD: r.asset.coingeckoId ? map[r.asset.coingeckoId] ?? r.priceUSD : r.priceUSD,
       }))
     );
-    }
+  }
     
     // Update selectableAssets with prices
     selectableAssets.forEach(asset => {
@@ -1703,7 +1704,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                   ? '✓ Live prices from CoinGecko' 
                   : '* Prices are estimated - fetching live data...'}
               </p>
-            </div>
+          </div>
 
 
             {/* Display added COINDEPO holdings */}
@@ -1978,15 +1979,44 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
           </div>
         </section>
 
+        {/* ======= PORTFOLIO ALLOCATION SECTION ======= */}
+        <section className="card mb-8 sm:mb-12">
+          <header className="mb-8 sm:mb-12">
+            <h1 className="cd-balance-large text-brand-blue text-2xl">Portfolio Allocation</h1>
+          </header>
+          
+          <PortfolioAllocationChart
+            assetsValue={otherValueUSD}
+            coindepoValue={cdpValueUSD}
+            loansValue={loansValueUSD}
+            formatCurrency={(value: number) => {
+              const convertedValue = value * (exchangeRates[selectedCurrency] || 1);
+              
+              if (selectedCurrency === 'JPY') {
+                return new Intl.NumberFormat("en-US", { 
+                  style: "currency", 
+                  currency: selectedCurrency,
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: 0
+                }).format(convertedValue);
+              }
+              
+              return new Intl.NumberFormat("en-US", { 
+                style: "currency", 
+                currency: selectedCurrency 
+              }).format(convertedValue);
+            }}
+          />
+        </section>
+
         {/* ======= INTEREST CONTRIBUTIONS SECTION ======= */}
         <section className="card mb-8 sm:mb-12">
           <header className="mb-8 sm:mb-12 flex justify-between items-center">
             <h1 className="cd-balance-large text-brand-blue text-2xl">Interest Contributions</h1>
           </header>
           
-          {/* Calculate total portfolio value for percentages */}
+          {/* Calculate interest contributions */}
           {(() => {
-            const totalPortfolioValue = holdingsTotal;
             const allHoldings = [
               ...rows.map(row => ({
                 asset: row.asset,
@@ -2015,19 +2045,16 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
             <div className="grid grid-cols-12 gap-2 px-2 pb-2 text-xs uppercase tracking-wide text-slate-400">
                       <div className="col-span-3"></div>
                       <div className="col-span-2"></div>
-                      <div className="col-span-2 text-center">PORTFOLIO %</div>
-                      <div className="col-span-4 text-right">ANNUAL INTEREST</div>
+                      <div className="col-span-6 text-right">ANNUAL INTEREST</div>
                       <div className="col-span-1"></div>
             </div>
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
                       {allHoldings.map((holding, i) => {
-                        const portfolioPercentage = totalPortfolioValue > 0 ? (holding.value / totalPortfolioValue) * 100 : 0;
-                        
                         return (
                           <div key={`interest-${i}`} className="py-5">
               <div className="grid grid-cols-12 gap-2 items-center">
-                              <div className="col-span-3 flex items-center" style={{ gap: '24px' }}>
+                              <div className="col-span-5 flex items-center" style={{ gap: '24px' }}>
                                 <TokenIcon asset={holding.asset} />
                                 <div>
                                   <div className="cd-asset-name text-lg font-bold">
@@ -2038,11 +2065,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                                   </div>
                                 </div>
                               </div>
-                              <div className="col-span-2"></div>
-                              <div className="col-span-2 text-center text-slate-800">
-                                {portfolioPercentage.toFixed(1)}%
-                              </div>
-                              <div className="col-span-4 text-right cd-value-primary">
+                              <div className="col-span-6 text-right cd-value-primary">
                                 <div>{formatCurrency(holding.annualInterest)}/year</div>
                                 <div className="text-xs text-slate-500 mt-1">
                                   {holding.apr.toFixed(1)}% APR{depositBonus > 0 ? (
@@ -2065,7 +2088,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                         return (
                           <div key={`loan-interest-${i}`} className="py-5">
                             <div className="grid grid-cols-12 gap-2 items-center">
-                              <div className="col-span-3 flex items-center" style={{ gap: '24px' }}>
+                              <div className="col-span-5 flex items-center" style={{ gap: '24px' }}>
                                 <TokenIcon asset={loan.asset} />
                                 <div>
                                   <div className="cd-asset-name text-red-600 text-lg font-bold">
@@ -2076,11 +2099,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                                   </div>
                                 </div>
                               </div>
-                              <div className="col-span-2"></div>
-                              <div className="col-span-2 text-center text-slate-800">
-                                -
-                              </div>
-                              <div className="col-span-4 text-right cd-loan-value" style={{color: '#dc2626 !important'}}>
+                              <div className="col-span-6 text-right cd-loan-value" style={{color: '#dc2626 !important'}}>
                                 <div>-{formatCurrency(annualInterest)}/year</div>
                                 <div className="text-xs text-slate-500 mt-1">
                                   {getAPRValue(loan.interestRate).toFixed(1)}% APR{loanBonus > 0 ? (
@@ -2201,13 +2220,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
 
             return upcomingPayouts.length > 0 ? (
               <>
-                {/* Payouts List Header */}
-                <div className="grid grid-cols-8 gap-2 px-2 pb-2 text-xs uppercase tracking-wide text-slate-400">
-                  <div className="col-span-3"></div>
-                  <div className="col-span-3 text-right">ACCRUED INTEREST</div>
-                  <div className="col-span-2 text-right">PAYOUT</div>
-              </div>
-
+                {/* Payouts List */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
                   {upcomingPayouts.map((payout, i) => {
                     const assetPrice = payout.asset.symbol === 'COINDEPO' ? 0.10 : 
@@ -2223,34 +2236,47 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                     );
 
                     return (
-                      <div key={`payout-${i}`} className="py-5">
-                        <div className="grid grid-cols-8 gap-2 items-center">
-                          <div className="col-span-3 flex items-center" style={{ gap: '24px' }}>
+                      <div key={`payout-${i}`} className="bg-white rounded-lg border border-slate-200 p-4">
+                        {/* Asset Header */}
+                        <div className="flex items-center justify-between pb-4">
+                          <div className="flex items-center gap-4">
                             <TokenIcon asset={payout.asset} />
-                            <div>
-                              <div className={`cd-asset-name text-lg font-bold ${payout.isLoan ? 'text-red-600' : ''}`}>
-                                {payout.qty.toLocaleString()} {payout.asset.name}
-              </div>
-            </div>
-          </div>
-                          <div className="col-span-3 text-right">
-                            <div className={`${payout.isLoan ? 'text-red-600' : 'text-green-600'} font-semibold`}>
-                              {payout.isLoan ? '-' : '+'}{(calculation.accruedInterest / (payout.asset.symbol === 'COINDEPO' ? 0.10 : 
-                                (rows.find(r => r.asset.symbol === payout.asset.symbol)?.priceUSD || 
-                                 loans.find(l => l.asset.symbol === payout.asset.symbol)?.priceUSD || 1))).toLocaleString()} {payout.asset.symbol}
-                            </div>
-                            <div className={`text-xs ${payout.isLoan ? 'cd-loan-value' : 'text-slate-500'}`} 
-                                 style={payout.isLoan ? {color: '#dc2626 !important'} : {}}>
-                              {payout.isLoan ? '-' : '+'}{fmtUSD(calculation.accruedInterest)}
+                            <div className={`cd-asset-name text-lg font-bold ${payout.isLoan ? 'text-red-600' : ''}`}>
+                              {payout.asset.name}
                             </div>
                           </div>
-                          <div className="col-span-2 text-right text-slate-500">
-                            {new Date(payout.payoutDate).toLocaleDateString()}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+                        </div>
+                        
+                        {/* Visual Separation */}
+                        <div className="cd-visual-separation"></div>
+                        
+                        {/* Details Grid */}
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="space-y-3">
+                            <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Quantity</div>
+                            <div className="text-base font-semibold">{payout.qty.toLocaleString()}</div>
+                          </div>
+                          
+                          <div className="space-y-3">
+                            <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Accrued Interest</div>
+                            <div className={`text-base font-semibold ${payout.isLoan ? 'text-red-600' : 'text-green-600'}`}>
+                              {payout.isLoan ? '-' : '+'}{(calculation.accruedInterest / assetPrice).toLocaleString()} {payout.asset.symbol}
+                              <div className="text-xs text-slate-500 mt-1">
+                                {payout.isLoan ? '-' : '+'}{fmtUSD(calculation.accruedInterest)}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {/* Payout Date */}
+                        <div className="mt-4 pt-4 border-t border-slate-200">
+                          <div className="text-xs text-slate-400">
+                            Interest payout date: <span className="font-medium text-slate-500">{new Date(payout.payoutDate).toLocaleDateString()}</span>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
           </div>
 
                 {/* Total Upcoming Interest */}

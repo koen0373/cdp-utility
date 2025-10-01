@@ -234,14 +234,24 @@ async function fetchCoinGeckoPrices(coingeckoIds: string[]): Promise<Record<stri
   }
   if (!need.length) return result;
 
-  const url = `/coingecko/api/v3/simple/price?ids=${encodeURIComponent(
-    need.join(",")
-  )}&vs_currencies=usd&include_24hr_change=true`;
-
   try {
-    const res = await fetch(url);
-    if (!res.ok) return result;
-    const data = await res.json();
+    const ids = need.join(',');
+    const response = await fetch(`/api/crypto-price-proxy?ids=${encodeURIComponent(ids)}&vs_currencies=usd&include_24hr_change=true`);
+    
+    if (!response.ok) {
+      console.error('Crypto price proxy error:', response.status);
+      return result;
+    }
+    
+    const proxyData = await response.json();
+    
+    if (!proxyData.success || !proxyData.data) {
+      console.error('Invalid proxy response:', proxyData);
+      return result;
+    }
+    
+    const data = proxyData.data;
+    
     for (const id of need) {
       const p = data?.[id]?.usd;
       const change24h = data?.[id]?.usd_24h_change || null;
@@ -251,7 +261,8 @@ async function fetchCoinGeckoPrices(coingeckoIds: string[]): Promise<Record<stri
       }
     }
     return result;
-  } catch {
+  } catch (error) {
+    console.error('Failed to fetch crypto prices:', error);
     return result;
   }
 }
@@ -261,30 +272,25 @@ async function fetchSinglePrice(id: string): Promise<{ price: number | null; pri
   const hit = priceCache.get(id);
   if (hit && now - hit.ts < CACHE_TTL_MS) return { price: hit.price, priceChange24h: hit.priceChange24h || null };
   
-  // Use proxy in development, direct API in production
-  const isDevelopment = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-  const urls = isDevelopment 
-    ? [
-        `/coingecko/api/v3/simple/price?ids=${encodeURIComponent(id)}&vs_currencies=usd&include_24hr_change=true`,
-        `https://api.coingecko.com/api/v3/simple/price?ids=${encodeURIComponent(id)}&vs_currencies=usd&include_24hr_change=true`
-      ]
-    : [
-        `https://api.coingecko.com/api/v3/simple/price?ids=${encodeURIComponent(id)}&vs_currencies=usd&include_24hr_change=true`
-      ];
-  
-  for (const url of urls) {
-    try {
-      console.log(`Fetching price for ${id} from ${url}`);
-      const res = await fetch(url);
-      console.log(`Response status: ${res.status}`);
-      
-      if (!res.ok) {
-        console.log(`API call failed with status ${res.status}`);
-        continue; // Try next URL
-      }
-      
-    const data = await res.json();
-      console.log(`API response:`, data);
+  try {
+    console.log(`Fetching price for ${id} via proxy`);
+    const response = await fetch(`/api/crypto-price-proxy?ids=${encodeURIComponent(id)}&vs_currencies=usd&include_24hr_change=true`);
+    console.log(`Proxy response status: ${response.status}`);
+    
+    if (!response.ok) {
+      console.log(`Proxy call failed with status ${response.status}`);
+      return { price: null, priceChange24h: null };
+    }
+    
+    const proxyData = await response.json();
+    console.log(`Proxy response:`, proxyData);
+    
+    if (!proxyData.success || !proxyData.data) {
+      console.log(`Invalid proxy response:`, proxyData);
+      return { price: null, priceChange24h: null };
+    }
+    
+    const data = proxyData.data;
     const p = data?.[id]?.usd;
       const change24h = data?.[id]?.usd_24h_change || null;
       
@@ -295,14 +301,11 @@ async function fetchSinglePrice(id: string): Promise<{ price: number | null; pri
       }
       
       console.log(`No valid price found in response`);
-    } catch (error) {
-      console.error(`Error fetching price for ${id} from ${url}:`, error);
-      continue; // Try next URL
-    }
+      return { price: null, priceChange24h: null };
+  } catch (error) {
+    console.error(`Error fetching price for ${id} via proxy:`, error);
+    return { price: null, priceChange24h: null };
   }
-  
-  console.log(`All price fetch attempts failed for ${id}`);
-  return hit ? { price: hit.price, priceChange24h: hit.priceChange24h || null } : { price: null, priceChange24h: null };
 }
 
 /* -------------------- LocalStorage -------------------- */
@@ -1136,19 +1139,25 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
     }
   }
 
-  // Fetch COINDEPO price from CoinGecko
+  // Fetch COINDEPO price from CoinGecko via proxy
   async function fetchCoindepoPrice() {
     try {
       setCoindepoPriceStatus('loading');
-      console.log('Fetching COINDEPO price from CoinGecko...');
+      console.log('Fetching COINDEPO price via proxy...');
       
-      const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=coindepo&vs_currencies=usd&include_24hr_change=true');
+      const response = await fetch('/api/crypto-price-proxy?ids=coindepo&vs_currencies=usd&include_24hr_change=true');
       
       if (!response.ok) {
-        throw new Error(`CoinGecko API error: ${response.status}`);
+        throw new Error(`Crypto price proxy error: ${response.status}`);
       }
       
-      const data = await response.json();
+      const proxyData = await response.json();
+      
+      if (!proxyData.success || !proxyData.data) {
+        throw new Error('Invalid proxy response');
+      }
+      
+      const data = proxyData.data;
       
       if (data.coindepo && data.coindepo.usd) {
         const price = data.coindepo.usd;

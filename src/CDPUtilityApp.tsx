@@ -1482,12 +1482,17 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
         {/* Header Section */}
         <div className="text-center mb-6 sm:mb-8">
           <div className="flex flex-col sm:flex-row items-center justify-center mb-4 gap-3 sm:gap-0 relative">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center sm:mr-6">
-              <span className="text-white font-bold text-base sm:text-lg">CD</span>
+            <div className="flex items-center gap-4">
+              <img 
+                src={COINDEPO_LOGO} 
+                alt="COINDEPO Logo" 
+                className="h-12 sm:h-16 w-auto"
+              />
+              <div className="flex flex-col">
+                <h1 className="text-3xl sm:text-4xl font-bold text-blue-600">COINDEPO</h1>
+                <p className="text-lg sm:text-xl text-slate-600 font-medium">Portfolio Manager</p>
+              </div>
             </div>
-            <h1 className="cd-balance-large text-2xl">
-              <span className="font-bold uppercase">COINDEPO</span> <span className="font-normal">Portfolio Manager</span>
-            </h1>
             <div className="flex gap-2 sm:absolute sm:right-0">
               <button
                 onClick={handleResetPortfolio}

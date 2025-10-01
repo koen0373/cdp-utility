@@ -34,7 +34,7 @@ export const Login: React.FC = () => {
           <img 
             src={COINDEPO_FULL_LOGO} 
             alt="COINDEPO Portfolio Manager" 
-            className="h-12 w-auto mx-auto mb-4"
+            className="w-1/2 sm:w-1/4 h-auto mx-auto mb-4"
           />
           <h1 className="text-lg font-bold text-blue-600 mb-1">Welcome Back</h1>
           <p className="text-slate-600 text-xs">Sign in to access your portfolio</p>

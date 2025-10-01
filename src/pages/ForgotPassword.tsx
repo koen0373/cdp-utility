@@ -35,7 +35,7 @@ export const ForgotPassword: React.FC = () => {
             <img 
               src={COINDEPO_FULL_LOGO} 
               alt="COINDEPO Portfolio Manager" 
-              className="h-12 w-auto mx-auto mb-4"
+              className="w-1/2 sm:w-1/4 h-auto mx-auto mb-4"
             />
             <div className="mx-auto w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
               <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -69,7 +69,7 @@ export const ForgotPassword: React.FC = () => {
           <img 
             src={COINDEPO_FULL_LOGO} 
             alt="COINDEPO Portfolio Manager" 
-            className="h-12 w-auto mx-auto mb-4"
+            className="w-1/2 sm:w-1/4 h-auto mx-auto mb-4"
           />
           <h1 className="text-lg font-bold text-blue-600 mb-1">Reset Password</h1>
           <p className="text-slate-600 text-xs">Enter your email to receive a reset link</p>

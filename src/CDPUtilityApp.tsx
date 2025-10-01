@@ -2,6 +2,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { ASSETS } from "./data/assets";
 import COINDEPO_LOGO from "./assets/COINDEPO.webp";
+import COINDEPO_FULL_LOGO from "./assets/Manager logo.png";
 import { storageService } from "./storageService";
 import { LogoutButton } from "./components/LogoutButton";
 import { usePortfolioSync } from "./hooks/usePortfolioSync";
@@ -1482,17 +1483,11 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
         {/* Header Section */}
         <div className="text-center mb-6 sm:mb-8">
           <div className="flex flex-col sm:flex-row items-center justify-center mb-4 gap-3 sm:gap-0 relative">
-            <div className="flex items-center gap-4">
-              <img 
-                src={COINDEPO_LOGO} 
-                alt="COINDEPO Logo" 
-                className="h-12 sm:h-16 w-auto"
-              />
-              <div className="flex flex-col">
-                <h1 className="text-3xl sm:text-4xl font-bold text-blue-600">COINDEPO</h1>
-                <p className="text-lg sm:text-xl text-slate-600 font-medium">Portfolio Manager</p>
-              </div>
-            </div>
+            <img 
+              src={COINDEPO_FULL_LOGO} 
+              alt="COINDEPO Portfolio Manager" 
+              className="h-16 sm:h-20 w-auto"
+            />
             <div className="flex gap-2 sm:absolute sm:right-0">
               <button
                 onClick={handleResetPortfolio}

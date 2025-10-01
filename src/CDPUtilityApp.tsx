@@ -1615,7 +1615,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
 
         {/* ======= PORTFOLIO SECTION ======= */}
         <section className="card mb-4 sm:mb-6">
-          <header className="mb-4 sm:mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <header className="mb-8 sm:mb-12 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div className="w-full sm:w-auto">
               <div className="flex items-center justify-between">
                 <h1 className="cd-balance-large text-brand-blue text-2xl">Your Portfolio</h1>

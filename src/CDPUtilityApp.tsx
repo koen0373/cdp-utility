@@ -2436,39 +2436,39 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
             )}
 
             <div className="space-y-3 mb-6">
-              <div className="flex justify-between items-center">
-                <span className="text-slate-700">Portfolio total:</span>
-                <span className="font-semibold">{fmtUSD(holdingsTotal)}</span>
-                </div>
+              <div className="grid grid-cols-12 gap-2 items-center">
+                <div className="col-span-8 text-slate-700">Portfolio total:</div>
+                <div className="col-span-4 text-right font-semibold">{fmtUSD(holdingsTotal)}</div>
+              </div>
 
-              <div className="flex justify-between items-center">
-                <span className="text-slate-700">COINDEPO holdings:</span>
-                <span className="font-semibold">{fmtUSD(cdpValueUSD)}</span>
-                </div>
+              <div className="grid grid-cols-12 gap-2 items-center">
+                <div className="col-span-8 text-slate-700">COINDEPO holdings:</div>
+                <div className="col-span-4 text-right font-semibold">{fmtUSD(cdpValueUSD)}</div>
+              </div>
 
-              <div className="flex justify-between items-center">
-                <span className="text-slate-700">Other crypto holdings:</span>
-                <span className="font-semibold">{fmtUSD(otherValueUSD)}</span>
-            </div>
+              <div className="grid grid-cols-12 gap-2 items-center">
+                <div className="col-span-8 text-slate-700">Other crypto holdings:</div>
+                <div className="col-span-4 text-right font-semibold">{fmtUSD(otherValueUSD)}</div>
+              </div>
 
               {loansValueUSD > 0 && (
-                <div className="flex justify-between items-center">
-                  <span className="text-slate-700">Loans (debt):</span>
-                  <span className="font-semibold cd-loan-value" style={{color: '#dc2626 !important'}}>-{fmtUSD(loansValueUSD)}</span>
-              </div>
+                <div className="grid grid-cols-12 gap-2 items-center">
+                  <div className="col-span-8 text-slate-700">Loans (debt):</div>
+                  <div className="col-span-4 text-right font-semibold cd-loan-value" style={{color: '#dc2626 !important'}}>-{fmtUSD(loansValueUSD)}</div>
+                </div>
               )}
-              </div>
+            </div>
 
             <div className="space-y-3 mb-6">
-              <div className="flex justify-between items-center">
-                <span className="text-slate-700">COINDEPO percentage:</span>
-                <span className="font-semibold text-blue-600">{cdpShare.toFixed(2)}%</span>
-            </div>
+              <div className="grid grid-cols-12 gap-2 items-center">
+                <div className="col-span-8 text-slate-700">COINDEPO percentage:</div>
+                <div className="col-span-4 text-right font-semibold text-blue-600">{cdpShare.toFixed(2)}%</div>
+              </div>
               
-              <div className="flex justify-between items-center">
-                <span className="text-slate-700">Current tier:</span>
-                <span className="font-semibold">{tierLabel}</span>
-          </div>
+              <div className="grid grid-cols-12 gap-2 items-center">
+                <div className="col-span-8 text-slate-700">Current tier:</div>
+                <div className="col-span-4 text-right font-semibold">{tierLabel}</div>
+              </div>
             </div>
 
             <div className="mb-6">
@@ -2476,28 +2476,30 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
               <div className="space-y-2">
                 
                 {loansValueUSD > 0 && (
-                  <div className="flex justify-between items-center">
-                    <span className="text-slate-700">Loan rate bonus:</span>
-                    <span className="font-semibold cd-loan-value" style={{color: '#dc2626 !important'}}>-{(loanBonus * 100).toFixed(0)}% (-{fmtUSD(loanSavingsUSD)})</span>
+                  <div className="grid grid-cols-12 gap-2 items-center">
+                    <div className="col-span-8 text-slate-700">Loan rate bonus:</div>
+                    <div className="col-span-4 text-right font-semibold cd-loan-value" style={{color: '#dc2626 !important'}}>-{(loanBonus * 100).toFixed(0)}% (-{fmtUSD(loanSavingsUSD)})</div>
                   </div>
                 )}
                 
-                <div className="flex justify-between items-center">
-                  <span className="text-slate-700">Token payout bonus:</span>
-                  <div className="flex items-center gap-2">
-                    <span className="font-semibold text-slate-700">+{(currentTier.tokenPayout * 100).toFixed(0)}%</span>
-                    <div className="flex items-center gap-1">
-                  <input
-                        type="checkbox"
-                        id="tokenPayoutBonus"
-                        checked={extraPayoutEnabled}
-                        onChange={(e) => setExtraPayoutEnabled(e.target.checked)}
-                        disabled={!isTierProgramActive}
-                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
-                      />
-                      <label htmlFor="tokenPayoutBonus" className="text-sm font-medium text-slate-700">
-                        Enable
-                      </label>
+                <div className="grid grid-cols-12 gap-2 items-center">
+                  <div className="col-span-8 text-slate-700">Token payout bonus:</div>
+                  <div className="col-span-4 text-right">
+                    <div className="flex items-center justify-end gap-2">
+                      <span className="font-semibold text-slate-700">+{(currentTier.tokenPayout * 100).toFixed(0)}%</span>
+                      <div className="flex items-center gap-1">
+                        <input
+                          type="checkbox"
+                          id="tokenPayoutBonus"
+                          checked={extraPayoutEnabled}
+                          onChange={(e) => setExtraPayoutEnabled(e.target.checked)}
+                          disabled={!isTierProgramActive}
+                          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                        />
+                        <label htmlFor="tokenPayoutBonus" className="text-sm font-medium text-slate-700">
+                          Enable
+                        </label>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -2505,56 +2507,56 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                 </div>
 
             <div className="space-y-2 mb-4">
-              <div className="flex justify-between items-center">
-                <span className="text-slate-700">Portfolio interest per year:</span>
-                <span className="font-semibold text-green-600">+{fmtUSD(otherValueUSD * 0.24)}</span>
-                </div>
+              <div className="grid grid-cols-12 gap-2 items-center">
+                <div className="col-span-8 text-slate-700">Portfolio interest per year:</div>
+                <div className="col-span-4 text-right font-semibold text-green-600">+{fmtUSD(otherValueUSD * 0.24)}</div>
+              </div>
               
               {depositBonus > 0 && (
-                <div className="flex justify-between items-center">
-                  <span className="text-slate-700">Tier {currentTierIndex + 1} interest bonus per year:</span>
-                  <span className="font-semibold text-green-600">+{fmtUSD(depositBonusUSD)}</span>
+                <div className="grid grid-cols-12 gap-2 items-center">
+                  <div className="col-span-8 text-slate-700">Tier {currentTierIndex + 1} interest bonus per year:</div>
+                  <div className="col-span-4 text-right font-semibold text-green-600">+{fmtUSD(depositBonusUSD)}</div>
                 </div>
               )}
               
               {extraPayoutEnabled && (
-                <div className="flex justify-between items-center">
-                  <span className="text-slate-700">Token payout bonus per year:</span>
-                  <span className="font-semibold text-green-600">+{fmtUSD(tokenPayoutUSD)}</span>
-              </div>
+                <div className="grid grid-cols-12 gap-2 items-center">
+                  <div className="col-span-8 text-slate-700">Token payout bonus per year:</div>
+                  <div className="col-span-4 text-right font-semibold text-green-600">+{fmtUSD(tokenPayoutUSD)}</div>
+                </div>
               )}
               
               {loansValueUSD > 0 && (
-                <div className="flex justify-between items-center">
-                  <span className="text-slate-700">Loan interest savings per year:</span>
-                  <span className="font-semibold text-green-600">+{fmtUSD(loanSavingsUSD)}</span>
-              </div>
+                <div className="grid grid-cols-12 gap-2 items-center">
+                  <div className="col-span-8 text-slate-700">Loan interest savings per year:</div>
+                  <div className="col-span-4 text-right font-semibold text-green-600">+{fmtUSD(loanSavingsUSD)}</div>
+                </div>
               )}
               
               {loansValueUSD > 0 && (
-                <div className="flex justify-between items-center">
-                  <span className="text-slate-700">Loan interest to pay per year:</span>
-                  <span className="font-semibold text-red-600">-{fmtUSD(loanInterestUSD)}</span>
-              </div>
+                <div className="grid grid-cols-12 gap-2 items-center">
+                  <div className="col-span-8 text-slate-700">Loan interest to pay per year:</div>
+                  <div className="col-span-4 text-right font-semibold text-red-600">-{fmtUSD(loanInterestUSD)}</div>
+                </div>
               )}
             </div>
 
             <div className="pt-4 border-t border-slate-200 space-y-2" style={{ paddingTop: '20px', paddingBottom: '20px' }}>
-              <div className="flex justify-between items-center">
-                <span className="text-base font-semibold text-blue-600">Total passive income per year:</span>
-                <span className="text-base font-semibold text-blue-600">{fmtUSD(otherValueUSD * 0.24 + utilityUSD - loanInterestUSD)}</span>
+              <div className="grid grid-cols-12 gap-2 items-center">
+                <div className="col-span-8 text-base font-semibold text-blue-600">Total passive income per year:</div>
+                <div className="col-span-4 text-right text-base font-semibold text-blue-600">{fmtUSD(otherValueUSD * 0.24 + utilityUSD - loanInterestUSD)}</div>
               </div>
               
-              <div className="flex justify-between items-center text-sm text-slate-600">
-                <span>Token utility yield:</span>
-                <span>{utilityYield.toFixed(2)}%</span>
+              <div className="grid grid-cols-12 gap-2 items-center text-sm text-slate-600">
+                <div className="col-span-8">Token utility yield:</div>
+                <div className="col-span-4 text-right">{utilityYield.toFixed(2)}%</div>
               </div>
             </div>
             
             {/* Extra witregel en groene totaal */}
-            <div className="mt-8 pt-4 flex justify-between items-center">
-              <span className="cd-total-green-sm">Total benefits per year:</span>
-              <span className="cd-total-green-sm">{fmtUSD(otherValueUSD * 0.24 + utilityUSD)}</span>
+            <div className="mt-8 pt-4 grid grid-cols-12 gap-2 items-center">
+              <div className="col-span-8 cd-total-green-sm">Total benefits per year:</div>
+              <div className="col-span-4 text-right cd-total-green-sm">{fmtUSD(otherValueUSD * 0.24 + utilityUSD)}</div>
             </div>
               </>
             )}
@@ -2597,12 +2599,12 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
 
                 return (
                     <div key={label} className="mb-4">
-                      <div className="flex justify-between items-start mb-1">
-                        <div className={`text-base font-semibold ${achieved ? "cd-tier-achieved" : "text-slate-800"}`}>
+                      <div className="grid grid-cols-12 gap-2 items-start mb-1">
+                        <div className={`col-span-11 text-base font-semibold ${achieved ? "cd-tier-achieved" : "text-slate-800"}`}>
                           {label}:
                         </div>
                         {achieved && (
-                          <div className="cd-tier-achieved-checkmark text-xl">✓</div>
+                          <div className="col-span-1 text-right cd-tier-achieved-checkmark text-xl">✓</div>
                         )}
                       </div>
                       <div className={`ml-4 ${achieved ? "cd-tier-achieved" : "text-slate-600"}`}>

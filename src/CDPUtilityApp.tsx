@@ -376,7 +376,8 @@ const CoindepoRow: React.FC<{
   coindepoAsset: Asset;
   selectedCurrency: string;
   exchangeRates: Record<string, number>;
-}> = ({ holding, value, onUpdate, onRemove, coindepoAsset, selectedCurrency, exchangeRates }) => {
+  coindepoPriceStatus: 'loading' | 'live' | 'estimated';
+}> = ({ holding, value, onUpdate, onRemove, coindepoAsset, selectedCurrency, exchangeRates, coindepoPriceStatus }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editQty, setEditQty] = useState<number>(holding.qty);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -468,8 +469,8 @@ const CoindepoRow: React.FC<{
             <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Price</div>
             <div className="text-base font-semibold text-slate-600">
               {formatCurrency(holding.priceUSD, selectedCurrency, exchangeRates)}
-              <div className="text-xs text-orange-500 italic">
-                ~est.
+              <div className={`text-xs italic ${coindepoPriceStatus === 'live' ? 'text-green-600' : 'text-orange-500'}`}>
+                {coindepoPriceStatus === 'live' ? '✓ live' : '~est.'}
               </div>
             </div>
           </div>
@@ -774,8 +775,9 @@ export default function CDPUtilityApp() {
   });
   const [localStorageStatus, setLocalStorageStatus] = useState<'available' | 'unavailable' | 'checking'>('checking');
 
-  // COINDEPO price state - fixed at $0.10
-  const [coindepoPrice] = useState<number>(0.10);
+  // COINDEPO price state - fetched from CoinGecko API
+  const [coindepoPrice, setCoindepoPrice] = useState<number>(0.10);
+  const [coindepoPriceStatus, setCoindepoPriceStatus] = useState<'loading' | 'live' | 'estimated'>('estimated');
 
   // Currency symbols and labels
   const CURRENCIES = [
@@ -879,7 +881,7 @@ export default function CDPUtilityApp() {
             .map((h: any) => ({
               asset: coindepoAsset,
               qty: h.qty || 0,
-              priceUSD: 0.10,
+              priceUSD: coindepoPrice,
               interestRate: h.interestRate || '',
               payoutDate: h.payoutDate || ''
             }))
@@ -1071,6 +1073,45 @@ export default function CDPUtilityApp() {
     return () => clearInterval(backupInterval);
   }, []); // Empty dependency array - run once on mount
 
+  // Fetch COINDEPO price from CoinGecko
+  async function fetchCoindepoPrice() {
+    try {
+      setCoindepoPriceStatus('loading');
+      console.log('Fetching COINDEPO price from CoinGecko...');
+      
+      const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=coindepo&vs_currencies=usd');
+      
+      if (!response.ok) {
+        throw new Error(`CoinGecko API error: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      
+      if (data.coindepo && data.coindepo.usd) {
+        const price = data.coindepo.usd;
+        setCoindepoPrice(price);
+        setCoindepoPriceStatus('live');
+        console.log('COINDEPO price updated:', price);
+        
+        // Update existing COINDEPO holdings with new price
+        if (coindepoHoldings.length > 0) {
+          setCoindepoHoldings((prev) =>
+            prev.map((h) => ({
+              ...h,
+              priceUSD: price,
+            }))
+          );
+        }
+      } else {
+        throw new Error('COINDEPO price not found in API response');
+      }
+    } catch (error) {
+      console.error('Error fetching COINDEPO price:', error);
+      setCoindepoPriceStatus('estimated');
+      // Keep the current price (fallback to $0.10 if not set)
+    }
+  }
+
   // Auto prijs voor rows en selectableAssets
   async function refreshPrices() {
     const rowIds = rows.map((r) => r.asset.coingeckoId).filter(Boolean) as string[];
@@ -1079,6 +1120,9 @@ export default function CDPUtilityApp() {
     console.log('Refreshing prices for:', uniqueIds);
     const map = await fetchCoinGeckoPrices(uniqueIds);
     console.log('Price map received:', map);
+    
+    // Also refresh COINDEPO price
+    await fetchCoindepoPrice();
     
     // Only update rows if there are existing rows
     if (rows.length > 0) {
@@ -1097,12 +1141,20 @@ export default function CDPUtilityApp() {
       }
     });
   }
+  // Fetch prices on initial load and periodically
   useEffect(() => {
     refreshPrices();
+    // Refresh every 2 minutes (120 seconds)
     const t = setInterval(refreshPrices, 120_000);
     return () => clearInterval(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rows.length]);
+
+  // Fetch COINDEPO price on initial load
+  useEffect(() => {
+    fetchCoindepoPrice();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Fetch exchange rates on startup and hourly updates
   useEffect(() => {
@@ -1280,7 +1332,7 @@ export default function CDPUtilityApp() {
     const newHolding = { 
       asset: coindepoAsset, 
       qty: q, 
-      priceUSD: 0.10, 
+      priceUSD: coindepoPrice, 
       interestRate: cdpInputAPR,
       payoutDate: cdpInputPayoutDate
     };
@@ -1578,10 +1630,12 @@ export default function CDPUtilityApp() {
           <div className="mt-6 sm:mt-8 pt-4 sm:pt-6">
             <div className="mb-4 sm:mb-6">
               <h2 className="cd-label text-lg">YOUR COINDEPO HOLDINGS</h2>
-              <p className="text-xs text-orange-600 italic mt-1">
-                * Prices are estimated until live API becomes available
+              <p className={`text-xs italic mt-1 ${coindepoPriceStatus === 'live' ? 'text-green-600' : 'text-orange-600'}`}>
+                {coindepoPriceStatus === 'live' 
+                  ? '✓ Live prices from CoinGecko' 
+                  : '* Prices are estimated - fetching live data...'}
               </p>
-          </div>
+            </div>
 
 
             {/* Display added COINDEPO holdings */}
@@ -1610,6 +1664,7 @@ export default function CDPUtilityApp() {
                         coindepoAsset={coindepoAsset}
                         selectedCurrency={selectedCurrency}
                         exchangeRates={exchangeRates}
+                        coindepoPriceStatus={coindepoPriceStatus}
                         onUpdate={(newQty) => {
                           const next = [...coindepoHoldings];
                           next[i].qty = newQty;

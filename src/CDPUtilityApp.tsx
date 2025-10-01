@@ -3,6 +3,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { ASSETS } from "./data/assets";
 import COINDEPO_LOGO from "./assets/COINDEPO.webp";
 import { storageService } from "./storageService";
+import { LogoutButton } from "./components/LogoutButton";
 
 // Local crypto icon imports
 import BTC_ICON from "./assets/crypto-icons/btc.png";
@@ -736,7 +737,11 @@ const Trash = ({ className }: { className?: string }) => (
 );
 
 /* ==================== Component ==================== */
-export default function CDPUtilityApp() {
+interface CDPUtilityAppProps {
+  guestMode?: boolean;
+}
+
+export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps) {
   const allAssets = useMemo(() => ASSETS.map(asset => ({
     ...asset,
     coingeckoId: asset.geckoId
@@ -1439,20 +1444,23 @@ export default function CDPUtilityApp() {
       <div className="max-w-6xl mx-auto px-3 sm:px-4 md:px-8 py-4 sm:py-6 md:py-8">
         {/* Header Section */}
         <div className="text-center mb-6 sm:mb-8">
-          <div className="flex flex-col sm:flex-row items-center justify-center mb-4 gap-3 sm:gap-0">
+          <div className="flex flex-col sm:flex-row items-center justify-center mb-4 gap-3 sm:gap-0 relative">
             <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center sm:mr-6">
               <span className="text-white font-bold text-base sm:text-lg">CD</span>
             </div>
             <h1 className="cd-balance-large text-2xl">
               <span className="font-bold uppercase">COINDEPO</span> <span className="font-normal">Portfolio Manager</span>
             </h1>
-            <button
-              onClick={handleResetPortfolio}
-              className="btn-primary px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-red-600 ml-4"
-              title="Reset entire portfolio"
-            >
-              Reset Portfolio
-            </button>
+            <div className="flex gap-2 sm:absolute sm:right-0">
+              <button
+                onClick={handleResetPortfolio}
+                className="btn-primary px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-red-600"
+                title="Reset entire portfolio"
+              >
+                Reset Portfolio
+              </button>
+              {!guestMode && <LogoutButton />}
+            </div>
           </div>
           
           <p className="text-base text-slate-600 mb-4 max-w-3xl mx-auto px-4">

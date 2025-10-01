@@ -372,7 +372,7 @@ const CoindepoRow: React.FC<{
     <div className="py-8 rounded-lg bg-white shadow-sm">
       {/* COINDEPO Header Row */}
       <div className="flex items-center justify-between p-8 pb-4">
-        <div className="flex items-center gap-6">
+        <div className="flex items-center" style={{ gap: '20px' }}>
           <TokenIcon asset={coindepoAsset} />
           <div>
             <div className="cd-asset-name text-lg font-bold">COINDEPO Token</div>
@@ -552,7 +552,7 @@ const AssetRow: React.FC<{
     <div className="py-8 rounded-lg bg-white shadow-sm">
       {/* Asset Header Row */}
       <div className="flex items-center justify-between p-8 pb-4">
-        <div className="flex items-center gap-6">
+        <div className="flex items-center" style={{ gap: '20px' }}>
           <TokenIcon asset={row.asset} />
           <div>
             <div className="cd-asset-name text-lg font-bold">{row.asset.name}</div>
@@ -2125,7 +2125,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                         return (
                           <div key={`interest-${i}`} className="py-5">
               <div className="grid grid-cols-12 gap-2 items-center">
-                              <div className="col-span-5 flex items-center" style={{ gap: '24px' }}>
+                              <div className="col-span-5 flex items-center" style={{ gap: '20px' }}>
                                 <TokenIcon asset={holding.asset} />
                                 <div>
                                   <div className="cd-asset-name text-lg font-bold">
@@ -2159,7 +2159,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                         return (
                           <div key={`loan-interest-${i}`} className="py-5">
                             <div className="grid grid-cols-12 gap-2 items-center">
-                              <div className="col-span-5 flex items-center" style={{ gap: '24px' }}>
+                              <div className="col-span-5 flex items-center" style={{ gap: '20px' }}>
                                 <TokenIcon asset={loan.asset} />
                                 <div>
                                   <div className="cd-asset-name text-red-600 text-lg font-bold">
@@ -2317,7 +2317,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                     return (
                       <div key={`payout-${i}`} className="bg-slate-50 rounded-lg p-4">
                         {/* Asset Header */}
-                        <div className="flex items-center gap-4 pb-4">
+                        <div className="flex items-center pb-4" style={{ gap: '20px' }}>
                           <TokenIcon asset={payout.asset} />
                           <div className={`cd-asset-name text-lg font-bold ${payout.isLoan ? 'text-red-600' : ''}`}>
                             {payout.asset.name}

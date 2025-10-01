@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 30 30">
+  <!-- Generator: Adobe Illustrator 29.6.0, SVG Export Plug-In . SVG Version: 2.1.1 Build 207)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: #5b9c5b;
+      }
+
+      .st1 {
+        fill: #0b8311;
+      }
+
+      .st2 {
+        fill: #adcdae;
+      }
+
+      .st3 {
+        fill: #aecfaf;
+      }
+
+      .st4 {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <path class="st1" d="M14,0c12-.7,20.1,12.1,13.8,22.7-5.9,10.1-20.7,9.6-26-.9S3.5.7,14,0Z"/>
+  <g id="Layer_2">
+    <g id="svg8">
+      <g id="layer5">
+        <g id="g1627">
+          <path id="path1599" class="st4" d="M8.6,15.9c2.2,1.2,4.6,2.4,6.4,3.4l6.3-3.4c-2.3,3.4-4.2,6.2-6.3,9.4-2.1-3.1-4.5-6.6-6.4-9.4ZM8.9,15l6.1-3.3,6.1,3.2-6.1,3.3-6.1-3.3ZM15,10.6l-6.4,3.4,6.3-9.3,6.3,9.3-6.3-3.4Z"/>
+          <path id="path1593" class="st2" d="M15,19.3l6.3-3.4c-2.3,3.4-6.3,9.4-6.3,9.4v-6ZM15,11.7l6.1,3.2-6.1,3.3v-6.5ZM15,10.6v-5.9s6.3,9.3,6.3,9.3l-6.3-3.4Z"/>
+          <path id="path1603" class="st3" d="M8.9,15l6.1.5,6.1-.5-6.1,3.3-6.1-3.3Z"/>
+          <path id="path1606" class="st0" d="M15,15.5l6.1-.5-6.1,3.3v-2.8Z"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

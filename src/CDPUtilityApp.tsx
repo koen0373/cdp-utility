@@ -4,6 +4,7 @@ import { ASSETS } from "./data/assets";
 import COINDEPO_LOGO from "./assets/COINDEPO.webp";
 import { storageService } from "./storageService";
 import { LogoutButton } from "./components/LogoutButton";
+import { usePortfolioSync } from "./hooks/usePortfolioSync";
 
 // Local crypto icon imports
 import BTC_ICON from "./assets/crypto-icons/btc.png";
@@ -742,6 +743,10 @@ interface CDPUtilityAppProps {
 }
 
 export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps) {
+  // Portfolio sync hook for authenticated users
+  const { user, loadFromSupabase, saveToSupabase, migrateFromLocalStorage } = usePortfolioSync();
+  const isAuthenticated = !guestMode && user;
+  
   const allAssets = useMemo(() => ASSETS.map(asset => ({
     ...asset,
     coingeckoId: asset.geckoId
@@ -852,7 +857,83 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
         const status = storageService.getStorageStatus();
         setLocalStorageStatus(status.indexedDB ? 'available' : (status.localStorage ? 'available' : 'unavailable'));
 
-        // Migrate data from localStorage to IndexedDB if needed
+        // For authenticated users, load from Supabase
+        if (isAuthenticated && user) {
+          console.log('👤 Authenticated user detected, loading from Supabase...');
+          
+          // Try to migrate localStorage data first (only runs once)
+          const migrated = await migrateFromLocalStorage();
+          if (migrated) {
+            console.log('✅ Successfully migrated localStorage data to Supabase');
+          }
+          
+          // Load portfolio from Supabase
+          const portfolioData = await loadFromSupabase();
+          
+          if (portfolioData) {
+            // Load assets
+            if (portfolioData.assets && portfolioData.assets.length > 0) {
+              const validRows: Row[] = portfolioData.assets
+                .map((r: any) => {
+                  const asset = selectableAssets.find((a) => a.symbol === r.symbol);
+                  if (!asset) return null;
+                  return { 
+                    asset, 
+                    qty: r.qty || 0, 
+                    priceUSD: r.priceUSD || 0, 
+                    interestRate: r.interestRate || '',
+                    payoutDate: r.payoutDate || ''
+                  } as Row;
+                })
+                .filter((r): r is Row => r !== null);
+              setRows(validRows);
+            }
+            
+            // Load COINDEPO holdings
+            if (portfolioData.coindepo_holdings && portfolioData.coindepo_holdings.length > 0) {
+              const validHoldings = portfolioData.coindepo_holdings
+                .map((h: any) => ({
+                  asset: coindepoAsset,
+                  qty: h.qty || 0,
+                  priceUSD: coindepoPrice,
+                  interestRate: h.interestRate || '',
+                  payoutDate: h.payoutDate || ''
+                }))
+                .filter((h: any) => h.qty > 0);
+              setCoindepoHoldings(validHoldings);
+            }
+            
+            // Load loans
+            if (portfolioData.loans && portfolioData.loans.length > 0) {
+              const validLoans: Row[] = portfolioData.loans
+                .map((l: any) => {
+                  const asset = selectableAssets.find((a) => a.symbol === l.symbol);
+                  if (!asset) return null;
+                  return { 
+                    asset, 
+                    qty: l.qty || 0, 
+                    priceUSD: l.priceUSD || 0, 
+                    interestRate: l.interestRate || '',
+                    payoutDate: l.payoutDate || ''
+                  } as Row;
+                })
+                .filter((l): l is Row => l !== null);
+              setLoans(validLoans);
+            }
+            
+            // Load settings
+            if (portfolioData.settings) {
+              setSelectedCurrency(portfolioData.settings.selected_currency || 'USD');
+              setExtraPayoutEnabled(portfolioData.settings.extra_payout_enabled || false);
+            }
+            
+            console.log('✅ Portfolio loaded from Supabase');
+            return;
+          }
+        }
+
+        // For guest mode or if Supabase load failed, use localStorage
+        console.log('💾 Loading from localStorage...');
         await storageService.migrateFromLocalStorage();
 
         // Load rows
@@ -923,123 +1004,79 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
     };
 
     loadData();
-  }, [selectableAssets]);
+  }, [selectableAssets, isAuthenticated, user]);
 
-  // Save data - Hybrid storage saving with IndexedDB and localStorage fallback
+  // Save data - Auto-save to Supabase for authenticated users, localStorage for guests
   useEffect(() => {
     const saveData = async () => {
-      if (rows.length > 0) {
-        const dataToSave = rows.map((r) => ({
-          symbol: r.asset.symbol,
-          qty: r.qty,
-          priceUSD: r.priceUSD,
-          interestRate: r.interestRate,
-          payoutDate: r.payoutDate
-        }));
-        
+      if (isAuthenticated && user) {
+        // Save to Supabase for authenticated users
         try {
-          // Create automatic backup before saving new data
-          const existingData = await storageService.load('portfolio-rows');
-          if (existingData) {
-            const timestamp = new Date().toISOString();
-            await storageService.save(`portfolio-rows-backup-${timestamp}`, existingData);
-            console.log('Created automatic backup:', `portfolio-rows-backup-${timestamp}`);
-          }
+          const portfolioData = {
+            assets: rows.map((r) => ({
+              symbol: r.asset.symbol,
+              qty: r.qty,
+              priceUSD: r.priceUSD,
+              interestRate: r.interestRate,
+              payoutDate: r.payoutDate
+            })),
+            coindepo_holdings: coindepoHoldings.map((h) => ({
+              qty: h.qty,
+              priceUSD: h.priceUSD,
+              interestRate: h.interestRate,
+              payoutDate: h.payoutDate
+            })),
+            loans: loans.map((l) => ({
+              symbol: l.asset.symbol,
+              qty: l.qty,
+              priceUSD: l.priceUSD,
+              interestRate: l.interestRate,
+              payoutDate: l.payoutDate
+            })),
+            settings: {
+              selected_currency: selectedCurrency,
+              extra_payout_enabled: extraPayoutEnabled
+            }
+          };
           
-          await storageService.save('portfolio-rows', dataToSave);
-          console.log('Saved rows to storage:', dataToSave);
+          await saveToSupabase(portfolioData);
+          console.log('💾 Auto-saved portfolio to Supabase');
         } catch (error) {
-          console.error('Error saving rows:', error);
+          console.error('❌ Error saving to Supabase:', error);
         }
       } else {
-        try {
-          await storageService.remove('portfolio-rows');
-          console.log('Removed empty rows from storage');
-        } catch (error) {
-          console.error('Error removing rows:', error);
+        // Save to localStorage for guest users
+        if (rows.length > 0) {
+          const dataToSave = rows.map((r) => ({
+            symbol: r.asset.symbol,
+            qty: r.qty,
+            priceUSD: r.priceUSD,
+            interestRate: r.interestRate,
+            payoutDate: r.payoutDate
+          }));
+          
+          try {
+            await storageService.save('portfolio-rows', dataToSave);
+            console.log('💾 Saved rows to localStorage');
+          } catch (error) {
+            console.error('Error saving rows:', error);
+          }
+        } else {
+          try {
+            await storageService.remove('portfolio-rows');
+          } catch (error) {
+            console.error('Error removing rows:', error);
+          }
         }
       }
     };
 
-    saveData();
-  }, [rows]);
+    // Debounce auto-save to avoid too many requests
+    const timeoutId = setTimeout(saveData, 1000);
+    return () => clearTimeout(timeoutId);
+  }, [rows, coindepoHoldings, loans, selectedCurrency, extraPayoutEnabled, isAuthenticated, user]);
 
-  // Save COINDEPO holdings data with hybrid storage
-  useEffect(() => {
-    const saveData = async () => {
-      if (coindepoHoldings.length > 0) {
-        const dataToSave = coindepoHoldings.map((h) => ({
-          qty: h.qty,
-          priceUSD: h.priceUSD,
-          interestRate: h.interestRate,
-          payoutDate: h.payoutDate
-        }));
-        
-        try {
-          // Create automatic backup before saving new data
-          const existingData = await storageService.load('coindepo-holdings');
-          if (existingData) {
-            const timestamp = new Date().toISOString();
-            await storageService.save(`coindepo-holdings-backup-${timestamp}`, existingData);
-            console.log('Created COINDEPO backup:', `coindepo-holdings-backup-${timestamp}`);
-          }
-          
-          await storageService.save('coindepo-holdings', dataToSave);
-          console.log('Saved COINDEPO holdings to storage:', dataToSave);
-        } catch (error) {
-          console.error('Error saving COINDEPO holdings:', error);
-        }
-      } else {
-        try {
-          await storageService.remove('coindepo-holdings');
-          console.log('Removed empty COINDEPO holdings from storage');
-        } catch (error) {
-          console.error('Error removing COINDEPO holdings:', error);
-        }
-      }
-    };
-
-    saveData();
-  }, [coindepoHoldings]);
-
-  // Save loans data with hybrid storage
-  useEffect(() => {
-    const saveData = async () => {
-      if (loans.length > 0) {
-        const dataToSave = loans.map((l) => ({
-          symbol: l.asset.symbol,
-          qty: l.qty,
-          priceUSD: l.priceUSD,
-          interestRate: l.interestRate,
-          payoutDate: l.payoutDate
-        }));
-        
-        try {
-          // Create automatic backup before saving new data
-          const existingData = await storageService.load('portfolio-loans');
-          if (existingData) {
-            const timestamp = new Date().toISOString();
-            await storageService.save(`portfolio-loans-backup-${timestamp}`, existingData);
-            console.log('Created loans backup:', `portfolio-loans-backup-${timestamp}`);
-          }
-          
-          await storageService.save('portfolio-loans', dataToSave);
-          console.log('Saved loans to storage:', dataToSave);
-        } catch (error) {
-          console.error('Error saving loans:', error);
-        }
-      } else {
-        try {
-          await storageService.remove('portfolio-loans');
-          console.log('Removed empty loans from storage');
-        } catch (error) {
-          console.error('Error removing loans:', error);
-        }
-      }
-    };
-
-    saveData();
-  }, [loans]);
+  // Note: COINDEPO and Loans are now saved together with assets in the unified save above
 
   // Automatic backup system - every 15 minutes with hybrid storage
   useEffect(() => {

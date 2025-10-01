@@ -1529,15 +1529,31 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
   return (
     <div className="bg-brand-gray min-h-screen relative">
       {/* Top Right Buttons - Fixed to page */}
-      <div className="fixed top-0 right-0 z-50 flex gap-2" style={{ paddingTop: '10px', paddingRight: '10px' }}>
+      <div className="fixed top-0 right-0 z-50 flex gap-2 bg-white/90 backdrop-blur-sm rounded-bl-lg shadow-lg" style={{ paddingTop: '10px', paddingRight: '10px', paddingBottom: '10px', paddingLeft: '10px' }}>
         <button
           onClick={handleResetPortfolio}
-          className="btn-primary px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-red-600"
+          className="bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 px-3 py-2 text-xs sm:text-sm font-medium rounded-md transition-colors"
           title="Reset entire portfolio"
         >
           Reset Portfolio
         </button>
-        {!guestMode && <LogoutButton />}
+        {!guestMode && (
+          <button
+            onClick={() => {
+              // Logout functionality
+              if (typeof window !== 'undefined') {
+                localStorage.removeItem('cdp-portfolio-data');
+                localStorage.removeItem('cdp-coindepo-holdings');
+                localStorage.removeItem('cdp-loans');
+                window.location.reload();
+              }
+            }}
+            className="bg-blue-50 hover:bg-blue-100 text-blue-600 border border-blue-200 px-3 py-2 text-xs sm:text-sm font-medium rounded-md transition-colors"
+            title="Logout"
+          >
+            Logout
+          </button>
+        )}
       </div>
       
       <div className="max-w-6xl mx-auto px-3 sm:px-4 md:px-8 py-4 sm:py-6 md:py-8">

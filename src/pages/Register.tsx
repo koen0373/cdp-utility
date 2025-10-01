@@ -53,12 +53,12 @@ export const Register: React.FC = () => {
   if (success) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-slate-100 flex items-center justify-center p-4">
-        <div className="w-full max-w-xs bg-white rounded-2xl shadow-xl p-6">
+        <div className="w-full bg-white rounded-2xl shadow-xl p-6 mx-auto" style={{ maxWidth: '280px' }}>
           <div className="text-center">
             <img 
               src={COINDEPO_FULL_LOGO} 
               alt="COINDEPO Portfolio Manager" 
-              className="h-8 w-auto mx-auto mb-4"
+              className="h-12 w-auto mx-auto mb-4"
             />
             <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
               <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -86,27 +86,27 @@ export const Register: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-slate-100 flex items-center justify-center p-4">
-      <div className="w-full max-w-xs bg-white rounded-2xl shadow-xl p-6">
+      <div className="w-full bg-white rounded-2xl shadow-xl p-6 mx-auto" style={{ maxWidth: '280px' }}>
         {/* Logo */}
         <div className="text-center mb-6">
           <img 
             src={COINDEPO_FULL_LOGO} 
             alt="COINDEPO Portfolio Manager" 
-            className="h-8 w-auto mx-auto mb-3"
+            className="h-12 w-auto mx-auto mb-4"
           />
           <h1 className="text-lg font-bold text-blue-600 mb-1">Create Account</h1>
           <p className="text-slate-600 text-xs">Start managing your COINDEPO portfolio</p>
         </div>
 
         {error && (
-          <div className="mb-6 p-3 bg-red-50 border border-red-200 rounded-lg">
+          <div className="mb-4 p-2 bg-red-50 border border-red-200 rounded-lg">
             <p className="text-xs text-red-600">{error}</p>
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-3">
           <div>
-            <label htmlFor="email" className="block text-xs font-semibold text-slate-700 mb-1.5">
+            <label htmlFor="email" className="block text-xs font-semibold text-slate-700 mb-1">
               Email
             </label>
             <input
@@ -115,13 +115,13 @@ export const Register: React.FC = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-2 py-1.5 text-xs border border-slate-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent"
               placeholder="your@email.com"
             />
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-xs font-semibold text-slate-700 mb-1.5">
+            <label htmlFor="password" className="block text-xs font-semibold text-slate-700 mb-1">
               Password
             </label>
             <input
@@ -131,14 +131,14 @@ export const Register: React.FC = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
               minLength={8}
-              className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-2 py-1.5 text-xs border border-slate-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent"
               placeholder="••••••••"
             />
-            <p className="mt-1 text-xs text-slate-500">Minimum 8 characters</p>
+            <p className="mt-0.5 text-xs text-slate-400">Min 8 characters</p>
           </div>
 
           <div>
-            <label htmlFor="confirmPassword" className="block text-xs font-semibold text-slate-700 mb-1.5">
+            <label htmlFor="confirmPassword" className="block text-xs font-semibold text-slate-700 mb-1">
               Confirm Password
             </label>
             <input
@@ -148,7 +148,7 @@ export const Register: React.FC = () => {
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
               minLength={8}
-              className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-2 py-1.5 text-xs border border-slate-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent"
               placeholder="••••••••"
             />
           </div>

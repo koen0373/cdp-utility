@@ -466,17 +466,7 @@ const CoindepoRow: React.FC<{
           <div className="col-span-3 space-y-3">
             <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">APR</div>
             <div className="flex items-center gap-3">
-              <span 
-                className="inline-block font-bold text-base"
-                style={{ 
-                  backgroundColor: '#4ade80', 
-                  color: '#ffffff',
-                  padding: '6px 12px',
-                  borderRadius: '8px',
-                  fontSize: '14px',
-                  fontWeight: '700'
-                }}
-              >
+              <span className="cd-apr-box cd-apr-box-green">
                 {getAPRValue(holding.interestRate).toFixed(1)}%
               </span>
             </div>
@@ -641,17 +631,7 @@ const AssetRow: React.FC<{
           <div className="col-span-3 space-y-3">
             <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">APR</div>
             <div className="flex items-center gap-3">
-              <span 
-                className="inline-block font-bold text-base"
-                style={{ 
-                  backgroundColor: isLoan ? '#ef4444' : '#4ade80', 
-                  color: '#ffffff',
-                  padding: '6px 12px',
-                  borderRadius: '8px',
-                  fontSize: '14px',
-                  fontWeight: '700'
-                }}
-              >
+              <span className={`cd-apr-box ${isLoan ? 'cd-apr-box-red' : 'cd-apr-box-green'}`}>
                 {isLoan 
                   ? (getAPRValue(row.interestRate) - (depositBonus * 100)).toFixed(1)
                   : (getAPRValue(row.interestRate) + (depositBonus * 100)).toFixed(1)
@@ -1528,21 +1508,37 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
 
   return (
     <div className="bg-brand-gray min-h-screen relative">
-      {/* Top Right Buttons - Fixed to viewport */}
+      {/* Top Right Buttons - Fixed to viewport with inline styles */}
       <div 
-        className="fixed top-0 right-0 z-50 flex gap-2 bg-white shadow-lg border border-gray-200" 
         style={{ 
           position: 'fixed',
           top: '10px',
           right: '10px',
-          zIndex: 9999,
+          zIndex: 99999,
+          display: 'flex',
+          gap: '8px',
+          backgroundColor: '#ffffff',
           padding: '8px',
-          borderRadius: '8px'
+          borderRadius: '8px',
+          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+          border: '1px solid #e5e7eb'
         }}
       >
         <button
           onClick={handleResetPortfolio}
-          className="bg-red-500 hover:bg-red-600 text-white px-3 py-2 text-xs sm:text-sm font-medium rounded transition-colors"
+          style={{
+            backgroundColor: '#ef4444',
+            color: '#ffffff',
+            padding: '8px 12px',
+            borderRadius: '6px',
+            fontSize: '14px',
+            fontWeight: '500',
+            border: 'none',
+            cursor: 'pointer',
+            transition: 'background-color 0.2s'
+          }}
+          onMouseEnter={(e) => e.target.style.backgroundColor = '#dc2626'}
+          onMouseLeave={(e) => e.target.style.backgroundColor = '#ef4444'}
           title="Reset entire portfolio"
         >
           Reset Portfolio
@@ -1558,7 +1554,19 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                 window.location.reload();
               }
             }}
-            className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 text-xs sm:text-sm font-medium rounded transition-colors"
+            style={{
+              backgroundColor: '#3b82f6',
+              color: '#ffffff',
+              padding: '8px 12px',
+              borderRadius: '6px',
+              fontSize: '14px',
+              fontWeight: '500',
+              border: 'none',
+              cursor: 'pointer',
+              transition: 'background-color 0.2s'
+            }}
+            onMouseEnter={(e) => e.target.style.backgroundColor = '#2563eb'}
+            onMouseLeave={(e) => e.target.style.backgroundColor = '#3b82f6'}
             title="Logout"
           >
             Logout

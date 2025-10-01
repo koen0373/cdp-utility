@@ -381,7 +381,8 @@ const CoindepoRow: React.FC<{
   selectedCurrency: string;
   exchangeRates: Record<string, number>;
   coindepoPriceStatus: 'loading' | 'live' | 'estimated';
-}> = ({ holding, value, onUpdate, onRemove, coindepoAsset, selectedCurrency, exchangeRates, coindepoPriceStatus }) => {
+  priceChange24h?: number;
+}> = ({ holding, value, onUpdate, onRemove, coindepoAsset, selectedCurrency, exchangeRates, coindepoPriceStatus, priceChange24h }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editQty, setEditQty] = useState<number>(holding.qty);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -473,8 +474,15 @@ const CoindepoRow: React.FC<{
             <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Price</div>
             <div className="text-base font-semibold text-slate-600">
               {formatCurrency(holding.priceUSD, selectedCurrency, exchangeRates)}
-              <div className={`text-xs italic ${coindepoPriceStatus === 'live' ? 'text-green-600' : 'text-orange-500'}`}>
-                {coindepoPriceStatus === 'live' ? '✓ live' : '~est.'}
+              <div className="flex items-center gap-2 mt-1">
+                <div className={`text-xs italic ${coindepoPriceStatus === 'live' ? 'text-green-600' : 'text-orange-500'}`}>
+                  {coindepoPriceStatus === 'live' ? '✓ live' : '~est.'}
+                </div>
+                {coindepoPriceStatus === 'live' && priceChange24h !== undefined && (
+                  <div className={`text-xs font-semibold ${priceChange24h >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    {priceChange24h >= 0 ? '↑' : '↓'} {Math.abs(priceChange24h).toFixed(2)}%
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -790,6 +798,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
   // COINDEPO price state - fetched from CoinGecko API
   const [coindepoPrice, setCoindepoPrice] = useState<number>(0.10);
   const [coindepoPriceStatus, setCoindepoPriceStatus] = useState<'loading' | 'live' | 'estimated'>('estimated');
+  const [coindepoPriceChange, setCoindepoPriceChange] = useState<number>(0);
 
   // Currency symbols and labels
   const CURRENCIES = [
@@ -1123,7 +1132,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
       setCoindepoPriceStatus('loading');
       console.log('Fetching COINDEPO price from CoinGecko...');
       
-      const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=coindepo&vs_currencies=usd');
+      const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=coindepo&vs_currencies=usd&include_24hr_change=true');
       
       if (!response.ok) {
         throw new Error(`CoinGecko API error: ${response.status}`);
@@ -1133,9 +1142,12 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
       
       if (data.coindepo && data.coindepo.usd) {
         const price = data.coindepo.usd;
+        const priceChange = data.coindepo.usd_24h_change || 0;
+        
         setCoindepoPrice(price);
+        setCoindepoPriceChange(priceChange);
         setCoindepoPriceStatus('live');
-        console.log('COINDEPO price updated:', price);
+        console.log('COINDEPO price updated:', price, 'Change 24h:', priceChange.toFixed(2) + '%');
         
         // Update existing COINDEPO holdings with new price
         if (coindepoHoldings.length > 0) {
@@ -1734,6 +1746,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                         selectedCurrency={selectedCurrency}
                         exchangeRates={exchangeRates}
                         coindepoPriceStatus={coindepoPriceStatus}
+                        priceChange24h={coindepoPriceChange}
                         onUpdate={(newQty) => {
                           const next = [...coindepoHoldings];
                           next[i].qty = newQty;
@@ -1986,7 +1999,10 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
           </header>
           
           <PortfolioAllocationChart
-            assetsValue={otherValueUSD}
+            assets={rows.map(row => ({
+              name: row.asset.name,
+              value: row.qty * row.priceUSD
+            }))}
             coindepoValue={cdpValueUSD}
             loansValue={loansValueUSD}
             formatCurrency={(value: number) => {
@@ -2236,40 +2252,35 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                     );
 
                     return (
-                      <div key={`payout-${i}`} className="bg-white rounded-lg border border-slate-200 p-4">
+                      <div key={`payout-${i}`} className="bg-slate-50 rounded-lg p-4">
                         {/* Asset Header */}
-                        <div className="flex items-center justify-between pb-4">
-                          <div className="flex items-center gap-4">
-                            <TokenIcon asset={payout.asset} />
-                            <div className={`cd-asset-name text-lg font-bold ${payout.isLoan ? 'text-red-600' : ''}`}>
-                              {payout.asset.name}
-                            </div>
-                          </div>
-                        </div>
-                        
-                        {/* Visual Separation */}
-                        <div className="cd-visual-separation"></div>
+                        <div className="flex items-center gap-4 pb-4">
+                          <TokenIcon asset={payout.asset} />
+                          <div className={`cd-asset-name text-lg font-bold ${payout.isLoan ? 'text-red-600' : ''}`}>
+                            {payout.asset.name}
+              </div>
+              </div>
                         
                         {/* Details Grid */}
                         <div className="grid grid-cols-2 gap-4">
-                          <div className="space-y-3">
+                          <div className="space-y-2">
                             <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Quantity</div>
                             <div className="text-base font-semibold">{payout.qty.toLocaleString()}</div>
-                          </div>
+            </div>
                           
-                          <div className="space-y-3">
+                          <div className="space-y-2">
                             <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Accrued Interest</div>
                             <div className={`text-base font-semibold ${payout.isLoan ? 'text-red-600' : 'text-green-600'}`}>
                               {payout.isLoan ? '-' : '+'}{(calculation.accruedInterest / assetPrice).toLocaleString()} {payout.asset.symbol}
                               <div className="text-xs text-slate-500 mt-1">
                                 {payout.isLoan ? '-' : '+'}{fmtUSD(calculation.accruedInterest)}
-                              </div>
+          </div>
                             </div>
                           </div>
                         </div>
                         
                         {/* Payout Date */}
-                        <div className="mt-4 pt-4 border-t border-slate-200">
+                        <div className="mt-4">
                           <div className="text-xs text-slate-400">
                             Interest payout date: <span className="font-medium text-slate-500">{new Date(payout.payoutDate).toLocaleDateString()}</span>
                           </div>

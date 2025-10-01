@@ -4,40 +4,60 @@ import { Pie } from 'react-chartjs-2';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
+interface AssetAllocation {
+  name: string;
+  value: number;
+}
+
 interface PortfolioAllocationChartProps {
-  assetsValue: number;
+  assets: AssetAllocation[];
   coindepoValue: number;
   loansValue: number;
   formatCurrency: (value: number) => string;
 }
 
+// Color palette for different assets
+const ASSET_COLORS = [
+  { bg: 'rgba(249, 115, 22, 0.8)', border: 'rgba(249, 115, 22, 1)' },    // Orange
+  { bg: 'rgba(99, 102, 241, 0.8)', border: 'rgba(99, 102, 241, 1)' },    // Indigo
+  { bg: 'rgba(16, 185, 129, 0.8)', border: 'rgba(16, 185, 129, 1)' },    // Green
+  { bg: 'rgba(236, 72, 153, 0.8)', border: 'rgba(236, 72, 153, 1)' },    // Pink
+  { bg: 'rgba(14, 165, 233, 0.8)', border: 'rgba(14, 165, 233, 1)' },    // Sky
+  { bg: 'rgba(168, 85, 247, 0.8)', border: 'rgba(168, 85, 247, 1)' },    // Purple
+  { bg: 'rgba(234, 179, 8, 0.8)', border: 'rgba(234, 179, 8, 1)' },      // Yellow
+  { bg: 'rgba(239, 68, 68, 0.8)', border: 'rgba(239, 68, 68, 1)' },      // Red
+];
+
 export const PortfolioAllocationChart: React.FC<PortfolioAllocationChartProps> = ({
-  assetsValue,
+  assets,
   coindepoValue,
   loansValue,
   formatCurrency
 }) => {
-  const total = assetsValue + coindepoValue;
-  const assetsPercent = total > 0 ? (assetsValue / total) * 100 : 0;
-  const coindepoPercent = total > 0 ? (coindepoValue / total) * 100 : 0;
+  // Combine all holdings
+  const allHoldings = [
+    ...assets.map(a => ({ name: a.name, value: a.value })),
+    ...(coindepoValue > 0 ? [{ name: 'COINDEPO', value: coindepoValue }] : []),
+    ...(loansValue > 0 ? [{ name: 'Loans (Debt)', value: loansValue }] : [])
+  ];
+
+  const total = allHoldings.reduce((sum, h) => sum + h.value, 0);
 
   const data = {
-    labels: ['Other Assets', 'COINDEPO Holdings', ...(loansValue > 0 ? ['Loans (Debt)'] : [])],
+    labels: allHoldings.map(h => h.name),
     datasets: [
       {
-        data: loansValue > 0 
-          ? [assetsValue, coindepoValue, loansValue]
-          : [assetsValue, coindepoValue],
-        backgroundColor: [
-          'rgba(99, 102, 241, 0.8)',   // Indigo for assets
-          'rgba(37, 99, 235, 0.8)',    // Blue for COINDEPO
-          ...(loansValue > 0 ? ['rgba(220, 38, 38, 0.8)'] : [])  // Red for loans
-        ],
-        borderColor: [
-          'rgba(99, 102, 241, 1)',
-          'rgba(37, 99, 235, 1)',
-          ...(loansValue > 0 ? ['rgba(220, 38, 38, 1)'] : [])
-        ],
+        data: allHoldings.map(h => h.value),
+        backgroundColor: allHoldings.map((h, i) => {
+          if (h.name === 'COINDEPO') return 'rgba(37, 99, 235, 0.8)';
+          if (h.name === 'Loans (Debt)') return 'rgba(220, 38, 38, 0.8)';
+          return ASSET_COLORS[i % ASSET_COLORS.length].bg;
+        }),
+        borderColor: allHoldings.map((h, i) => {
+          if (h.name === 'COINDEPO') return 'rgba(37, 99, 235, 1)';
+          if (h.name === 'Loans (Debt)') return 'rgba(220, 38, 38, 1)';
+          return ASSET_COLORS[i % ASSET_COLORS.length].border;
+        }),
         borderWidth: 2,
       },
     ],
@@ -73,30 +93,39 @@ export const PortfolioAllocationChart: React.FC<PortfolioAllocationChartProps> =
   return (
     <div className="space-y-6">
       {/* Chart */}
-      <div className="max-w-xs mx-auto">
+      <div className="max-w-sm mx-auto">
         <Pie data={data} options={options} />
       </div>
 
-      {/* Summary Stats */}
-      <div className="grid grid-cols-2 gap-4 text-center">
-        <div className="bg-indigo-50 rounded-lg p-3">
-          <div className="text-xs text-slate-600 mb-1">Other Assets</div>
-          <div className="text-base font-bold text-indigo-600">{assetsPercent.toFixed(1)}%</div>
-          <div className="text-xs text-slate-500">{formatCurrency(assetsValue)}</div>
-        </div>
-        <div className="bg-blue-50 rounded-lg p-3">
-          <div className="text-xs text-slate-600 mb-1">COINDEPO</div>
-          <div className="text-base font-bold text-blue-600">{coindepoPercent.toFixed(1)}%</div>
-          <div className="text-xs text-slate-500">{formatCurrency(coindepoValue)}</div>
-        </div>
+      {/* Summary Stats - Show all holdings */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-center">
+        {allHoldings.map((holding) => {
+          const percent = total > 0 ? ((holding.value / total) * 100).toFixed(1) : '0';
+          const isLoan = holding.name === 'Loans (Debt)';
+          const isCoindepo = holding.name === 'COINDEPO';
+          
+          return (
+            <div 
+              key={holding.name} 
+              className={`rounded-lg p-3 ${
+                isLoan ? 'bg-red-50' : 
+                isCoindepo ? 'bg-blue-50' : 
+                'bg-slate-50'
+              }`}
+            >
+              <div className="text-xs text-slate-600 mb-1 truncate">{holding.name}</div>
+              <div className={`text-base font-bold ${
+                isLoan ? 'text-red-600' : 
+                isCoindepo ? 'text-blue-600' : 
+                'text-slate-700'
+              }`}>
+                {percent}%
+              </div>
+              <div className="text-xs text-slate-500">{formatCurrency(holding.value)}</div>
+            </div>
+          );
+        })}
       </div>
-      
-      {loansValue > 0 && (
-        <div className="bg-red-50 rounded-lg p-3 text-center">
-          <div className="text-xs text-slate-600 mb-1">Total Loans (Debt)</div>
-          <div className="text-base font-bold text-red-600">{formatCurrency(loansValue)}</div>
-        </div>
-      )}
     </div>
   );
 };

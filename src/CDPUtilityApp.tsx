@@ -2340,27 +2340,27 @@ export default function CDPUtilityApp() {
             <div className="space-y-2 mb-4">
               <div className="flex justify-between items-center">
                 <span className="text-slate-700">Portfolio interest per year:</span>
-                <span className="font-semibold">{fmtUSD(otherValueUSD * 0.24)}</span>
+                <span className="font-semibold text-green-600">+{fmtUSD(otherValueUSD * 0.24)}</span>
                 </div>
               
               {depositBonus > 0 && (
                 <div className="flex justify-between items-center">
-                  <span className="text-green-600">Tier {currentTierIndex + 1} interest bonus per year:</span>
-                  <span className="font-semibold text-green-600">{fmtUSD(depositBonusUSD)}</span>
+                  <span className="text-slate-700">Tier {currentTierIndex + 1} interest bonus per year:</span>
+                  <span className="font-semibold text-green-600">+{fmtUSD(depositBonusUSD)}</span>
                 </div>
               )}
               
               {extraPayoutEnabled && (
                 <div className="flex justify-between items-center">
-                  <span className="cd-token-payout-bonus">Token payout bonus per year:</span>
-                  <span className="font-semibold cd-token-payout-amount">{fmtUSD(tokenPayoutUSD)}</span>
+                  <span className="text-slate-700">Token payout bonus per year:</span>
+                  <span className="font-semibold text-green-600">+{fmtUSD(tokenPayoutUSD)}</span>
               </div>
               )}
               
               {loansValueUSD > 0 && (
                 <div className="flex justify-between items-center">
                   <span className="text-slate-700">Loan interest savings per year:</span>
-                  <span className="font-semibold text-green-600">{fmtUSD(loanSavingsUSD)}</span>
+                  <span className="font-semibold text-green-600">+{fmtUSD(loanSavingsUSD)}</span>
               </div>
               )}
               

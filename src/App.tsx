@@ -4,6 +4,7 @@ import { ProtectedRoute } from './components/ProtectedRoute';
 import { Login } from './pages/Login';
 import { Register } from './pages/Register';
 import { ForgotPassword } from './pages/ForgotPassword';
+import { EnvTest } from './pages/EnvTest';
 import CDPUtilityApp from './CDPUtilityApp';
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/env-test" element={<EnvTest />} />
           <Route path="/guest" element={<CDPUtilityApp guestMode={true} />} />
           
           {/* Protected routes */}

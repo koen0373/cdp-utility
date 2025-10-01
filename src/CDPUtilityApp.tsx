@@ -1274,10 +1274,21 @@ export default function CDPUtilityApp() {
     }
   }
 
-  // Extract individual bonuses
-  const depositBonus = currentTier.depositBonus;
-  const loanBonus = currentTier.loanBonus;
-  const tokenPayoutBonus = extraPayoutEnabled ? currentTier.tokenPayout : 0;
+  // Token Advantage Program activation date
+  const TIER_ACTIVATION_DATE = new Date('2025-10-10T00:00:00');
+  const isTierProgramActive = new Date() >= TIER_ACTIVATION_DATE;
+  
+  // Format activation date for display
+  const activationDateString = TIER_ACTIVATION_DATE.toLocaleDateString('en-US', { 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric' 
+  });
+
+  // Extract individual bonuses (only active after October 10, 2025)
+  const depositBonus = isTierProgramActive ? currentTier.depositBonus : 0;
+  const loanBonus = isTierProgramActive ? currentTier.loanBonus : 0;
+  const tokenPayoutBonus = (isTierProgramActive && extraPayoutEnabled) ? currentTier.tokenPayout : 0;
 
   // Token Advantage Program calculations (Official COINDEPO)
   const depositBonusUSD = otherValueUSD * depositBonus; // Extra APR on deposits
@@ -1465,11 +1476,19 @@ export default function CDPUtilityApp() {
           <header className="mb-4 sm:mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div className="w-full sm:w-auto">
               <h1 className="cd-balance-large text-brand-blue text-2xl">Your Portfolio</h1>
-              {depositBonus > 0 && (
+              {isTierProgramActive && depositBonus > 0 && (
                 <div className="mt-2">
                   <span className="inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs font-semibold bg-green-100 cd-tier-badge">
                     <span className="hidden sm:inline">{tierLabel} Active • +{(depositBonus * 100).toFixed(1)}% Deposit Bonus • -{(loanBonus * 100).toFixed(1)}% Loan Discount</span>
                     <span className="sm:hidden">{tierLabel} Active</span>
+                  </span>
+                </div>
+              )}
+              {!isTierProgramActive && (
+                <div className="mt-2">
+                  <span className="inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">
+                    <span className="hidden sm:inline">Token Advantage Program starts {activationDateString}</span>
+                    <span className="sm:hidden">Tier Program: Coming Soon</span>
                   </span>
                 </div>
               )}
@@ -2238,6 +2257,16 @@ export default function CDPUtilityApp() {
         <div className="flex flex-col sm:flex-row gap-8 sm:gap-12 mt-8 sm:mt-12">
           <section className="card flex-1">
             <h2 className="cd-balance-medium text-blue-600 mb-8 sm:mb-12 text-lg">Your Earnings</h2>
+            
+            {!isTierProgramActive && (
+              <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <p className="text-sm text-blue-700">
+                  <strong>Token Advantage Program starts {activationDateString}</strong>
+                  <br />
+                  Tier bonuses will be calculated from this date onwards.
+                </p>
+              </div>
+            )}
 
             <div className="space-y-3 mb-6">
               <div className="flex justify-between items-center">
@@ -2296,7 +2325,8 @@ export default function CDPUtilityApp() {
                         id="tokenPayoutBonus"
                         checked={extraPayoutEnabled}
                         onChange={(e) => setExtraPayoutEnabled(e.target.checked)}
-                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                        disabled={!isTierProgramActive}
+                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
                       />
                       <label htmlFor="tokenPayoutBonus" className="text-sm font-medium text-slate-700">
                         Enable
@@ -2363,6 +2393,17 @@ export default function CDPUtilityApp() {
 
           <section className="card flex-1">
             <h2 className="cd-balance-medium mb-8 sm:mb-12 text-blue-600 text-lg">COINDEPO Holdings Advantages</h2>
+            
+            {!isTierProgramActive && (
+              <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <p className="text-sm text-blue-700">
+                  <strong>Coming Soon: {activationDateString}</strong>
+                  <br />
+                  The Token Advantage Program with tier benefits launches on this date.
+                </p>
+              </div>
+            )}
+            
             {otherValueUSD <= 0 ? (
               <p className="text-slate-500">Add assets to see required COINDEPO.</p>
             ) : (

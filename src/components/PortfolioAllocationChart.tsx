@@ -93,7 +93,7 @@ export const PortfolioAllocationChart: React.FC<PortfolioAllocationChartProps> =
   return (
     <div className="space-y-6">
       {/* Chart */}
-      <div className="max-w-sm mx-auto">
+      <div className="max-w-xs mx-auto">
         <Pie data={data} options={options} />
       </div>
 

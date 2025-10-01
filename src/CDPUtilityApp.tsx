@@ -2259,7 +2259,7 @@ export default function CDPUtilityApp() {
             <h2 className="cd-balance-medium text-blue-600 mb-8 sm:mb-12 text-lg">Your Earnings</h2>
             
             {!isTierProgramActive && (
-              <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <div className="mb-6 p-4 bg-blue-50 rounded-lg">
                 <p className="text-sm text-blue-700">
                   <strong>Token Advantage Program starts {activationDateString}</strong>
                   <br />
@@ -2395,7 +2395,7 @@ export default function CDPUtilityApp() {
             <h2 className="cd-balance-medium mb-8 sm:mb-12 text-blue-600 text-lg">COINDEPO Holdings Advantages</h2>
             
             {!isTierProgramActive && (
-              <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <div className="mb-6 p-4 bg-blue-50 rounded-lg">
                 <p className="text-sm text-blue-700">
                   <strong>Coming Soon: {activationDateString}</strong>
                   <br />

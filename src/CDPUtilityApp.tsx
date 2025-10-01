@@ -439,7 +439,7 @@ const CoindepoRow: React.FC<{
                   {coindepoPriceStatus === 'live' ? '✓ live' : '~est.'}
                 </div>
                 {coindepoPriceStatus === 'live' && priceChange24h !== undefined && (
-                  <div className={`text-xs font-semibold ${priceChange24h >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                  <div className={`text-xs font-semibold ${priceChange24h >= 0 ? 'cd-price-change-positive' : 'cd-price-change-negative'}`}>
                     {priceChange24h >= 0 ? '↑' : '↓'} {Math.abs(priceChange24h).toFixed(2)}%
                   </div>
                 )}
@@ -614,7 +614,7 @@ const AssetRow: React.FC<{
               {row.priceUSD && priceChange24h !== null && priceChange24h !== undefined && (
                 <div className="flex items-center gap-2 mt-1">
                   <div className="text-xs italic text-green-600">✓ live</div>
-                  <div className={`text-xs font-semibold ${priceChange24h >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                  <div className={`text-xs font-semibold ${priceChange24h >= 0 ? 'cd-price-change-positive' : 'cd-price-change-negative'}`}>
                     {priceChange24h >= 0 ? '↑' : '↓'} {Math.abs(priceChange24h).toFixed(2)}%
                   </div>
                 </div>

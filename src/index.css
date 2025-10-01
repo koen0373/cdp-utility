@@ -137,6 +137,17 @@ h1.cd-balance-large:not(.text-brand-blue) {
   font-weight: 600 !important;
 }
 
+/* Force 24h price change colors - cannot be overridden */
+.cd-price-change-positive {
+  color: #16a34a !important;
+  font-weight: 600 !important;
+}
+
+.cd-price-change-negative {
+  color: #dc2626 !important;
+  font-weight: 600 !important;
+}
+
 
 .cd-value-secondary {
   font-family: 'Poppins', sans-serif;

@@ -1284,6 +1284,9 @@ export default function CDPUtilityApp() {
   const loanSavingsUSD = loansValueUSD * loanBonus; // Savings on loan interest
   const tokenPayoutUSD = tokenPayoutBonus * cdpValueUSD; // Extra payout in tokens (if enabled) - based on COINDEPO holdings
   
+  // Calculate loan interest to pay (27.5% APR with tier discount)
+  const loanInterestUSD = loansValueUSD * 0.275 * (1 - loanBonus); // Interest to pay on loans
+  
   // Total utility from Token Advantage Program
   const utilityUSD = depositBonusUSD + loanSavingsUSD + tokenPayoutUSD;
   const utilityYield = cdpValueUSD > 0 ? (utilityUSD / cdpValueUSD) * 100 : 0;
@@ -2330,12 +2333,19 @@ export default function CDPUtilityApp() {
                   <span className="font-semibold text-green-600">{fmtUSD(loanSavingsUSD)}</span>
               </div>
               )}
+              
+              {loansValueUSD > 0 && (
+                <div className="flex justify-between items-center">
+                  <span className="text-slate-700">Loan interest to pay per year:</span>
+                  <span className="font-semibold text-red-600">-{fmtUSD(loanInterestUSD)}</span>
+              </div>
+              )}
             </div>
 
             <div className="pt-4 border-t border-slate-200 space-y-2">
               <div className="flex justify-between items-center">
                 <span className="text-base font-semibold text-blue-600">Total passive income per year:</span>
-                <span className="text-base font-semibold text-blue-600">{fmtUSD(otherValueUSD * 0.24 + utilityUSD)}</span>
+                <span className="text-base font-semibold text-blue-600">{fmtUSD(otherValueUSD * 0.24 + utilityUSD - loanInterestUSD)}</span>
               </div>
               
               <div className="flex justify-between items-center text-sm text-slate-600">

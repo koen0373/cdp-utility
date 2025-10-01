@@ -51,14 +51,19 @@ export const portfolioService = {
       
       const { error } = await supabase
         .from('portfolios')
-        .upsert({
-          user_id: userId,
-          assets: portfolio.assets,
-          coindepo_holdings: portfolio.coindepo_holdings,
-          loans: portfolio.loans,
-          settings: portfolio.settings,
-          updated_at: new Date().toISOString()
-        });
+        .upsert(
+          {
+            user_id: userId,
+            assets: portfolio.assets,
+            coindepo_holdings: portfolio.coindepo_holdings,
+            loans: portfolio.loans,
+            settings: portfolio.settings,
+            updated_at: new Date().toISOString()
+          },
+          {
+            onConflict: 'user_id'
+          }
+        );
 
       if (error) throw error;
       

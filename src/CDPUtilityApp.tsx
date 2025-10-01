@@ -56,7 +56,7 @@ function isStablecoin(symbol: string): boolean {
 function getAPROptions(assetSymbol: string) {
   // COINDEPO specific APRs - Updated with new rates
   if (assetSymbol === "COINDEPO") {
-    return [
+  return [
       { value: "coindepo-18.5", label: "WEEKLY: 18.5% APR" },
       { value: "coindepo-20", label: "MONTHLY: 20% APR" },
       { value: "coindepo-21", label: "QUARTERLY: 21% APR" },
@@ -127,38 +127,49 @@ const TokenIcon: React.FC<{ asset: Asset; size?: number }> = ({ asset, size = 32
   
   // Generate initials for fallback
   const initials = asset.name
-    ?.split(" ")
-    .map((p) => p[0])
-    .join("")
-    .slice(0, 3)
-    .toUpperCase() ?? "?";
+      ?.split(" ")
+      .map((p) => p[0])
+      .join("")
+      .slice(0, 3)
+      .toUpperCase() ?? "?";
 
-  // State for image loading
-  const [currentUrlIndex, setCurrentUrlIndex] = useState(0);
+  // State for icon loading
+  const [iconUrl, setIconUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
 
-  // Reliable crypto icon URLs in order of preference
-  const iconUrls = [
-    // CoinGecko API (most reliable)
-    `https://assets.coingecko.com/coins/images/1/large/${symbol}.png`,
-    // CryptoIcons.org (reliable)
-    `https://cryptoicons.org/api/color/${symbol}/200`,
-    `https://cryptoicons.org/api/icon/${symbol}/200`,
-    // CoinMarketCap (backup)
-    `https://s2.coinmarketcap.com/static/img/coins/64x64/${symbol}.png`,
-    // SpotHQ icons (backup)
-    `https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/32/color/${symbol}.png`,
-  ];
+  // Fetch icon URL from our proxy
+  useEffect(() => {
+    const fetchIconUrl = async () => {
+      try {
+        setIsLoading(true);
+        setHasError(false);
+        
+        const response = await fetch(`/api/crypto-icon-proxy?symbol=${encodeURIComponent(symbol)}`);
+        
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success && data.iconUrl) {
+            setIconUrl(data.iconUrl);
+          } else {
+            setHasError(true);
+          }
+        } else {
+          setHasError(true);
+        }
+      } catch (error) {
+        console.error('Failed to fetch crypto icon:', error);
+        setHasError(true);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchIconUrl();
+  }, [symbol]);
 
   const handleImageError = () => {
-    if (currentUrlIndex + 1 < iconUrls.length) {
-      setCurrentUrlIndex(currentUrlIndex + 1);
-      setIsLoading(true);
-    } else {
-      setHasError(true);
-      setIsLoading(false);
-    }
+    setHasError(true);
   };
 
   const handleImageLoad = () => {
@@ -167,7 +178,7 @@ const TokenIcon: React.FC<{ asset: Asset; size?: number }> = ({ asset, size = 32
   };
 
   // Show loading state
-  if (isLoading && !hasError && iconUrls.length > 0) {
+  if (isLoading) {
     return (
       <div
         style={{ width: size, height: size }}
@@ -179,7 +190,7 @@ const TokenIcon: React.FC<{ asset: Asset; size?: number }> = ({ asset, size = 32
   }
 
   // Show fallback with initials
-  if (hasError || !iconUrls.length || currentUrlIndex >= iconUrls.length) {
+  if (hasError || !iconUrl) {
     return (
       <div
         style={{ width: size, height: size }}
@@ -193,11 +204,11 @@ const TokenIcon: React.FC<{ asset: Asset; size?: number }> = ({ asset, size = 32
   // Show crypto icon
   return (
     <img
-      src={iconUrls[currentUrlIndex]}
+      src={iconUrl}
       width={size}
       height={size}
       className="rounded-full"
-      style={{ display: isLoading ? 'none' : 'block', border: 'none', outline: 'none' }}
+      style={{ border: 'none', outline: 'none' }}
       onError={handleImageError}
       onLoad={handleImageLoad}
       alt={`${asset.name} icon`}

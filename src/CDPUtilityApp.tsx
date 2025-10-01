@@ -7,24 +7,7 @@ import { storageService } from "./storageService";
 import { LogoutButton } from "./components/LogoutButton";
 import { usePortfolioSync } from "./hooks/usePortfolioSync";
 import { PortfolioAllocationChart } from "./components/PortfolioAllocationChart";
-
-// Local crypto icon imports
-import BTC_ICON from "./assets/crypto-icons/btc.png";
-import ETH_ICON from "./assets/crypto-icons/eth.png";
-import USDC_ICON from "./assets/crypto-icons/usdc.png";
-import USDT_ICON from "./assets/crypto-icons/usdt.png";
-import XRP_ICON from "./assets/crypto-icons/xrp.png";
-import ADA_ICON from "./assets/crypto-icons/ada.png";
-import SOL_ICON from "./assets/crypto-icons/sol.png";
-import DOT_ICON from "./assets/crypto-icons/dot.png";
-import MATIC_ICON from "./assets/crypto-icons/matic.png";
-import AVAX_ICON from "./assets/crypto-icons/avax.png";
-import LINK_ICON from "./assets/crypto-icons/link.png";
-import UNI_ICON from "./assets/crypto-icons/uni.png";
-import LTC_ICON from "./assets/crypto-icons/ltc.png";
-import BCH_ICON from "./assets/crypto-icons/bch.png";
-import DOGE_ICON from "./assets/crypto-icons/doge.png";
-import BNB_ICON from "./assets/crypto-icons/bnb.png"; // zet je logo hier neer
+// Using reliable external crypto icon APIs
 
 type Asset = { symbol: string; name: string; coingeckoId?: string; isCDP?: boolean };
 type Row = { asset: Asset; qty: number; priceUSD: number; interestRate?: string; payoutDate?: string; isEditing?: boolean };
@@ -123,66 +106,7 @@ function getAPROptions(assetSymbol: string) {
 }
 
 /* -------------------- Icons -------------------- */
-// Local icon mapping for common cryptocurrencies
-const LOCAL_ICON_MAP: Record<string, string> = {
-  'btc': BTC_ICON,
-  'eth': ETH_ICON,
-  'usdc': USDC_ICON,
-  'usdt': USDT_ICON,
-  'xrp': XRP_ICON,
-  'ada': ADA_ICON,
-  'sol': SOL_ICON,
-  'dot': DOT_ICON,
-  'matic': MATIC_ICON,
-  'avax': AVAX_ICON,
-  'link': LINK_ICON,
-  'uni': UNI_ICON,
-  'ltc': LTC_ICON,
-  'bch': BCH_ICON,
-  'doge': DOGE_ICON,
-  'bnb': BNB_ICON,
-  // Add more as needed
-};
-
-function getLocalIcon(asset?: Asset): string | null {
-  if (!asset) return null;
-  const ticker = asset.symbol.toLowerCase().split("-")[0];
-  return LOCAL_ICON_MAP[ticker] || null;
-}
-
-function iconCandidates(asset?: Asset): string[] {
-  if (!asset) return [];
-  const ticker = asset.symbol.toLowerCase().split("-")[0];
-  const geckoId = asset.coingeckoId;
-  
-  const candidates = [
-    // Primary sources - most reliable
-    `https://assets.coingecko.com/coins/images/1/large/${ticker}.png`,
-    `https://cryptoicons.org/api/icon/${ticker}/200`,
-    `https://cryptoicons.org/api/color/${ticker}/200`,
-    
-    // CoinGecko API (if available)
-    ...(geckoId ? [`https://api.coingecko.com/api/v3/coins/${geckoId}/image`] : []),
-    
-    // SpotHQ icons (backup)
-    `https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/32/color/${ticker}.png`,
-    `https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/32/icon/${ticker}.png`,
-    
-    // Additional fallbacks
-    `https://coin-images.coingecko.com/coins/images/1/large/${ticker}.png`,
-    `https://s2.coinmarketcap.com/static/img/coins/64x64/${ticker}.png`,
-    `https://s2.coinmarketcap.com/static/img/coins/32x32/${ticker}.png`,
-    
-    // Generic crypto icon services
-    `https://cryptologos.cc/logos/${ticker}-${ticker}-logo.png`,
-    `https://cryptofonts.com/img/icons/${ticker}.svg`,
-    
-    // Last resort - use a generic crypto icon
-    `https://cryptoicons.org/api/icon/btc/200`
-  ];
-  
-  return candidates;
-}
+// Using reliable external crypto icon APIs
 
 const TokenIcon: React.FC<{ asset: Asset; size?: number }> = ({ asset, size = 32 }) => {
   if (asset.isCDP) {
@@ -198,38 +122,38 @@ const TokenIcon: React.FC<{ asset: Asset; size?: number }> = ({ asset, size = 32
     );
   }
   
-  // Try local icon first
-  const localIcon = getLocalIcon(asset);
-  if (localIcon) {
-    return (
-      <img
-        src={localIcon}
-        width={size}
-        height={size}
-        className="rounded-full"
-        style={{ border: 'none', outline: 'none' }}
-        alt={`${asset.name} icon`}
-      />
-    );
-  }
+  // Get the symbol (lowercase, remove network suffixes)
+  const symbol = asset.symbol.toLowerCase().split('-')[0].split('_')[0];
   
-  // Fallback to external sources if no local icon
-  const [idx, setIdx] = useState(0);
+  // Generate initials for fallback
+  const initials = asset.name
+    ?.split(" ")
+    .map((p) => p[0])
+    .join("")
+    .slice(0, 3)
+    .toUpperCase() ?? "?";
+
+  // State for image loading
+  const [currentUrlIndex, setCurrentUrlIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
-  const urls = iconCandidates(asset);
-  
-  const initials =
-    asset.name
-      ?.split(" ")
-      .map((p) => p[0])
-      .join("")
-      .slice(0, 3)
-      .toUpperCase() ?? "?";
+
+  // Reliable crypto icon URLs in order of preference
+  const iconUrls = [
+    // CoinGecko API (most reliable)
+    `https://assets.coingecko.com/coins/images/1/large/${symbol}.png`,
+    // CryptoIcons.org (reliable)
+    `https://cryptoicons.org/api/color/${symbol}/200`,
+    `https://cryptoicons.org/api/icon/${symbol}/200`,
+    // CoinMarketCap (backup)
+    `https://s2.coinmarketcap.com/static/img/coins/64x64/${symbol}.png`,
+    // SpotHQ icons (backup)
+    `https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/32/color/${symbol}.png`,
+  ];
 
   const handleImageError = () => {
-    if (idx + 1 < urls.length) {
-      setIdx(idx + 1);
+    if (currentUrlIndex + 1 < iconUrls.length) {
+      setCurrentUrlIndex(currentUrlIndex + 1);
       setIsLoading(true);
     } else {
       setHasError(true);
@@ -243,7 +167,7 @@ const TokenIcon: React.FC<{ asset: Asset; size?: number }> = ({ asset, size = 32
   };
 
   // Show loading state
-  if (isLoading && !hasError && urls.length > 0) {
+  if (isLoading && !hasError && iconUrls.length > 0) {
     return (
       <div
         style={{ width: size, height: size }}
@@ -255,7 +179,7 @@ const TokenIcon: React.FC<{ asset: Asset; size?: number }> = ({ asset, size = 32
   }
 
   // Show fallback with initials
-  if (hasError || !urls.length || idx >= urls.length) {
+  if (hasError || !iconUrls.length || currentUrlIndex >= iconUrls.length) {
     return (
       <div
         style={{ width: size, height: size }}
@@ -266,10 +190,10 @@ const TokenIcon: React.FC<{ asset: Asset; size?: number }> = ({ asset, size = 32
     );
   }
 
-  // Show external image
+  // Show crypto icon
   return (
     <img
-      src={urls[idx]}
+      src={iconUrls[currentUrlIndex]}
       width={size}
       height={size}
       className="rounded-full"
@@ -2805,3 +2729,4 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
     </div>
   );
 }// Force refresh Sun Sep 28 20:43:34 CEST 2025
+

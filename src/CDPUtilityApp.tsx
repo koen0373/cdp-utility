@@ -1,5 +1,6 @@
 // src/CDPUtilityApp.tsx - Updated Layout v2
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import styled from "styled-components";
 import { ASSETS } from "./data/assets";
 import COINDEPO_LOGO from "./assets/COINDEPO.webp";
 import COINDEPO_FULL_LOGO from "./assets/Manager logo.png";
@@ -8,6 +9,37 @@ import { LogoutButton } from "./components/LogoutButton";
 import { usePortfolioSync } from "./hooks/usePortfolioSync";
 import { PortfolioAllocationChart } from "./components/PortfolioAllocationChart";
 // Using reliable external crypto icon APIs
+
+// Styled components for robust positioning
+const TopRightButtons = styled.div`
+  position: fixed !important;
+  top: 10px !important;
+  right: 10px !important;
+  z-index: 99999 !important;
+  display: flex !important;
+  gap: 8px !important;
+  background-color: #ffffff !important;
+  padding: 8px !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+  border: 1px solid #e5e7eb !important;
+`;
+
+const TopButton = styled.button<{ variant: 'red' | 'blue' }>`
+  background-color: ${props => props.variant === 'red' ? '#ef4444' : '#3b82f6'} !important;
+  color: #ffffff !important;
+  padding: 8px 12px !important;
+  border-radius: 6px !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  border: none !important;
+  cursor: pointer !important;
+  transition: background-color 0.2s !important;
+  
+  &:hover {
+    background-color: ${props => props.variant === 'red' ? '#dc2626' : '#2563eb'} !important;
+  }
+`;
 
 type Asset = { symbol: string; name: string; coingeckoId?: string; isCDP?: boolean };
 type Row = { asset: Asset; qty: number; priceUSD: number; interestRate?: string; payoutDate?: string; isEditing?: boolean };
@@ -1508,43 +1540,18 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
 
   return (
     <div className="bg-brand-gray min-h-screen relative">
-      {/* Top Right Buttons - Fixed to viewport with inline styles */}
-      <div 
-        style={{ 
-          position: 'fixed',
-          top: '10px',
-          right: '10px',
-          zIndex: 99999,
-          display: 'flex',
-          gap: '8px',
-          backgroundColor: '#ffffff',
-          padding: '8px',
-          borderRadius: '8px',
-          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-          border: '1px solid #e5e7eb'
-        }}
-      >
-        <button
+      {/* Top Right Buttons - Using styled-components for robust positioning */}
+      <TopRightButtons>
+        <TopButton
+          variant="red"
           onClick={handleResetPortfolio}
-          style={{
-            backgroundColor: '#ef4444',
-            color: '#ffffff',
-            padding: '8px 12px',
-            borderRadius: '6px',
-            fontSize: '14px',
-            fontWeight: '500',
-            border: 'none',
-            cursor: 'pointer',
-            transition: 'background-color 0.2s'
-          }}
-          onMouseEnter={(e) => e.target.style.backgroundColor = '#dc2626'}
-          onMouseLeave={(e) => e.target.style.backgroundColor = '#ef4444'}
           title="Reset entire portfolio"
         >
           Reset Portfolio
-        </button>
+        </TopButton>
         {!guestMode && (
-          <button
+          <TopButton
+            variant="blue"
             onClick={() => {
               // Logout functionality
               if (typeof window !== 'undefined') {
@@ -1554,25 +1561,12 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                 window.location.reload();
               }
             }}
-            style={{
-              backgroundColor: '#3b82f6',
-              color: '#ffffff',
-              padding: '8px 12px',
-              borderRadius: '6px',
-              fontSize: '14px',
-              fontWeight: '500',
-              border: 'none',
-              cursor: 'pointer',
-              transition: 'background-color 0.2s'
-            }}
-            onMouseEnter={(e) => e.target.style.backgroundColor = '#2563eb'}
-            onMouseLeave={(e) => e.target.style.backgroundColor = '#3b82f6'}
             title="Logout"
           >
             Logout
-          </button>
+          </TopButton>
         )}
-      </div>
+      </TopRightButtons>
       
       <div className="max-w-6xl mx-auto px-3 sm:px-4 md:px-8 py-4 sm:py-6 md:py-8">
         {/* Header Section */}

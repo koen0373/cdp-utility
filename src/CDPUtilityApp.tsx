@@ -2079,7 +2079,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
           </div>
 
             {/* Extra witregel en groene totaal */}
-            <div className="mt-8 pt-4 flex justify-end">
+            <div className="mt-4 flex justify-end">
               <div className="text-right">
                 <div className="cd-total-green">
                   Net Holdings: {formatCurrency(netHoldings)}
@@ -2245,7 +2245,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                 </div>
 
                           {/* Extra witregel en groene totaal */}
-                          <div className="mt-8 pt-4 flex justify-end">
+                          <div className="mt-4 flex justify-end">
                             <div className="text-right">
                               <div className="cd-total-green">
                                 Net Interest Income: {fmtUSD(netAnnualInterest)}/year
@@ -2415,7 +2415,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
           </div>
 
                   {/* Extra witregel en groene totaal */}
-                  <div className="mt-8 pt-4 flex justify-end">
+                  <div className="mt-4 flex justify-end">
                     <div className="text-right">
                       {(() => {
                         const totalAccruedInterest = upcomingPayouts.reduce((sum, payout) => {
@@ -2594,7 +2594,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
             </div>
             
             {/* Extra witregel en groene totaal */}
-            <div className="mt-8 pt-4 grid grid-cols-12 gap-2 items-center">
+            <div className="mt-4 grid grid-cols-12 gap-2 items-center">
               <div className="col-span-8 cd-total-green-sm">Total benefits per year:</div>
               <div className="col-span-4 text-right cd-total-green-sm">{fmtUSD(otherValueUSD * 0.24 + utilityUSD)}</div>
             </div>

@@ -13,7 +13,7 @@ export const ASSETS: AssetDef[] = [
   { symbol: "DAI", name: "Dai", geckoId: "dai" },
   { symbol: "BTC", name: "Bitcoin", geckoId: "bitcoin" },
   { symbol: "ETH", name: "Ethereum", geckoId: "ethereum" },
-  { symbol: "XRP", name: "XRP Ripple", geckoId: "ripple" },
+  { symbol: "XRP", name: "XRP", geckoId: "ripple" },
   { symbol: "BNB", name: "BNB", geckoId: "binancecoin" },
   { symbol: "SOL", name: "Solana", geckoId: "solana" },
   { symbol: "DOGE", name: "Dogecoin", geckoId: "dogecoin" },
@@ -37,7 +37,7 @@ export const ASSETS: AssetDef[] = [
   { symbol: "FIL", name: "Filecoin", geckoId: "filecoin" },
   { symbol: "PAXG", name: "PAX Gold", geckoId: "pax-gold" },
   { symbol: "XAUT", name: "Tether Gold", geckoId: "tether-gold" },
-  { symbol: "COINDEPO", name: "COINDEPO Token", isCDP: true }
+  { symbol: "COINDEPO", name: "COINDEPO", isCDP: true }
 
 ];
 

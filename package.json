@@ -1,8 +1,9 @@
 {
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "build": "rm -rf dist && vite build",
+    "preview": "vite preview",
+    "vercel-build": "rm -rf dist && rm -rf .vite && vite build"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.58.0",

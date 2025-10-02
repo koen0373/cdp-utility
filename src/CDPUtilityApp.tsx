@@ -2805,3 +2805,4 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
 
 // Force rebuild Thu Oct  2 09:22:11 CEST 2025
 // Vercel webhook trigger - Thu Oct  2 09:44:29 CEST 2025
+// FINAL TRIGGER: Thu Oct  2 09:47:48 CEST 2025

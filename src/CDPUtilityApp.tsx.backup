@@ -1,45 +1,13 @@
-// src/CDPUtilityApp.tsx - Updated Layout v2 - Build: 2025-10-02T09:15:00
+// src/CDPUtilityApp.tsx - Updated Layout v2
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import styled from "styled-components";
 import { ASSETS } from "./data/assets";
 import COINDEPO_LOGO from "./assets/COINDEPO.webp";
 import COINDEPO_FULL_LOGO from "./assets/Manager logo.png";
 import { storageService } from "./storageService";
-import { LogoutButton } from "./components/LogoutButton";
 import { usePortfolioSync } from "./hooks/usePortfolioSync";
 import { PortfolioAllocationChart } from "./components/PortfolioAllocationChart";
 // Using reliable external crypto icon APIs
 
-// Styled components for robust positioning
-const TopRightButtons = styled.div`
-  position: fixed !important;
-  top: 10px !important;
-  right: 10px !important;
-  z-index: 99999 !important;
-  display: flex !important;
-  gap: 8px !important;
-  background-color: #ffffff !important;
-  padding: 8px !important;
-  border-radius: 8px !important;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
-  border: 1px solid #e5e7eb !important;
-`;
-
-const TopButton = styled.button<{ variant: 'red' | 'blue' }>`
-  background-color: ${props => props.variant === 'red' ? '#ef4444' : '#3b82f6'} !important;
-  color: #ffffff !important;
-  padding: 8px 12px !important;
-  border-radius: 6px !important;
-  font-size: 14px !important;
-  font-weight: 500 !important;
-  border: none !important;
-  cursor: pointer !important;
-  transition: background-color 0.2s !important;
-  
-  &:hover {
-    background-color: ${props => props.variant === 'red' ? '#dc2626' : '#2563eb'} !important;
-  }
-`;
 
 type Asset = { symbol: string; name: string; coingeckoId?: string; isCDP?: boolean };
 type Row = { asset: Asset; qty: number; priceUSD: number; interestRate?: string; payoutDate?: string; isEditing?: boolean };
@@ -231,7 +199,7 @@ const TokenIcon: React.FC<{ asset: Asset; size?: number }> = ({ asset, size = 32
         style={{ width: size, height: size }}
         className="rounded-full bg-slate-200 grid place-items-center"
       >
-        <div className="w-4 h-4 border-2 border-slate-400 border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-4 h-4 border-2 border-slate-400 rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -470,7 +438,7 @@ const CoindepoRow: React.FC<{
                     value={editQty}
                     onChange={(e) => setEditQty(toNum(e.target.value))}
                     onKeyDown={(e) => e.key === "Enter" && save()}
-                    className="w-24 h-8 px-2 bg-slate-50 rounded text-center text-base font-semibold"
+                    className="w-24 h-8 px-2 rounded text-center text-base font-semibold bg-slate-50"
                   />
                 ) : (
                   holding.qty.toLocaleString()
@@ -643,7 +611,7 @@ const AssetRow: React.FC<{
                     value={editQty}
                     onChange={(e) => setEditQty(toNum(e.target.value))}
                     onKeyDown={(e) => e.key === "Enter" && save()}
-                    className="w-24 h-8 px-2 bg-slate-50 rounded text-center text-base font-semibold"
+                    className="w-24 h-8 px-2 rounded text-center text-base font-semibold bg-slate-50"
                   />
                 ) : (
                   row.qty.toLocaleString()
@@ -776,7 +744,6 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
   const [addAssetInterestRate, setAddAssetInterestRate] = useState("");
   const [addAssetPayoutDate, setAddAssetPayoutDate] = useState(""); // New state for payout date
   const [selectedAssetPrice, setSelectedAssetPrice] = useState<number>(0);
-  const [selectedAssetPriceChange, setSelectedAssetPriceChange] = useState<number | null>(null);
 
   // COINDEPO holdings (nu als array voor meerdere holdings)
   const [coindepoHoldings, setCoindepoHoldings] = useState<Row[]>([]);
@@ -863,7 +830,6 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
   const [addLoanQty, setAddLoanQty] = useState<number>(0);
   const [addLoanAPR, setAddLoanAPR] = useState("");
   const [selectedLoanPrice, setSelectedLoanPrice] = useState<number>(0);
-  const [selectedLoanPriceChange, setSelectedLoanPriceChange] = useState<number | null>(null);
 
   // Price changes for existing assets and loans
   const [assetPriceChanges, setAssetPriceChanges] = useState<Record<string, number | null>>({});
@@ -1304,12 +1270,10 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
           console.log(`Price response for ${asset.symbol}:`, result);
           if (result.price && result.price > 0) {
             setSelectedAssetPrice(result.price);
-            setSelectedAssetPriceChange(result.priceChange24h);
             console.log(`Price set for ${asset.symbol}: $${result.price}, 24h change: ${result.priceChange24h}%`);
           } else {
             console.log(`No valid price for ${asset.symbol}, setting to 0`);
             setSelectedAssetPrice(0);
-            setSelectedAssetPriceChange(null);
           }
         }).catch(error => {
           console.error(`Error fetching price for ${asset.symbol}:`, error);
@@ -1340,12 +1304,10 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
           console.log(`Loan price response for ${asset.symbol}:`, result);
           if (result.price && result.price > 0) {
             setSelectedLoanPrice(result.price);
-            setSelectedLoanPriceChange(result.priceChange24h);
             console.log(`Loan price set for ${asset.symbol}: $${result.price}, 24h change: ${result.priceChange24h}%`);
           } else {
             console.log(`No valid loan price for ${asset.symbol}, setting to 0`);
             setSelectedLoanPrice(0);
-            setSelectedLoanPriceChange(null);
           }
         }).catch(error => {
           console.error(`Error fetching loan price for ${asset.symbol}:`, error);
@@ -1552,35 +1514,77 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
 
   return (
     <div className="bg-brand-gray min-h-screen relative">
-      {/* Top Right Buttons - Using styled-components for robust positioning */}
-      <TopRightButtons>
-        <TopButton
-          variant="red"
-          onClick={handleResetPortfolio}
-          title="Reset entire portfolio"
-        >
-          Reset Portfolio
-        </TopButton>
-        {!guestMode && (
-          <TopButton
-            variant="blue"
-            onClick={() => {
-              // Logout functionality
-              if (typeof window !== 'undefined') {
-                localStorage.removeItem('cdp-portfolio-data');
-                localStorage.removeItem('cdp-coindepo-holdings');
-                localStorage.removeItem('cdp-loans');
-                window.location.reload();
-              }
+      {/* Top padding area with buttons positioned inside */}
+      <div style={{ paddingTop: '150px', position: 'relative' }}>
+        {/* Top Right Buttons - Positioned in the padding area */}
+        <div style={{ 
+          position: 'absolute', 
+          top: '10px', 
+          right: '10px', 
+          display: 'flex', 
+          gap: '8px' 
+        }}>
+          <button
+            onClick={handleResetPortfolio}
+            title="Reset entire portfolio"
+            style={{
+              backgroundColor: 'transparent',
+              color: '#ef4444',
+              padding: '8px 12px',
+              border: '1px solid #ef4444',
+              fontSize: '14px',
+              fontWeight: '500',
+              cursor: 'pointer',
+              transition: 'all 0.2s'
             }}
-            title="Logout"
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = '#ef4444';
+              e.currentTarget.style.color = '#ffffff';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'transparent';
+              e.currentTarget.style.color = '#ef4444';
+            }}
           >
-            Logout
-          </TopButton>
-        )}
-      </TopRightButtons>
-      
-      <div className="max-w-6xl mx-auto px-3 sm:px-4 md:px-8 py-4 sm:py-6 md:py-8">
+            Reset Portfolio
+          </button>
+          {!guestMode && (
+            <button
+              onClick={() => {
+                // Logout functionality
+                if (typeof window !== 'undefined') {
+                  localStorage.removeItem('cdp-portfolio-data');
+                  localStorage.removeItem('cdp-coindepo-holdings');
+                  localStorage.removeItem('cdp-loans');
+                  window.location.reload();
+                }
+              }}
+              title="Logout"
+              style={{
+                backgroundColor: 'transparent',
+                color: '#3b82f6',
+                padding: '8px 12px',
+                border: '1px solid #3b82f6',
+                fontSize: '14px',
+                fontWeight: '500',
+                cursor: 'pointer',
+                transition: 'all 0.2s'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#3b82f6';
+                e.currentTarget.style.color = '#ffffff';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'transparent';
+                e.currentTarget.style.color = '#3b82f6';
+              }}
+            >
+              Logout
+            </button>
+          )}
+        </div>
+        
+        <div className="max-w-6xl mx-auto px-3 sm:px-4 md:px-8 py-4 sm:py-6 md:py-8">
         {/* Header Section */}
         <div className="text-center mb-6 sm:mb-8">
           <div className="flex flex-col items-center justify-center mb-4">
@@ -1643,7 +1647,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                 <select
                   value={selectedCurrency}
                   onChange={(e) => setSelectedCurrency(e.target.value)}
-                  className="px-2 sm:px-3 py-2 text-xs sm:text-sm bg-slate-50 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-64"
+                  className="px-2 sm:px-3 py-2 text-xs sm:text-sm rounded-lg bg-slate-50 focus:ring-2 focus:ring-blue-500 flex-1 sm:flex-none"
                 >
                   {CURRENCIES.map(currency => (
                     <option key={currency.code} value={currency.code}>
@@ -1670,7 +1674,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
 
           {/* Assets List Header */}
           {rows.length > 0 && (
-          <div className="hidden sm:grid grid-cols-12 gap-2 px-2 pb-2 text-xs uppercase tracking-wide text-slate-400">
+          <div className="hidden sm:grid grid-cols-12 gap-2 px-2 pb-1 text-xs uppercase tracking-wide text-slate-400">
             <div className="col-span-3"></div>
             <div className="col-span-2 text-right">QTY</div>
             <div className="col-span-2 text-right">PRICE</div>
@@ -1719,7 +1723,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                   {/* Asset Selection - Always Visible */}
                   <div style={{ width: '256px' }}>
                     <select
-                      className="w-full h-10 px-3 bg-slate-50 rounded-lg bg-white text-slate-700 text-sm"
+                      className="w-full h-10 px-3 rounded-lg bg-slate-50 text-slate-700 text-sm"
                       value={addAssetSymbol}
                       onChange={(e) => setAddAssetSymbol(e.target.value)}
                     >
@@ -1741,7 +1745,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                         placeholder="Qty"
                         value={addQty || ""}
                         onChange={(e) => setAddQty(toNum(e.target.value))}
-                        className="w-full h-10 px-3 bg-slate-50 rounded-lg text-right text-sm"
+                        className="w-full h-10 px-3 rounded-lg bg-slate-50 text-right text-sm"
                       />
                     </div>
                   )}
@@ -1754,7 +1758,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                     <div className="w-full sm:w-44">
                       <label className="block text-xs font-medium text-slate-600 mb-1">Interest Account Type</label>
                       <select
-                        className="w-full h-10 px-3 bg-slate-50 rounded-lg bg-white text-slate-700 text-sm"
+                        className="w-full h-10 px-3 rounded-lg bg-slate-50 text-slate-700 text-sm"
                         value={addAssetInterestRate}
                         onChange={(e) => setAddAssetInterestRate(e.target.value)}
                       >
@@ -1775,7 +1779,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                         placeholder="Payout Date"
                         value={addAssetPayoutDate}
                         onChange={(e) => setAddAssetPayoutDate(e.target.value)}
-                        className="w-full h-10 px-3 bg-slate-50 rounded-lg text-sm"
+                        className="w-full h-10 px-3 rounded-lg bg-slate-50 text-sm"
                       />
                     </div>
                   </div>
@@ -1800,7 +1804,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
 
           {/* ======= YOUR COINDEPO HOLDINGS SECTION ======= */}
           {portfolioVisible && (
-            <div className="mt-6 sm:mt-8 pt-4 sm:pt-6">
+            <div className="mt-6 sm:mt-8 sm:pt-6">
               <div className="mb-4 sm:mb-6">
                 <h2 className="cd-label text-lg">YOUR COINDEPO HOLDINGS</h2>
               <p className={`text-xs italic mt-1 ${coindepoPriceStatus === 'live' ? 'text-green-600' : 'text-orange-600'}`}>
@@ -1815,7 +1819,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
             {coindepoHoldings.length > 0 && (
               <div>
                 {/* COINDEPO List Header */}
-                <div className="grid grid-cols-12 gap-2 px-2 pb-2 text-xs uppercase tracking-wide text-slate-400">
+                <div className="grid grid-cols-12 gap-2 px-2 pb-1 text-xs uppercase tracking-wide text-slate-400">
                   <div className="col-span-3"></div>
                   <div className="col-span-2 text-right">QTY</div>
                   <div className="col-span-2 text-right">PRICE</div>
@@ -1860,7 +1864,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                   {/* COINDEPO Selection - Always Visible */}
                   <div style={{ width: '256px' }}>
                     <select
-                      className="w-full h-10 px-3 bg-slate-50 rounded-lg bg-white text-slate-700 text-sm"
+                      className="w-full h-10 px-3 rounded-lg bg-slate-50 text-slate-700 text-sm"
                       value={showCoindepoInput ? "COINDEPO" : ""}
                       onChange={(e) => setShowCoindepoInput(e.target.value === "COINDEPO")}
                     >
@@ -1878,7 +1882,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                         placeholder="Qty"
                         value={cdpInputQty || ""}
                         onChange={(e) => setCdpInputQty(e.target.value)}
-                        className="w-full h-10 px-3 bg-slate-50 rounded-lg text-right text-sm"
+                        className="w-full h-10 px-3 rounded-lg bg-slate-50 text-right text-sm"
                       />
                     </div>
                   )}
@@ -1888,7 +1892,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                     <div className="w-full sm:w-44">
                       <label className="block text-xs font-medium text-slate-600 mb-1">Interest Account Type</label>
                       <select
-                        className="w-full h-10 px-3 bg-slate-50 rounded-lg bg-white text-slate-700 text-sm"
+                        className="w-full h-10 px-3 rounded-lg bg-slate-50 text-slate-700 text-sm"
                         value={cdpInputAPR}
                         onChange={(e) => setCdpInputAPR(e.target.value)}
                       >
@@ -1910,7 +1914,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                         type="date"
                         value={cdpInputPayoutDate}
                         onChange={(e) => setCdpInputPayoutDate(e.target.value)}
-                        className="w-full h-10 px-3 bg-slate-50 rounded-lg text-sm"
+                        className="w-full h-10 px-3 rounded-lg bg-slate-50 text-sm"
                       />
                     </div>
                   )}
@@ -1935,12 +1939,12 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
 
           {/* ======= YOUR LOANS SECTION ======= */}
           {portfolioVisible && (
-            <div className="mt-6 sm:mt-8 pt-4 sm:pt-6">
+            <div className="mt-6 sm:mt-8 sm:pt-6">
               <h2 className="cd-label text-lg mb-4 sm:mb-6">YOUR LOANS</h2>
 
             {/* Loans List Header */}
             {loans.length > 0 && (
-              <div className="hidden sm:grid grid-cols-12 gap-2 px-2 pb-2 text-xs uppercase tracking-wide text-slate-400">
+              <div className="hidden sm:grid grid-cols-12 gap-2 px-2 pb-1 text-xs uppercase tracking-wide text-slate-400">
                 <div className="col-span-3"></div>
                 <div className="col-span-2 text-right">QTY</div>
                 <div className="col-span-2 text-right">PRICE</div>
@@ -1987,7 +1991,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                   {/* Asset Selection - Always Visible */}
                   <div style={{ width: '256px' }}>
                     <select
-                      className="w-full h-10 px-3 bg-slate-50 rounded-lg bg-white text-slate-700 text-sm"
+                      className="w-full h-10 px-3 rounded-lg bg-slate-50 text-slate-700 text-sm"
                       value={addLoanSymbol}
                       onChange={(e) => setAddLoanSymbol(e.target.value)}
                     >
@@ -2009,7 +2013,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                         placeholder="Qty"
                         value={addLoanQty || ""}
                         onChange={(e) => setAddLoanQty(toNum(e.target.value))}
-                        className="w-full h-10 px-3 bg-slate-50 rounded-lg text-right text-sm"
+                        className="w-full h-10 px-3 rounded-lg bg-slate-50 text-right text-sm"
                       />
                     </div>
                   )}
@@ -2019,7 +2023,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                     <div className="w-full sm:w-44">
                       <label className="block text-xs font-medium text-slate-600 mb-1">Interest Account Type</label>
                       <select
-                        className="w-full h-10 px-3 bg-slate-50 rounded-lg bg-white text-slate-700 text-sm"
+                        className="w-full h-10 px-3 rounded-lg bg-slate-50 text-slate-700 text-sm"
                         value={addLoanAPR}
                         onChange={(e) => setAddLoanAPR(e.target.value)}
                       >
@@ -2053,7 +2057,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
 
           {/* ======= PORTFOLIO TOTALS ======= */}
           {portfolioVisible && (
-            <div className="mt-8 pt-6 " style={{ paddingTop: '20px', paddingBottom: '20px' }}>
+            <div className="mt-8 " style={{ paddingTop: '10px', paddingBottom: '10px' }}>
             <div className="flex justify-end">
               <div className="text-right space-y-2">
                 <div className="mb-2">
@@ -2064,7 +2068,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                   <span className="text-slate-600">COINDEPO: </span>
                   <span className="font-semibold">{formatCurrency(cdpValueUSD)}</span>
           </div>
-                <div className="mb-3 pb-2 ">
+                <div className="mb-3 pb-1 ">
                   <span className="text-slate-600">Holdings Total (for tiers): </span>
                   <span className="text-base font-semibold text-blue-600">{formatCurrency(holdingsTotal)}</span>
                 </div>
@@ -2079,7 +2083,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
           </div>
 
             {/* Extra witregel en groene totaal */}
-            <div className="mt-4 flex justify-end">
+            <div className="mt-8 flex justify-end">
               <div className="text-right">
                 <div className="cd-total-green">
                   Net Holdings: {formatCurrency(netHoldings)}
@@ -2168,7 +2172,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                 {allHoldings.length > 0 ? (
                   <>
                     {/* Interest List Header */}
-            <div className="grid grid-cols-12 gap-2 px-2 pb-2 text-xs uppercase tracking-wide text-slate-400">
+            <div className="grid grid-cols-12 gap-2 px-2 pb-1 text-xs uppercase tracking-wide text-slate-400">
                       <div className="col-span-8"></div>
                       <div className="col-span-4 text-right">ANNUAL INTEREST</div>
             </div>
@@ -2237,7 +2241,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                 </div>
 
                         {/* Net Interest Income Total */}
-                        <div className="mt-12 pt-8 " style={{ paddingTop: '20px', paddingBottom: '20px' }}>
+                        <div className="mt-12 " style={{ paddingTop: '10px', paddingBottom: '10px' }}>
                           <div className="flex justify-end">
                             <div className="text-right">
                               <div className="text-xs text-slate-500 mb-4">Total from all assets</div>
@@ -2245,7 +2249,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                 </div>
 
                           {/* Extra witregel en groene totaal */}
-                          <div className="mt-4 flex justify-end">
+                          <div className="mt-8 flex justify-end">
                             <div className="text-right">
                               <div className="cd-total-green">
                                 Net Interest Income: {fmtUSD(netAnnualInterest)}/year
@@ -2405,7 +2409,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
           </div>
 
                 {/* Total Upcoming Interest */}
-                <div className="mt-8 pt-6 " style={{ paddingTop: '20px', paddingBottom: '20px' }}>
+                <div className="mt-8 " style={{ paddingTop: '10px', paddingBottom: '10px' }}>
                   <div className="flex justify-end">
                     <div className="text-right">
                       <div className="text-xs text-slate-500 mb-4">
@@ -2415,7 +2419,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
           </div>
 
                   {/* Extra witregel en groene totaal */}
-                  <div className="mt-4 flex justify-end">
+                  <div className="mt-8 flex justify-end">
                     <div className="text-right">
                       {(() => {
                         const totalAccruedInterest = upcomingPayouts.reduce((sum, payout) => {
@@ -2534,7 +2538,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                           checked={extraPayoutEnabled}
                           onChange={(e) => setExtraPayoutEnabled(e.target.checked)}
                           disabled={!isTierProgramActive}
-                          className="w-4 h-4 text-blue-600 bg-gray-100  rounded focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="w-4 h-4 text-blue-600 bg-gray-100 rounded focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
                         />
                         <label htmlFor="tokenPayoutBonus" className="text-sm font-medium text-slate-700">
                           Enable
@@ -2581,7 +2585,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
               )}
             </div>
 
-            <div className="pt-4  space-y-2" style={{ paddingTop: '20px', paddingBottom: '20px' }}>
+            <div className=" space-y-2" style={{ paddingTop: '10px', paddingBottom: '10px' }}>
               <div className="grid grid-cols-12 gap-2 items-center">
                 <div className="col-span-8 text-base font-semibold text-blue-600">Total passive income per year:</div>
                 <div className="col-span-4 text-right text-base font-semibold text-blue-600">{fmtUSD(otherValueUSD * 0.24 + utilityUSD - loanInterestUSD)}</div>
@@ -2594,7 +2598,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
             </div>
             
             {/* Extra witregel en groene totaal */}
-            <div className="mt-4 grid grid-cols-12 gap-2 items-center">
+            <div className="mt-8 grid grid-cols-12 gap-2 items-center">
               <div className="col-span-8 cd-total-green-sm">Total benefits per year:</div>
               <div className="col-span-4 text-right cd-total-green-sm">{fmtUSD(otherValueUSD * 0.24 + utilityUSD)}</div>
             </div>
@@ -2660,7 +2664,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                 })}
                 
                 {/* Exchange Links */}
-                <div className="mt-8 pt-6 " style={{ paddingTop: '20px', paddingBottom: '20px' }}>
+                <div className="mt-8 " style={{ paddingTop: '10px', paddingBottom: '10px' }}>
                   <div className="text-slate-600 mb-4">
                     Get your extra tokens at:
                   </div>
@@ -2755,7 +2759,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
               </div>
             </div>
             
-            <div className=" pt-6 sm:pt-8" style={{ paddingTop: '20px', paddingBottom: '20px' }}>
+            <div className=" sm:pt-8" style={{ paddingTop: '10px', paddingBottom: '10px' }}>
               <p className="font-semibold text-slate-800 mb-3 text-sm sm:text-base">NOT A COINDEPO MEMBER?</p>
               <p className="text-slate-600 mb-3 text-sm sm:text-base">Use my partnerlink to open a free account:</p>
               <a 
@@ -2768,7 +2772,7 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
               </a>
             </div>
             
-            <div className=" pt-6 sm:pt-8" style={{ paddingTop: '20px', paddingBottom: '20px' }}>
+            <div className=" sm:pt-8" style={{ paddingTop: '10px', paddingBottom: '10px' }}>
               <p className="mb-3 text-sm sm:text-base">
                 <span className="font-semibold text-slate-800">COINDEPO COMMUNITY LINK</span> @coindepo_community
               </p>
@@ -2778,8 +2782,8 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
               <p className="font-semibold text-base sm:text-lg text-slate-800">THANK YOU!</p>
             </div>
             
-            <div className=" pt-6 sm:pt-8 text-xs text-slate-500">
-              <div className="bg-yellow-50  rounded-lg p-3 sm:p-4 mb-4">
+            <div className=" sm:text-xs text-slate-500">
+                <div className="bg-yellow-50 rounded-lg p-3 sm:p-4 mb-4">
                 <h4 className="font-semibold text-yellow-800 mb-2 text-sm sm:text-base">⚠️ IMPORTANT DISCLAIMER</h4>
                 <ul className="space-y-1 text-yellow-700 text-xs sm:text-sm">
                   <li>• This Portfolio Manager is <strong>NOT</strong> a COINDEPO endorsed or official product</li>
@@ -2795,11 +2799,12 @@ export default function CDPUtilityApp({ guestMode = false }: CDPUtilityAppProps)
                 <strong>Technical Note:</strong> COINDEPO prices are currently estimated at $0.10 as live APIs are temporarily unavailable.
               </p>
             </div>
-          </div>
+            </div>
           )}
         </section>
+        </div>
+        </div>
       </div>
     </div>
   );
-}// Force refresh Sun Sep 28 20:43:34 CEST 2025
-
+}
